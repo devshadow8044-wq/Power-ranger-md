@@ -87,6 +87,65 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
 .buy:hover{transform:translateY(-1px);box-shadow:0 0 22px var(--glow)}
 .buy:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 @media(max-width:380px){.row{flex-direction:column}.go{width:100%}.dock{gap:10px;padding:8px 10px}#musicText{display:none}#musicBtn{padding:0 10px}.fab{gap:12px}}
+button.buy{border:0;width:100%;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.co{position:fixed;inset:0;z-index:8;display:none;overflow-y:auto;background:rgba(5,10,13,.96);backdrop-filter:blur(8px)}
+.co.on{display:block}
+.co-in{width:min(440px,100%);margin:0 auto;padding:calc(18px + env(safe-area-inset-top,0px)) 16px calc(28px + env(safe-area-inset-bottom,0px))}
+.co-x{display:block;margin:0 0 12px auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-size:20px;line-height:1;cursor:pointer}
+.step{display:none}.step.on{display:block}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 16px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+.logo{text-align:center;font-size:24px;font-weight:800;color:var(--accent);text-shadow:0 0 18px var(--glow);margin-bottom:16px}
+.logo.sm{text-align:left;font-size:18px;margin:0}
+.co p{margin:0 0 12px;font-size:13px;line-height:1.5;color:var(--muted)}
+.co .amt{color:var(--ink)}
+.co .amt b{color:var(--accent);font-size:22px;text-shadow:0 0 14px var(--glow)}
+.co em{font-style:normal;color:#ff6b7b;font-weight:800}
+.wv{width:130px;margin:6px auto 16px;text-align:center;padding:10px 8px;border:1px solid var(--accent);border-radius:8px;background:#03080a;box-shadow:0 0 18px var(--glow);font-size:12px}
+.wv span{display:block;background:#1dc8ff;color:#031013;font-weight:800;font-size:18px;border-radius:4px;padding:8px 0;margin-bottom:8px}
+.co .wv em{display:block;color:var(--accent);font-size:10px;font-weight:400;margin-top:3px}
+.phone{display:flex;gap:8px;margin-bottom:12px}
+.phone select{height:48px;max-width:46%;background:#03080a;border:1px solid var(--line);border-radius:6px;color:var(--ink);font:inherit;font-size:12px;padding:0 6px;outline:none}
+.phone select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+.warn{padding:10px 12px;margin-bottom:14px;background:rgba(255,77,97,.12);border-radius:6px;color:#ff6b7b;font-size:12px;line-height:1.5}
+.err{display:none;margin:-4px 0 12px;color:#ff6b7b;font-size:12px}.err.show{display:block}
+.co .go{width:100%}
+.top2{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+.cd{text-align:right;font-size:11px;color:var(--muted)}
+.cd div{margin-top:6px;display:flex;gap:4px;justify-content:flex-end;align-items:center}
+.cd b{min-width:28px;padding:4px 0;text-align:center;border:1px solid var(--accent);border-radius:4px;color:var(--accent);font-size:14px}
+.h3{margin:0 0 4px;font-size:15px;font-weight:800;color:var(--ink)}
+.box{background:#03080a;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0 18px}
+.lab{font-size:11px;color:var(--muted);margin-top:10px}.box>.lab:first-child{margin-top:0}
+.val{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--accent);font-size:20px;font-weight:800;overflow-wrap:anywhere}
+.cp{flex:none;height:32px;padding:0 10px;border:1px solid var(--accent);border-radius:6px;background:transparent;color:var(--accent);font:inherit;font-size:11px;cursor:pointer}
+.row2{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.refresh{height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--accent);color:#031013;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+#more{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}#more.on{display:block}
+.co .fast{color:var(--accent);font-size:14px;font-weight:800;margin:0 0 6px}
+.paid{display:flex;align-items:center;justify-content:center;height:54px;border-radius:27px;background:var(--accent);color:#031013;font-size:16px;font-weight:800;letter-spacing:1px;text-decoration:none;box-shadow:0 0 26px var(--glow);animation:pulse 1.8s infinite}
+@keyframes pulse{50%{box-shadow:0 0 40px var(--glow),0 0 0 6px var(--glow)}}
+.co .acc{color:var(--ink);font-size:16px;margin:4px 0 0}
+.co button:focus-visible,.co .paid:focus-visible,.co select:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.acct{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:4;height:34px;max-width:50vw;padding:0 13px;border:1px solid var(--line);border-radius:9px;background:rgba(7,15,19,.88);color:var(--ink);font:inherit;font-size:12px;cursor:pointer;backdrop-filter:blur(10px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct.in{border-color:var(--accent);color:var(--accent);box-shadow:0 0 14px var(--glow)}
+.acct:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tabs button{flex:1;height:40px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.tabs button[aria-selected='true']{border-color:var(--accent);color:var(--accent);box-shadow:0 0 14px var(--glow)}
+.fld{margin-bottom:12px}
+.fld input{width:100%}
+.fld input.bad{border-color:#ff6b7b;box-shadow:0 0 0 3px rgba(255,77,97,.25)}
+.chk{display:flex;align-items:flex-start;gap:10px;margin:4px 0 8px;font-size:12px;color:var(--muted);line-height:1.5;cursor:pointer}
+.chk:before{content:none}
+.chk input{flex:none;min-width:20px;width:20px;height:20px;padding:0;margin-top:1px;accent-color:var(--accent)}
+.terms{margin:0 0 14px;font-size:11px;color:var(--muted);line-height:1.5}
+.terms summary{cursor:pointer;color:var(--accent)}
+.msg{display:none;margin:0 0 14px;padding:11px 13px;border-radius:6px;font-size:12px;line-height:1.5;border:1px solid}
+.msg.show{display:block}
+.msg.bad{background:rgba(255,77,97,.12);border-color:rgba(255,77,97,.5);color:#ff6b7b}
+.msg.good{background:rgba(45,255,143,.12);border-color:rgba(45,255,143,.55);color:#2dff8f}
+.msg.bad:before{content:'✕  '}
+.msg.good:before{content:'✓  '}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -112,6 +171,77 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
     </section>
   </main>
 </div>
+<div class='co' id='co' role='dialog' aria-modal='true' aria-label='Paiement'>
+  <div class='co-in'>
+    <button class='co-x' id='coX' type='button' aria-label='Fermer'>×</button>
+    <div class='step on' id='st1'>
+      <div class='card'>
+        <div class='logo'>Zoro-Md</div>
+        <p>Veuillez remplir votre mode de paiement et le compte de paiement réel que vous utiliserez pour effectuer le paiement.</p>
+        <p class='amt'>Montant de paiement : <b id='amt1'></b></p>
+        <p>Veuillez sélectionner un mode de paiement</p>
+        <div class='wv'><span>wave</span>WAVE<em>bientôt</em></div>
+        <div class='phone'><select id='ctry' aria-label='Pays'></select><input id='pnum' type='tel' inputmode='tel' autocomplete='tel' placeholder='Votre compte de paiement réel'></div>
+        <div class='err' id='perr' role='alert'></div>
+        <div class='warn'>Veuillez remplir votre compte de paiement avec précision. Un remplissage incorrect peut entraîner la perte des fonds transférés.</div>
+        <button class='go' id='confirm' type='button'>Confirmer →</button>
+      </div>
+    </div>
+    <div class='step' id='st2'>
+      <div class='card'>
+        <div class='top2'><div class='logo sm'>Zoro-Md</div><div class='cd'>la transaction expire plus tard<div><b id='cdM'>15</b>:<b id='cdS'>00</b></div></div></div>
+        <h3 class='h3'>Copiez ce compte</h3>
+        <p>Copiez ce compte <em>WAVE</em> et effectuez le paiement.</p>
+        <div class='box'>
+          <div class='lab'>Montant total payable :</div>
+          <div class='val'><span id='amt2'></span></div>
+          <div class='lab'>WAVE Compte :</div>
+          <div class='val'><span id='wnum'>755545742</span><button class='cp' type='button' data-copy='wnum'>Copier</button></div>
+          <div class='lab'>Nom du compte :</div>
+          <div class='val'><span id='wname'>PAPINO G</span><button class='cp' type='button' data-copy='wname'>Copier</button></div>
+        </div>
+        <h3 class='h3'>Paiement achevé ?</h3>
+        <p>Cliquez sur <em>« Rafraîchir »</em> pour vérifier s’il a réussi.</p>
+        <div class='box'>
+          <div class='row2'><div><div class='lab' style='margin:0'>Montant payé :</div><div class='val'><span style='color:var(--muted)'>XOF 0</span></div></div><button class='refresh' id='refresh' type='button'>Rafraîchir</button></div>
+          <p style='margin:10px 0 0;font-size:11px'>Le paiement devrait réussir dans 2 à 10 minutes. Cliquez pour actualiser les résultats.</p>
+          <div id='more'>
+            <div class='fast'>Obtenez des résultats plus rapidement !</div>
+            <p>Après avoir payé, clique sur le bouton ci-dessous pour nous prévenir sur WhatsApp.</p>
+            <a class='paid' id='paid' href='#' target='_blank' rel='noopener'>J’AI PAYÉ</a>
+          </div>
+        </div>
+        <h3 class='h3'>Votre compte de paiement :</h3>
+        <p class='acc' id='acc'></p>
+      </div>
+    </div>
+  </div>
+</div>
+<button class='acct' id='acct' type='button'>Connexion</button>
+<div class='co' id='au' role='dialog' aria-modal='true' aria-label='Compte'>
+  <div class='co-in'>
+    <button class='co-x' id='auX' type='button' aria-label='Fermer'>×</button>
+    <div class='card'>
+      <div class='logo'>Zoro-Md</div>
+      <div id='auForm'>
+        <div class='tabs' role='tablist'><button type='button' role='tab' id='tabReg' aria-selected='true'>Inscription</button><button type='button' role='tab' id='tabLog' aria-selected='false'>Connexion</button></div>
+        <div class='msg' id='auMsg' role='alert'></div>
+        <div class='fld' id='fName'><label for='aName'>Nom</label><input id='aName' type='text' autocomplete='name' placeholder='Ton nom'></div>
+        <div class='fld'><label for='aMail'>E-mail</label><input id='aMail' type='email' autocomplete='email' inputmode='email' placeholder='exemple@mail.com'></div>
+        <div class='fld'><label for='aPass'>Code</label><input id='aPass' type='password' autocomplete='new-password' placeholder='6 caractères minimum'></div>
+        <label class='chk' id='fTerms'><input id='aTerms' type='checkbox'><span>J’accepte les conditions d’utilisation</span></label>
+        <details class='terms' id='termsBox'><summary>Lire les conditions</summary><p style='margin:8px 0 0'>Tes informations servent uniquement à gérer ton compte. Tu es responsable de l’exactitude des informations saisies. Les conditions complètes seront précisées par Zoro-Md.</p></details>
+        <button class='go' id='auGo' type='button'>Créer mon compte</button>
+      </div>
+      <div id='auMe' style='display:none'>
+        <p class='amt'>Connecté en tant que</p>
+        <p class='acc' id='meName'></p>
+        <p id='meMail'></p>
+        <button class='go' id='auOut' type='button'>Se déconnecter</button>
+      </div>
+    </div>
+  </div>
+</div>
 <section class="shop" id="shop" aria-label="Boutique">
   <div class="shop-in">
     <a class="back" href="#">← Retour</a>
@@ -131,11 +261,15 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
       <a id="lnkSupport" href="#" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg></i>Service client</a>
       <a id="lnkOwner" href="#" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></i>Propriétaire</a>
       <a id="lnkShop" href="#boutique"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l1 13H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg></i>Boutique</a>
+      <a id="lnkChat" href="#" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></i>Discussion</a>
     </div>
     <button class="plus" id="plusBtn" type="button" aria-expanded="false" aria-controls="fab" aria-label="Contacts">+</button>
   </div>
   <button id="musicBtn" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span id="musicText">Musique</span></button>
 </nav>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"></script>
 <script>
 const body=document.body,COLORS=['cyan','green','violet','red'];
 try{const c=localStorage.getItem('prb-color');if(COLORS.includes(c))body.dataset.color=c}catch(e){}
@@ -189,17 +323,20 @@ const MSG={support:'Bonjour, j’ai besoin d’aide avec Power Ranger Bot (servi
 const LINKS={support:'https://wa.me/221755545742?text='+encodeURIComponent(MSG.support),owner:'https://wa.me/4799883083?text='+encodeURIComponent(MSG.owner),shop:'https://wa.me/221755545742?text='+encodeURIComponent(MSG.shop)};
 document.getElementById('lnkSupport').href=LINKS.support;
 document.getElementById('lnkOwner').href=LINKS.owner;
+/* Remplace par le lien de ton groupe ou canal WhatsApp */
+const DISCUSSION_URL='https://wa.me/221755545742?text='+encodeURIComponent('Bonjour, je voudrais rejoindre la discussion de Power Ranger Bot.');
+document.getElementById('lnkChat').href=DISCUSSION_URL;
 /* Boutique : liste des produits (ajoute un objet pour un nouveau produit) */
 const D='Description du produit à compléter.';
 const PRODUCTS=[
-  {name:'APK BAN',old:2000,price:1500,desc:'Application pour bannir des compte WhatsApp marche 100%.'},
+  {name:'APK BAN',old:2000,price:1500,desc:'Application pour gérer et débloquer les numéros bannis, simple à installer et rapide à utiliser.'},
   {name:'Bot personnalisé',old:3000,price:1500,desc:'Un bot WhatsApp fait sur mesure, avec le nom, les commandes et le style que tu veux.'},
-  {name:'Power bot MD',old:4000,price:2000,desc:'Bot WhatsApp multi-appareils complet, avec de nombreuses commandes et très puissant prêtes à l’emploi.'},
+  {name:'Power bot MD',old:4000,price:2000,desc:'Bot WhatsApp multi-appareils complet, avec de nombreuses commandes prêtes à l’emploi.'},
   {name:'Check ban',old:2000,price:1500,desc:'Vérifie en quelques secondes si un numéro WhatsApp est banni ou non.'},
   {name:'Formation DEV',old:3000,price:2000,desc:'Formation pour apprendre la programmation pas à pas, même en partant de zéro.'},
   {name:'Apprendre à créer un bot',old:4000,price:2500,desc:'Apprends à créer ton propre bot, de l’installation jusqu’à la mise en ligne.'},
   {name:'Bot Telegram',old:2000,price:1500,desc:'Bot Telegram prêt à l’emploi, facile à configurer et à lancer.'},
-  {name:'Support ban',old:1000,price:500,desc:'envoyé des fausses texte a service WhatsApp pour bannir une numero.'},
+  {name:'Support ban',old:1000,price:500,desc:'Aide pour récupérer un compte banni, avec un accompagnement par le service client.'},
   {name:'Telegram premium',old:2000,price:1500,desc:'Abonnement Telegram Premium pour profiter de toutes les fonctions avancées.'},
   {name:'Movie box premium',old:3000,price:1500,desc:'Accès Premium à Movie Box, pour regarder films et séries sans limites.'},
   {name:'Numéro virtuel',old:3000,price:1500,desc:'Numéro virtuel pour créer et vérifier tes comptes sans utiliser ton vrai numéro.'},
@@ -215,9 +352,9 @@ PRODUCTS.forEach(p=>{
   const ph=el('div','ph','photo bientôt');
   const b=el('div','pbody'),pr=el('div','prices');
   pr.append(el('span','old',p.old+' F'),el('span','now',p.price+' F'),el('span','pct','-'+Math.round((1-p.price/p.old)*100)+'%'));
-  const buy=el('a','buy','Acheter');
-  buy.href=CONTACT+encodeURIComponent('Bonjour, je veux acheter '+p.name+' ('+p.price+' F).');
-  buy.target='_blank';buy.rel='noopener';
+  const buy=el('button','buy','Acheter');buy.type='button';buy.addEventListener('click',()=>openCo(p));
+  
+  
   b.append(el('h3','pname',p.name),pr,el('p','pdesc',p.desc),buy);
   card.append(top,ph,b);list.append(card);
 });
@@ -229,6 +366,102 @@ function setFab(o){fab.classList.toggle('open',o);plus.setAttribute('aria-expand
 plus.addEventListener('click',e=>{e.stopPropagation();setFab(!fab.classList.contains('open'))});
 document.addEventListener('click',e=>{if(!fab.contains(e.target))setFab(false)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setFab(false)});
+
+/* Paiement */
+const COUNTRIES=[['Sénégal','221'],['Côte d’Ivoire','225'],['Mali','223'],['Burkina Faso','226'],['Gambie','220'],['Ouganda','256'],['Guinée','224'],['Niger','227'],['Sierra Leone','232'],['Cameroun','237']];
+const co=document.getElementById('co'),st1=document.getElementById('st1'),st2=document.getElementById('st2'),ctry=document.getElementById('ctry'),pnum=document.getElementById('pnum'),perr=document.getElementById('perr'),more=document.getElementById('more');
+COUNTRIES.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=c[0]+' +'+c[1];ctry.append(o)});
+let cur=null,timer=null;
+function openCo(p){cur=p;pnum.value='';perr.className='err';st1.classList.add('on');st2.classList.remove('on');more.classList.remove('on');document.getElementById('amt1').textContent='XOF '+p.price;document.getElementById('amt2').textContent='XOF '+p.price;co.classList.add('on');co.scrollTop=0}
+function closeCo(){co.classList.remove('on');clearInterval(timer)}
+function startCd(){clearInterval(timer);let s=900;const m=document.getElementById('cdM'),sc=document.getElementById('cdS');const t=()=>{m.textContent=String(Math.floor(s/60)).padStart(2,'0');sc.textContent=String(s%60).padStart(2,'0');if(s--<=0)clearInterval(timer)};t();timer=setInterval(t,1000)}
+document.getElementById('coX').addEventListener('click',closeCo);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCo()});
+document.getElementById('confirm').addEventListener('click',()=>{
+  const d=pnum.value.replace(/\D/g,'').replace(/^0+/,'');
+  if(d.length<7||d.length>12){perr.textContent='Numéro invalide : vérifie ton compte de paiement.';perr.className='err show';return}
+  const c=COUNTRIES[ctry.value],acc='+'+c[1]+' '+d;
+  document.getElementById('acc').textContent=acc;
+  const msg='Bonjour, j’ai payé via Wave.\nProduit : '+cur.name+'\nMontant : '+cur.price+' F\nPays : '+c[0]+'\nCompte de paiement : '+acc;
+  document.getElementById('paid').href=CONTACT+encodeURIComponent(msg);
+  st1.classList.remove('on');st2.classList.add('on');startCd();co.scrollTop=0;
+});
+document.getElementById('refresh').addEventListener('click',()=>more.classList.add('on'));
+document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>{
+  const txt=document.getElementById(b.dataset.copy).textContent;
+  const done=()=>{b.textContent='Copié ✓';setTimeout(()=>{b.textContent='Copier'},1500)};
+  const fb=()=>{try{const t=document.createElement('textarea');t.value=txt;document.body.append(t);t.select();document.execCommand('copy');t.remove();done()}catch(e){}};
+  try{navigator.clipboard.writeText(txt).then(done,fb)}catch(e){fb()}
+}));
+
+/* Compte : inscription / connexion (stocké sur l’appareil du visiteur) */
+const au=document.getElementById('au'),acctBtn=document.getElementById('acct'),aName=document.getElementById('aName'),aMail=document.getElementById('aMail'),aPass=document.getElementById('aPass'),aTerms=document.getElementById('aTerms'),auMsg=document.getElementById('auMsg'),auGo=document.getElementById('auGo'),tabReg=document.getElementById('tabReg'),tabLog=document.getElementById('tabLog'),fName=document.getElementById('fName'),fTerms=document.getElementById('fTerms'),termsBox=document.getElementById('termsBox');
+let mode='reg';
+/* Sécurité : colle ici la configuration de ton projet Firebase (console Firebase > Paramètres du projet > Tes applications > Web). Tant que ce n’est pas rempli, les comptes restent en mode local. */
+const FIREBASE_CONFIG={apiKey:'VOTRE_API_KEY',authDomain:'VOTRE_PROJET.firebaseapp.com',projectId:'VOTRE_PROJET',appId:'VOTRE_APP_ID'};
+let FB=null,fbUser=null,fbDb=null;
+try{if(typeof firebase!=='undefined'&&!/^VOTRE_/.test(FIREBASE_CONFIG.apiKey)){firebase.initializeApp(FIREBASE_CONFIG);FB=firebase.auth();fbDb=firebase.firestore?firebase.firestore():null;FB.onAuthStateChanged(u=>{fbUser=u;render()})}}catch(e){FB=null}
+const FB_ERR={'auth/email-already-in-use':'Cet e-mail a déjà un compte. Va dans Connexion.','auth/invalid-credential':'E-mail ou code incorrect.','auth/wrong-password':'E-mail ou code incorrect.','auth/user-not-found':'E-mail ou code incorrect.','auth/invalid-email':'Adresse e-mail invalide.','auth/weak-password':'Code trop faible (6 caractères minimum).','auth/too-many-requests':'Trop de tentatives. Réessaie dans quelques minutes.','auth/network-request-failed':'Pas de connexion. Vérifie ton internet.'};
+async function fbAuth(m,name,mail,pw){
+  try{
+    if(m==='reg'){
+      const c=await FB.createUserWithEmailAndPassword(mail,pw);
+      await c.user.updateProfile({displayName:name});
+      fbUser=c.user;
+      if(fbDb){try{await fbDb.collection('users').doc(c.user.uid).set({name,email:mail,createdAt:firebase.firestore.FieldValue.serverTimestamp()})}catch(e){}}
+      return {name};
+    }
+    const c=await FB.signInWithEmailAndPassword(mail,pw);
+    return {name:c.user.displayName||mail.split('@')[0]};
+  }catch(e){return {err:FB_ERR[e.code]||'Une erreur est survenue. Réessaie.'}}
+}
+function store(){try{return JSON.parse(localStorage.getItem('zm-users')||'[]')}catch(e){return []}}
+function save(u){try{localStorage.setItem('zm-users',JSON.stringify(u));return true}catch(e){return false}}
+function sess(){try{return localStorage.getItem('zm-session')}catch(e){return null}}
+function setSess(m){try{if(m)localStorage.setItem('zm-session',m);else localStorage.removeItem('zm-session')}catch(e){}}
+async function hash(pw,salt){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+pw));return Array.from(new Uint8Array(d)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+function msg(t,ok){auMsg.textContent=t;auMsg.className='msg show '+(ok?'good':'bad')}
+function clearMsg(){auMsg.className='msg';[aName,aMail,aPass].forEach(i=>i.classList.remove('bad'))}
+function mark(i){i.classList.add('bad');i.focus()}
+function setMode(m){mode=m;clearMsg();tabReg.setAttribute('aria-selected',String(m==='reg'));tabLog.setAttribute('aria-selected',String(m==='log'));const d=m==='reg'?'':'none';fName.style.display=d;fTerms.style.display=d;termsBox.style.display=d;aPass.autocomplete=m==='reg'?'new-password':'current-password';auGo.textContent=m==='reg'?'Créer mon compte':'Se connecter'}
+function render(){const m=sess(),u=FB?(fbUser&&{name:fbUser.displayName||(fbUser.email||'').split('@')[0],email:fbUser.email}):(m&&store().find(x=>x.email===m));if(u){acctBtn.textContent=u.name.split(' ')[0];acctBtn.classList.add('in')}else{acctBtn.textContent='Connexion';acctBtn.classList.remove('in')}return u}
+function openAu(){const u=render();document.getElementById('auForm').style.display=u?'none':'';document.getElementById('auMe').style.display=u?'':'none';if(u){document.getElementById('meName').textContent=u.name;document.getElementById('meMail').textContent=u.email}else{aName.value='';aMail.value='';aPass.value='';aTerms.checked=false;setMode(mode)}au.classList.add('on');au.scrollTop=0}
+function closeAu(){au.classList.remove('on')}
+acctBtn.addEventListener('click',openAu);
+document.getElementById('auX').addEventListener('click',closeAu);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAu()});
+tabReg.addEventListener('click',()=>setMode('reg'));
+tabLog.addEventListener('click',()=>setMode('log'));
+au.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'&&e.target.type!=='checkbox'){e.preventDefault();auGo.click()}});
+auGo.addEventListener('click',async()=>{
+  clearMsg();
+  const name=aName.value.trim().replace(/\s+/g,' '),mail=aMail.value.trim().toLowerCase(),pw=aPass.value;
+  if(mode==='reg'&&name.length<2){mark(aName);return msg('Entre ton nom (2 lettres minimum).')}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)){mark(aMail);return msg('Adresse e-mail invalide.')}
+  if(pw.length<6){mark(aPass);return msg('Le code doit contenir au moins 6 caractères.')}
+  if(mode==='reg'&&!aTerms.checked)return msg('Tu dois accepter les conditions pour créer un compte.');
+  auGo.disabled=true;let ok=false;
+  try{
+    if(FB){const r=await fbAuth(mode,name,mail,pw);if(r.err)return msg(r.err);msg(mode==='reg'?'Compte créé avec succès ! Bienvenue '+r.name+'.':'Connexion réussie ! Content de te revoir '+r.name+'.',true);ok=true;render();setTimeout(()=>{closeAu();aPass.value='';auGo.disabled=false},1400);return}
+    const users=store();
+    if(mode==='reg'){
+      if(users.some(x=>x.email===mail)){mark(aMail);return msg('Cet e-mail a déjà un compte. Va dans Connexion.')}
+      const salt=Math.random().toString(36).slice(2)+Date.now().toString(36);
+      users.push({name,email:mail,salt,hash:await hash(pw,salt)});
+      if(!save(users))return msg('Impossible d’enregistrer le compte sur cet appareil.');
+      setSess(mail);msg('Compte créé avec succès ! Bienvenue '+name+'.',true);
+    }else{
+      const u=users.find(x=>x.email===mail);
+      if(!u||u.hash!==await hash(pw,u.salt))return msg('E-mail ou code incorrect.');
+      setSess(mail);msg('Connexion réussie ! Content de te revoir '+u.name+'.',true);
+    }
+    ok=true;render();
+    setTimeout(()=>{closeAu();aPass.value='';auGo.disabled=false},1400);
+  }catch(e){msg('Une erreur est survenue. Réessaie.')}
+  finally{if(!ok)auGo.disabled=false}
+});
+document.getElementById('auOut').addEventListener('click',()=>{if(FB){FB.signOut();fbUser=null}setSess(null);render();openAu();msg('Tu es déconnecté.',true)});
+render();
 
 /* Pairing */
 const form=document.getElementById('pairForm'),result=document.getElementById('result'),submit=document.getElementById('submitBtn');
