@@ -7,7 +7,9 @@
 <meta name="description" content="Zoro Bot — pairing WhatsApp.">
 <title>Zoro-Md</title>
 <style>
-:root{--bg:#050a0d;--ink:#e6f4f7;--muted:#7f9aa3;--line:rgba(120,220,240,.16);--panel:rgba(7,15,19,.78);--accent:#19e3ff;--glow:rgba(25,227,255,.35)}
+:root{--bg:#050a0d;--ink:#e6f4f7;--muted:#7f9aa3;--line:rgba(120,220,240,.16);--panel:rgba(7,15,19,.78);--accent:#ffffff;--glow:rgba(255,255,255,.45)}
+body[data-color="white"]{--accent:#ffffff;--glow:rgba(255,255,255,.45)}
+body[data-color="cyan"]{--accent:#19e3ff;--glow:rgba(25,227,255,.35)}
 body[data-color="green"]{--accent:#2dff8f;--glow:rgba(45,255,143,.33)}
 body[data-color="violet"]{--accent:#b36bff;--glow:rgba(179,107,255,.36)}
 body[data-color="red"]{--accent:#ff4d61;--glow:rgba(255,77,97,.36)}
@@ -50,7 +52,7 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
 .sw{display:flex;gap:9px}
 .sw button{width:26px;height:26px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
 .sw button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 12px currentColor}
-.sw [data-pick=cyan]{background:#19e3ff;color:#19e3ff}.sw [data-pick=green]{background:#2dff8f;color:#2dff8f}.sw [data-pick=violet]{background:#b36bff;color:#b36bff}.sw [data-pick=red]{background:#ff4d61;color:#ff4d61}
+.sw [data-pick=white]{background:#ffffff;color:#ffffff}.sw [data-pick=cyan]{background:#19e3ff;color:#19e3ff}.sw [data-pick=green]{background:#2dff8f;color:#2dff8f}.sw [data-pick=violet]{background:#b36bff;color:#b36bff}
 .sw{justify-self:start}#musicBtn{justify-self:end}
 .mid{position:relative;display:flex;justify-content:center}
 .plus{width:44px;height:44px;border-radius:50%;border:0;background:var(--accent);color:#031013;font:inherit;font-size:28px;font-weight:300;line-height:1;cursor:pointer;box-shadow:0 0 20px var(--glow);transition:transform .25s}
@@ -73,8 +75,8 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
 .back:hover,.back:focus-visible{color:var(--accent)}
 .shop h2{margin:0 0 16px;font-size:clamp(26px,8vw,34px);font-weight:800;text-shadow:0 0 18px var(--glow)}
 .prod{background:var(--panel);border:1px solid var(--line);border-radius:10px;backdrop-filter:blur(10px);box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 0 1px rgba(0,0,0,.4);overflow:hidden;margin-bottom:10px;display:grid;grid-template-columns:84px 1fr}
-.prod-top{grid-column:1/-1;display:flex;align-items:center;gap:8px;padding:6px 12px;border-bottom:1px solid var(--line);font-size:11px;color:#2dff8f}
-.prod-top i{width:9px;height:9px;border-radius:50%;background:#2dff8f;box-shadow:0 0 10px #2dff8f;animation:blink 1.6s infinite}
+.prod-top{grid-column:1/-1;display:flex;align-items:center;gap:8px;padding:6px 12px;border-bottom:1px solid var(--line);font-size:11px;color:var(--accent)}
+.prod-top i{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:blink 1.6s infinite}
 .ph{aspect-ratio:1;display:flex;align-items:center;justify-content:center;text-align:center;margin:10px 0 10px 10px;border:1px dashed var(--line);border-radius:8px;color:var(--muted);font-size:9px;background:#03080a}
 .pbody{padding:10px 12px;min-width:0}
 .pct{padding:2px 6px;border-radius:4px;background:var(--accent);color:#031013;font-size:10px;font-weight:800}
@@ -157,7 +159,7 @@ button.buy{border-radius:17px;letter-spacing:.5px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body data-color="cyan">
+<body data-color="white">
 <canvas id="rain" aria-hidden="true"></canvas>
 <div class="veil" aria-hidden="true"></div>
 <div class="page">
@@ -238,10 +240,10 @@ button.buy{border-radius:17px;letter-spacing:.5px}
 </section>
 <nav class="dock" aria-label="Réglages">
   <div class="sw" role="group" aria-label="Couleur">
-    <button type="button" data-pick="cyan" aria-label="Cyan" aria-pressed="true"></button>
+    <button type="button" data-pick="white" aria-label="Blanc" aria-pressed="true"></button>
+    <button type="button" data-pick="cyan" aria-label="Cyan" aria-pressed="false"></button>
     <button type="button" data-pick="green" aria-label="Vert" aria-pressed="false"></button>
     <button type="button" data-pick="violet" aria-label="Violet" aria-pressed="false"></button>
-    <button type="button" data-pick="red" aria-label="Rouge" aria-pressed="false"></button>
   </div>
   <div class="mid">
     <div class="fab" id="fab">
@@ -254,7 +256,7 @@ button.buy{border-radius:17px;letter-spacing:.5px}
   <button id="musicBtn" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span id="musicText">Musique</span></button>
 </nav>
 <script>
-const body=document.body,COLORS=['cyan','green','violet','red'];
+const body=document.body,COLORS=['white','cyan','green','violet','red'];
 try{const c=localStorage.getItem('prb-color');if(COLORS.includes(c))body.dataset.color=c}catch(e){}
 const picks=document.querySelectorAll('[data-pick]');
 function syncPicks(){picks.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pick===body.dataset.color)))}
@@ -265,7 +267,7 @@ syncPicks();
 const cv=document.getElementById('rain'),cx=cv.getContext('2d');
 const WORDS=['POWER_RANGER','pairing','sudo','root@prb','ACCESS_GRANTED','0xFF41','session.key','baileys','handshake','decrypt','/api/pair','whatsapp','token','bypass','connect()','SYNC_OK'];
 const GLYPHS='01アイウエオカキクケコサシスセソ{}<>/\\$#=+';
-const SIZE=15;let cols=[],accent='#19e3ff',W=0,H=0,dpr=1;
+const SIZE=15;let cols=[],accent='#ffffff',W=0,H=0,dpr=1;
 function readAccent(){accent=getComputedStyle(body).getPropertyValue('--accent').trim()||accent}
 function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);cols=Array.from({length:Math.ceil(W/SIZE)},()=>({y:Math.random()*-H/SIZE,word:null,i:0,speed:.25+Math.random()*.55}))}
 function frame(){
@@ -276,7 +278,7 @@ function frame(){
     if(c.word){ch=c.word[c.i++];if(c.i>=c.word.length)c.word=null}
     else{ch=GLYPHS[Math.floor(Math.random()*GLYPHS.length)];if(Math.random()<.012){c.word=WORDS[Math.floor(Math.random()*WORDS.length)];c.i=0}}
     const x=i*SIZE,y=c.y*SIZE;
-    cx.fillStyle='#e6fbff';cx.globalAlpha=.9;cx.fillText(ch,x,y);
+    cx.fillStyle='#ffffff';cx.globalAlpha=.9;cx.fillText(ch,x,y);
     cx.fillStyle=accent;cx.globalAlpha=.75;cx.fillText(ch,x,y-SIZE);
     cx.globalAlpha=1;
     c.y+=c.speed;
@@ -306,23 +308,23 @@ const MSG={support:'Bonjour, j’ai besoin d’aide avec Power Ranger Bot (servi
 const LINKS={support:'https://wa.me/221755545742?text='+encodeURIComponent(MSG.support),owner:'https://wa.me/4799883083?text='+encodeURIComponent(MSG.owner),shop:'https://wa.me/221755545742?text='+encodeURIComponent(MSG.shop)};
 document.getElementById('lnkSupport').href=LINKS.support;
 document.getElementById('lnkOwner').href=LINKS.owner;
-/* Boutique : liste des produits (ajoute un objet pour un nouveau produit) */
+
+/* Boutique : liste des produits */
 const ICONS={
   'APK BAN':`<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24" fill="none" stroke="#ff4d61" stroke-width="7"/><path d="M15 49L49 15" stroke="#ff4d61" stroke-width="7" stroke-linecap="round"/></svg>`,
-  'Bot personnalisé':`<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="29" y="8" width="6" height="12" fill="#9fb4bd"/><circle cx="32" cy="8" r="4" fill="#ff4d61"/><rect x="12" y="20" width="40" height="32" rx="9" fill="#9fb4bd"/><circle cx="24" cy="34" r="5.5" fill="#0b2a33"/><circle cx="40" cy="34" r="5.5" fill="#0b2a33"/><circle cx="24" cy="34" r="2.5" fill="#19e3ff"/><circle cx="40" cy="34" r="2.5" fill="#19e3ff"/><rect x="22" y="43" width="20" height="4" rx="2" fill="#3b4f58"/></svg>`,
+  'Bot personnalisé':`<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="29" y="8" width="6" height="12" fill="#9fb4bd"/><circle cx="32" cy="8" r="4" fill="#ff4d61"/><rect x="12" y="20" width="40" height="32" rx="9" fill="#9fb4bd"/><circle cx="24" cy="34" r="5.5" fill="#0b2a33"/><circle cx="40" cy="34" r="5.5" fill="#0b2a33"/><circle cx="24" cy="34" r="2.5" fill="#ffffff"/><circle cx="40" cy="34" r="2.5" fill="#ffffff"/><rect x="22" y="43" width="20" height="4" rx="2" fill="#3b4f58"/></svg>`,
   'Power bot MD':`<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M37 4L15 36h15l-5 24 24-34H34z" fill="#ffd23f" stroke="#f5a623" stroke-width="2.5" stroke-linejoin="round"/></svg>`,
-  'Check ban':`<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="27" cy="27" r="17" fill="#0b2a33" stroke="#19e3ff" stroke-width="6"/><path d="M40 40L56 56" stroke="#19e3ff" stroke-width="7" stroke-linecap="round"/><path d="M19 27l6 6 11-12" stroke="#2dff8f" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  'Formation DEV':`<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="14" width="40" height="28" rx="3" fill="#13232a" stroke="#9fb4bd" stroke-width="3"/><path d="M5 47h54l-4 7H9z" fill="#9fb4bd"/><path d="M25 22l-7 6 7 6M39 22l7 6-7 6" stroke="#2dff8f" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  'Check ban':`<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="27" cy="27" r="17" fill="#0b2a33" stroke="#ffffff" stroke-width="6"/><path d="M40 40L56 56" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/><path d="M19 27l6 6 11-12" stroke="#ffffff" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  'Formation DEV':`<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="14" width="40" height="28" rx="3" fill="#13232a" stroke="#9fb4bd" stroke-width="3"/><path d="M5 47h54l-4 7H9z" fill="#9fb4bd"/><path d="M25 22l-7 6 7 6M39 22l7 6-7 6" stroke="#ffffff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   'Apprendre à créer un bot':`<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 12L3 27l29 15 29-15z" fill="#b36bff"/><path d="M15 37v11c0 5 34 5 34 0V37l-17 8z" fill="#8a4fd6"/><path d="M57 28v16" stroke="#ffd23f" stroke-width="3" stroke-linecap="round"/><circle cx="57" cy="46" r="3.5" fill="#ffd23f"/></svg>`,
   'Bot Telegram':`<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="#29a9eb"/><path d="M13 31L51 16l-8 32-11-9-8 7-1-10z" fill="#fff"/><path d="M23 36l20-15-14 17z" fill="#c8e6f7"/></svg>`,
   'Support ban':`<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="21" fill="none" stroke="#ff4d61" stroke-width="13"/><circle cx="32" cy="32" r="21" fill="none" stroke="#fff" stroke-width="13" stroke-dasharray="16.5 16.5" stroke-dashoffset="8"/><circle cx="32" cy="32" r="9" fill="#050a0d"/></svg>`,
   'Telegram premium':`<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 5l8 18 19 2-14 13 4 19-17-10-17 10 4-19L5 25l19-2z" fill="#ffd23f" stroke="#f5a623" stroke-width="3" stroke-linejoin="round"/></svg>`,
   'Movie box premium':`<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="7" y="25" width="50" height="31" rx="3" fill="#2a3a42"/><rect x="7" y="13" width="50" height="12" rx="2" fill="#e6f4f7"/><path d="M19 13l-7 12M31 13l-7 12M43 13l-7 12M55 13l-7 12" stroke="#1b2b33" stroke-width="4.5"/><path d="M27 33l15 9-15 9z" fill="#ffd23f"/></svg>`,
-  'Numéro virtuel':`<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="17" y="5" width="30" height="54" rx="7" fill="#13232a" stroke="#19e3ff" stroke-width="3"/><rect x="22" y="12" width="20" height="30" rx="3" fill="#19e3ff" opacity=".3"/><path d="M32 20v14M25 27h14" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><circle cx="32" cy="50" r="3.5" fill="#19e3ff"/></svg>`,
-  'Site web personnalisé':`<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="25" fill="#14506b" stroke="#19e3ff" stroke-width="3"/><ellipse cx="32" cy="32" rx="11" ry="25" fill="none" stroke="#19e3ff" stroke-width="2.5"/><path d="M7 32h50M11 20h42M11 44h42" stroke="#19e3ff" stroke-width="2.5" fill="none"/></svg>`,
+  'Numéro virtuel':`<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="17" y="5" width="30" height="54" rx="7" fill="#13232a" stroke="#ffffff" stroke-width="3"/><rect x="22" y="12" width="20" height="30" rx="3" fill="#ffffff" opacity=".3"/><path d="M32 20v14M25 27h14" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><circle cx="32" cy="50" r="3.5" fill="#ffffff"/></svg>`,
+  'Site web personnalisé':`<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="25" fill="#14506b" stroke="#ffffff" stroke-width="3"/><ellipse cx="32" cy="32" rx="11" ry="25" fill="none" stroke="#ffffff" stroke-width="2.5"/><path d="M7 32h50M11 20h42M11 44h42" stroke="#ffffff" stroke-width="2.5" fill="none"/></svg>`,
   'Bot Telegram personnalisé':`<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="11" y="20" width="42" height="34" rx="5" fill="#b36bff"/><circle cx="32" cy="15" r="8" fill="#b36bff"/><circle cx="58" cy="37" r="7" fill="#b36bff"/><circle cx="32" cy="15" r="3.5" fill="#050a0d"/><path d="M24 40l6 6 11-12" stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`
 };
-const D='Description du produit à compléter.';
 const PRODUCTS=[
   {name:'APK BAN',ico:'🚫',old:2000,price:1500,desc:'Application pour gérer et débloquer les numéros bannis, simple à installer et rapide à utiliser.'},
   {name:'Bot personnalisé',ico:'🤖',old:3000,price:1500,desc:'Un bot WhatsApp fait sur mesure, avec le nom, les commandes et le style que tu veux.'},
@@ -348,7 +350,6 @@ PRODUCTS.forEach(p=>{
   const b=el('div','pbody'),pr=el('div','prices');
   pr.append(el('span','old',p.old+' F'),el('span','now',p.price+' F'),el('span','pct','-'+Math.round((1-p.price/p.old)*100)+'%'));
   const buy=el('button','buy','Acheter →');buy.type='button';buy.addEventListener('click',()=>openCo(p));
-  
   
   b.append(el('h3','pname',p.name),pr,el('p','pdesc',p.desc),buy);
   card.append(top,ph,b);list.append(card);
