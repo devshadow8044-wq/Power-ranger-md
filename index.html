@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050a0d">
-<meta name="description" content="Zoro Bot — pairing WhatsApp.">
-<title>Zoro-Md</title>
+<meta name="description" content="DARK-BOT — pairing WhatsApp.">
+<title>DARK-BOT</title>
 <style>
 :root{--bg:#050a0d;--ink:#e6f4f7;--muted:#7f9aa3;--line:rgba(120,220,240,.16);--panel:rgba(7,15,19,.78);--accent:#ffffff;--glow:rgba(255,255,255,.45)}
 body[data-color="white"]{--accent:#ffffff;--glow:rgba(255,255,255,.45)}
@@ -15,7 +15,7 @@ body[data-color="violet"]{--accent:#b36bff;--glow:rgba(179,107,255,.36)}
 body[data-color="red"]{--accent:#ff4d61;--glow:rgba(255,77,97,.36)}
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--bg)}
-body{background:var(--bg) url("https://files.catbox.moe/1o0zwl.jpg") center center / cover fixed no-repeat;color:var(--ink);font-family:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;overflow-x:hidden}
+body{background:var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center center / cover fixed no-repeat;color:var(--ink);font-family:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;overflow-x:hidden}
 #rain{display:none}
 .veil{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,rgba(5,10,13,.48) 0,rgba(5,10,13,.30) 45%,rgba(5,10,13,.12) 100%),repeating-linear-gradient(0deg,rgba(0,0,0,.14) 0 1px,transparent 1px 3px)}
 .page{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:calc(18px + env(safe-area-inset-top,0px)) 16px calc(104px + env(safe-area-inset-bottom,0px))}
@@ -165,8 +165,8 @@ button.buy{border-radius:17px;letter-spacing:.5px}
 <div class="page">
   <div class="status"><i></i><span>serveur : en ligne</span></div>
   <main>
-    <img class="cover" src="https://files.catbox.moe/k80788.jpg" alt="Illustration futuriste de Power Ranger Bot">
-    <h1 id="title" class="glitch">Zoro-Md Bot</h1>
+    <img class="cover" src="https://files.catbox.moe/k80788.jpg" alt="Illustration futuriste de DARK-BOT">
+    <h1 id="title" class="glitch">DARK-BOT</h1>
     <p class="tag" id="tag" aria-live="polite"></p>
     <section class="term">
       <div class="bar"><b></b><b></b><b></b><span>pairing.sh</span></div>
@@ -186,7 +186,7 @@ button.buy{border-radius:17px;letter-spacing:.5px}
     <button class='co-x' id='coX' type='button' aria-label='Fermer'>×</button>
     <div class='step on' id='st1'>
       <div class='card'>
-        <div class='logo'>Zoro-Md</div>
+        <div class='logo'>DARK-BOT</div>
         <div class='steps'><i class='on'></i><i></i></div>
         <div class='sum'><div><b id='sName'></b><small id='sPct'></small></div><div><s id='sOld'></s><strong id='sNow'></strong></div></div>
         <p>Veuillez remplir votre mode de paiement et le compte de paiement réel que vous utiliserez pour effectuer le paiement.</p>
@@ -202,7 +202,7 @@ button.buy{border-radius:17px;letter-spacing:.5px}
     <div class='step' id='st2'>
       <div class='card'>
         <div class='steps'><i class='on'></i><i class='on'></i></div>
-        <div class='top2'><div class='logo sm'>Zoro-Md</div><div class='cd'>la transaction expire plus tard<div><b id='cdM'>15</b>:<b id='cdS'>00</b></div></div></div>
+        <div class='top2'><div class='logo sm'>DARK-BOT</div><div class='cd'>la transaction expire plus tard<div><b id='cdM'>15</b>:<b id='cdS'>00</b></div></div></div>
         <div class='bar2'><i id='cdBar'></i></div>
         <h3 class='h3'>Copiez ce compte</h3>
         <p>Copiez ce compte <em>WAVE</em> et effectuez le paiement.</p>
@@ -265,7 +265,7 @@ syncPicks();
 
 /* Fond hacker : pluie de code + mots */
 const cv=document.getElementById('rain'),cx=cv.getContext('2d');
-const WORDS=['POWER_RANGER','pairing','sudo','root@prb','ACCESS_GRANTED','0xFF41','session.key','baileys','handshake','decrypt','/api/pair','whatsapp','token','bypass','connect()','SYNC_OK'];
+const WORDS=['DARK_BOT','pairing','sudo','root@prb','ACCESS_GRANTED','0xFF41','session.key','baileys','handshake','decrypt','/api/pair','whatsapp','token','bypass','connect()','SYNC_OK'];
 const GLYPHS='01アイウエオカキクケコサシスセソ{}<>/\\$#=+';
 const SIZE=15;let cols=[],accent='#ffffff',W=0,H=0,dpr=1;
 function readAccent(){accent=getComputedStyle(body).getPropertyValue('--accent').trim()||accent}
@@ -304,7 +304,7 @@ mb.addEventListener('click',()=>{
 });
 
 /* Bouton + : service client / propriétaire / boutique */
-const MSG={support:'Bonjour, j’ai besoin d’aide avec Power Ranger Bot (service client).',owner:'Bonjour, je voudrais parler au propriétaire de Power Ranger Bot.',shop:'Bonjour, je voudrais voir la boutique de Power Ranger Bot.'};
+const MSG={support:'Bonjour, j’ai besoin d’aide avec DARK-BOT (service client).',owner:'Bonjour, je voudrais parler au propriétaire de DARK-BOT.',shop:'Bonjour, je voudrais voir la boutique de DARK-BOT.'};
 const LINKS={support:'https://wa.me/221755545742?text='+encodeURIComponent(MSG.support),owner:'https://wa.me/4799883083?text='+encodeURIComponent(MSG.owner),shop:'https://wa.me/221755545742?text='+encodeURIComponent(MSG.shop)};
 document.getElementById('lnkSupport').href=LINKS.support;
 document.getElementById('lnkOwner').href=LINKS.owner;
