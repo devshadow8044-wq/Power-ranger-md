@@ -64,16 +64,30 @@ body::before {
 .color-picker button.active { border-color: #fff; transform: scale(1.2); box-shadow: 0 0 15px var(--glow); animation: pulse-btn 1.5s infinite; }
 @keyframes pulse-btn { 0% { box-shadow: 0 0 10px var(--glow); } 50% { box-shadow: 0 0 25px var(--accent); } 100% { box-shadow: 0 0 10px var(--glow); } }
 
-/* En-tête Puissant & Animé */
+/* En-tête Puissant & ANIMATION GLITCH RAPIDE */
 .header { text-align: center; margin-bottom: 30px; }
 .header .title { 
   font-size: 32px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; 
-  color: var(--accent); text-shadow: 0 0 20px var(--glow);
-  animation: flicker 3s infinite alternate;
+  color: var(--accent); 
+  /* L'animation d'écran caché / bug ultra rapide */
+  animation: glitch-fast 2.5s infinite; 
 }
-@keyframes flicker {
-  0%, 18%, 22%, 25%, 53%, 57%, 100% { text-shadow: 0 0 20px var(--glow), 0 0 40px var(--accent); opacity: 1; }
-  20%, 24%, 55% { text-shadow: none; opacity: 0.7; }
+/* L'animation qui fait disparaître et apparaître rapidement avec des tremblements */
+@keyframes glitch-fast {
+  0%, 100% { opacity: 1; transform: translate(0); text-shadow: 0 0 20px var(--glow); }
+  5% { opacity: 0; transform: translate(-2px, 1px); text-shadow: none; }
+  10% { opacity: 1; transform: translate(2px, -1px); text-shadow: 2px 0 #ff4d61, -2px 0 #19e3ff; }
+  15% { opacity: 0; transform: translate(0); }
+  20% { opacity: 1; transform: translate(0); text-shadow: 0 0 20px var(--glow); }
+  45% { opacity: 1; }
+  50% { opacity: 0; }
+  55% { opacity: 1; transform: translate(-2px); text-shadow: 0 0 15px var(--accent); }
+  60% { opacity: 0; }
+  65% { opacity: 1; transform: translate(2px); }
+  70% { opacity: 0; }
+  75% { opacity: 1; transform: translate(0); text-shadow: 0 0 20px var(--glow); }
+  85% { opacity: 0; }
+  90% { opacity: 1; }
 }
 .header .subtitle { font-size: 12px; color: #aaa; margin-top: 8px; letter-spacing: 2px; text-transform: uppercase; }
 .header .subtitle::after { content: "▌"; animation: blink-cursor 1s step-end infinite; color: var(--accent); margin-left: 2px; }
@@ -142,7 +156,6 @@ body::before {
   
   <div class="sys-status"><div class="dot"></div> SYSTEM ONLINE</div>
 
-  <!-- 5 Couleurs -->
   <div class="color-picker">
     <button data-color="white" class="active" aria-label="Blanc"></button>
     <button data-color="cyan" aria-label="Cyan"></button>
@@ -151,7 +164,6 @@ body::before {
     <button data-color="red" aria-label="Rouge"></button>
   </div>
 
-  <!-- En-tête Puissant -->
   <div class="header">
     <div class="title">PAPINO BUG BOT</div>
     <div class="subtitle">L'application la plus puissante</div>
@@ -159,7 +171,6 @@ body::before {
   
   <div id="alertMsg" class="msg"></div>
 
-  <!-- CONNEXION -->
   <div class="auth-container active" id="loginSection">
     <div class="action-card">
       <div class="row-title">CONNEXION</div>
@@ -170,7 +181,6 @@ body::before {
     <div class="switch-link">Pas de compte ? <span onclick="toggleAuth('register')">S'inscrire</span></div>
   </div>
 
-  <!-- INSCRIPTION -->
   <div class="auth-container" id="registerSection">
     <div class="action-card">
       <div class="row-title">CRÉER UN COMPTE</div>
