@@ -19,7 +19,6 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .veil { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(5,10,13,.4) 0%, rgba(5,10,13,.8) 100%), repeating-linear-gradient(0deg, rgba(0,0,0,.2) 0 1px, transparent 1px 3px); }
 .app { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; padding: 10px 16px; max-width: 480px; margin: 0 auto; width: 100%; }
 
-/* Indicateur Système */
 .sys-status {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   font-size: 11px; color: var(--accent); font-weight: bold; letter-spacing: 2px; margin: 10px 0 5px;
@@ -28,7 +27,6 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .sys-status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse-dot 1s infinite alternate; }
 @keyframes pulse-dot { from { opacity: 0.3; box-shadow: 0 0 0 0 var(--glow); } to { opacity: 1; box-shadow: 0 0 10px var(--accent); } }
 
-/* Les 5 couleurs */
 .color-picker { display: flex; gap: 15px; justify-content: center; padding: 10px 0 20px; }
 .color-picker button { width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.2s; }
 .color-picker button[data-color="white"] { background: #ffffff; }
@@ -38,7 +36,6 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .color-picker button[data-color="red"] { background: #ff4d61; }
 .color-picker button.active { border-color: #fff; transform: scale(1.2); box-shadow: 0 0 15px var(--glow); }
 
-/* Header */
 .header { background: rgba(30, 30, 30, 0.85); backdrop-filter: blur(10px); border-radius: 20px; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border: 1px solid var(--line); }
 .header .back, .header .menu { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: 0.2s; }
 .header .back:hover { background: rgba(255,59,48,0.5); }
@@ -47,24 +44,24 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .header .title-box { text-align: center; }
 .header .title { 
   font-size: 15px; font-weight: bold; color: var(--accent); letter-spacing: 1px;
-  animation: glitch-fast 2.5s infinite; /* Animation d'écran caché */
+  animation: screen-hidden 6s ease-in-out infinite; 
 }
-/* L'animation de bug rapide pour le header */
-@keyframes glitch-fast {
-  0%, 100% { opacity: 1; transform: translate(0); text-shadow: 0 0 20px var(--glow); }
-  5% { opacity: 0; transform: translate(-2px, 1px); text-shadow: none; }
-  10% { opacity: 1; transform: translate(2px, -1px); text-shadow: 2px 0 #ff4d61, -2px 0 #19e3ff; }
-  15% { opacity: 0; transform: translate(0); }
-  20% { opacity: 1; transform: translate(0); text-shadow: 0 0 20px var(--glow); }
+@keyframes screen-hidden {
+  0%, 100% { opacity: 1; transform: scale(1); text-shadow: 0 0 20px var(--glow); }
+  10% { opacity: 0.8; transform: scale(1.02); }
+  15% { opacity: 0; transform: scale(0.98); } 
+  20% { opacity: 0; transform: scale(0.98); } 
+  22% { opacity: 1; transform: scale(1); text-shadow: 2px 0 #ff4d61, -2px 0 #19e3ff; } 
+  28% { opacity: 1; transform: translate(1px, 0); text-shadow: 0 0 20px var(--glow); }
+  40% { opacity: 1; }
+  42% { opacity: 0; } 
   45% { opacity: 1; }
-  50% { opacity: 0; }
-  55% { opacity: 1; transform: translate(-2px); text-shadow: 0 0 15px var(--accent); }
-  60% { opacity: 0; }
-  65% { opacity: 1; transform: translate(2px); }
-  70% { opacity: 0; }
-  75% { opacity: 1; transform: translate(0); text-shadow: 0 0 20px var(--glow); }
-  85% { opacity: 0; }
-  90% { opacity: 1; }
+  60% { opacity: 1; transform: scale(1); }
+  65% { opacity: 0; transform: scale(0.98); } 
+  70% { opacity: 0; transform: scale(0.98); }
+  75% { opacity: 1; transform: scale(1); text-shadow: -2px 0 #ff4d61, 2px 0 #19e3ff; } 
+  80% { opacity: 1; transform: translate(-1px, 1px); text-shadow: 0 0 20px var(--glow); }
+  85% { opacity: 1; transform: translate(0); }
 }
 .header .subtitle { font-size: 11px; color: #aaa; margin-top: 2px; }
 .header .subtitle::after { content: "▌"; animation: blink-cursor 1s step-end infinite; color: var(--accent); margin-left: 2px; }
@@ -143,12 +140,34 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .lab { font-size: 11px; color: #7f9aa3; margin-top: 10px; } .box>.lab:first-child { margin-top: 0; }
 .val { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #fff; font-size: 20px; font-weight: 800; }
 .paid { display: flex; align-items: center; justify-content: center; height: 54px; border-radius: 27px; background: var(--accent); color: #000; font-size: 16px; font-weight: 800; text-decoration: none; margin-top: 10px; }
+
+/* ====== BOUTON MUSIQUE ====== */
+.music-btn {
+  position: fixed; bottom: 25px; right: 20px; z-index: 100;
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--panel); border: 2px solid var(--accent);
+  color: var(--accent); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: 0 0 15px var(--glow); transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+.music-btn:hover { transform: scale(1.1); }
+.music-btn svg { width: 24px; height: 24px; fill: currentColor; }
+.music-btn.playing { animation: pulse-music 1.5s infinite; }
+@keyframes pulse-music {
+  0%, 100% { box-shadow: 0 0 10px var(--glow); }
+  50% { box-shadow: 0 0 25px var(--accent), 0 0 40px var(--accent); }
+}
 </style>
 <script>
   if (!localStorage.getItem('galsenapp_user')) { window.location.href = 'auth.html'; }
 </script>
 </head>
 <body data-color="white">
+
+<audio id="bgMusic" src="https://files.catbox.moe/5ovdzj.m4a" loop preload="auto"></audio>
+<button class="music-btn" id="musicToggle" aria-label="Musique">
+  <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+</button>
 
 <video id="bgv" autoplay muted loop playsinline preload="auto" poster="https://files.catbox.moe/9bf5n2.jpg" aria-hidden="true"><source src="https://files.catbox.moe/wg8jz6.mp4" type="video/mp4"></video>
 <div class="veil" aria-hidden="true"></div>
@@ -242,6 +261,37 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 </div>
 
 <script>
+/* === LOGIQUE MUSIQUE === */
+const bgMusic = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicToggle');
+let isPlaying = localStorage.getItem('papino_music') !== 'off';
+
+function updateMusicUI() {
+  if (isPlaying) {
+    musicBtn.classList.add('playing');
+    musicBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>';
+  } else {
+    musicBtn.classList.remove('playing');
+    musicBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>';
+  }
+}
+
+musicBtn.addEventListener('click', () => {
+  isPlaying = !isPlaying;
+  localStorage.setItem('papino_music', isPlaying ? 'on' : 'off');
+  if (isPlaying) bgMusic.play().catch(()=>{});
+  else bgMusic.pause();
+  updateMusicUI();
+});
+
+const startMusic = () => {
+  if (isPlaying) bgMusic.play().catch(()=>{});
+  document.removeEventListener('pointerdown', startMusic);
+};
+document.addEventListener('pointerdown', startMusic);
+updateMusicUI();
+
+/* === RESTE DU SCRIPT === */
 const colorBtns = document.querySelectorAll('.color-picker button');
 const savedColor = localStorage.getItem('galsenapp_color') || 'white';
 document.body.dataset.color = savedColor;
