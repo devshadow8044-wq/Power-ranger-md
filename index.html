@@ -45,7 +45,27 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .header .menu:hover { background: rgba(255,255,255,0.2); }
 .header .back { font-size: 16px; }
 .header .title-box { text-align: center; }
-.header .title { font-size: 15px; font-weight: bold; color: var(--accent); text-shadow: 0 0 10px var(--glow); letter-spacing: 1px; }
+.header .title { 
+  font-size: 15px; font-weight: bold; color: var(--accent); letter-spacing: 1px;
+  animation: glitch-fast 2.5s infinite; /* Animation d'écran caché */
+}
+/* L'animation de bug rapide pour le header */
+@keyframes glitch-fast {
+  0%, 100% { opacity: 1; transform: translate(0); text-shadow: 0 0 20px var(--glow); }
+  5% { opacity: 0; transform: translate(-2px, 1px); text-shadow: none; }
+  10% { opacity: 1; transform: translate(2px, -1px); text-shadow: 2px 0 #ff4d61, -2px 0 #19e3ff; }
+  15% { opacity: 0; transform: translate(0); }
+  20% { opacity: 1; transform: translate(0); text-shadow: 0 0 20px var(--glow); }
+  45% { opacity: 1; }
+  50% { opacity: 0; }
+  55% { opacity: 1; transform: translate(-2px); text-shadow: 0 0 15px var(--accent); }
+  60% { opacity: 0; }
+  65% { opacity: 1; transform: translate(2px); }
+  70% { opacity: 0; }
+  75% { opacity: 1; transform: translate(0); text-shadow: 0 0 20px var(--glow); }
+  85% { opacity: 0; }
+  90% { opacity: 1; }
+}
 .header .subtitle { font-size: 11px; color: #aaa; margin-top: 2px; }
 .header .subtitle::after { content: "▌"; animation: blink-cursor 1s step-end infinite; color: var(--accent); margin-left: 2px; }
 @keyframes blink-cursor { 50% { opacity: 0; } }
