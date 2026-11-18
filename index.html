@@ -4,30 +4,41 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050a0d">
-<title>BUG DEV PAPINO</title>
+<title>GALSENAPP</title>
 <style>
-:root { --bg: #050a0d; --ink: #ffffff; --line: rgba(255, 255, 255, 0.8); --panel: rgba(10, 15, 20, 0.65); --accent: #ffffff; }
+:root { --bg: #050a0d; --ink: #ffffff; --line: rgba(255, 255, 255, 0.8); --panel: rgba(10, 15, 20, 0.65); --accent: #ffffff; --glow: rgba(255,255,255,0.45); }
+body[data-color="cyan"] { --accent: #19e3ff; --glow: rgba(25,227,255,0.4); }
+body[data-color="green"] { --accent: #25D366; --glow: rgba(37,211,102,0.4); }
+body[data-color="violet"] { --accent: #b36bff; --glow: rgba(179,107,255,0.4); }
+body[data-color="red"] { --accent: #ff4d61; --glow: rgba(255,77,97,0.4); }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { min-height: 100%; background: var(--bg); overflow-x: hidden; }
 body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center center / cover fixed no-repeat; color: var(--ink); font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace; height: 100vh; display: flex; flex-direction: column; }
 #bgv { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; background: #050a0d; }
 .veil { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(5,10,13,.4) 0%, rgba(5,10,13,.8) 100%), repeating-linear-gradient(0deg, rgba(0,0,0,.2) 0 1px, transparent 1px 3px); }
 .app { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; padding: 10px 16px; max-width: 480px; margin: 0 auto; width: 100%; }
-.status-bar { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; padding: 5px 0 15px; }
-.status-left { background: #ff3b30; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; }
-.status-center { background: #25D366; color: white; padding: 4px 12px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-size: 11px; }
-.status-right { display: flex; align-items: center; gap: 6px; }
-.status-right svg { width: 14px; height: 14px; fill: white; }
+
+/* Les 5 couleurs (remplace la barre d'état) */
+.color-picker { display: flex; gap: 15px; justify-content: center; padding: 15px 0 25px; }
+.color-picker button { width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.2s; }
+.color-picker button[data-color="white"] { background: #ffffff; }
+.color-picker button[data-color="cyan"] { background: #19e3ff; }
+.color-picker button[data-color="green"] { background: #25D366; }
+.color-picker button[data-color="violet"] { background: #b36bff; }
+.color-picker button[data-color="red"] { background: #ff4d61; }
+.color-picker button.active { border-color: #fff; transform: scale(1.2); box-shadow: 0 0 15px var(--glow); }
+
 .header { background: rgba(30, 30, 30, 0.85); backdrop-filter: blur(10px); border-radius: 20px; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .header .back, .header .menu { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: 0.2s; }
 .header .back:hover { background: rgba(255,59,48,0.5); }
 .header .menu:hover { background: rgba(255,255,255,0.2); }
 .header .back { font-size: 16px; }
 .header .title-box { text-align: center; }
-.header .title { font-size: 15px; font-weight: bold; }
+.header .title { font-size: 15px; font-weight: bold; color: var(--accent); text-shadow: 0 0 10px var(--glow); }
 .header .subtitle { font-size: 11px; color: #aaa; margin-top: 2px; }
 .icon-center { display: flex; justify-content: center; margin-bottom: 25px; }
-.icon-center svg { width: 48px; height: 48px; fill: none; stroke: white; stroke-width: 2; }
+.icon-center svg { width: 48px; height: 48px; fill: none; stroke: var(--accent); stroke-width: 2; }
 .action-card { border: 2px solid var(--line); border-radius: 20px; background: var(--panel); margin-bottom: 30px; overflow: hidden; }
 .row-split { display: flex; border-bottom: 2px solid var(--line); }
 .row-split button { flex: 1; background: transparent; border: none; color: white; font: inherit; font-size: 14px; letter-spacing: 1px; padding: 14px 0; cursor: pointer; }
@@ -44,49 +55,49 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .bubble-actions { display: flex; border-top: 2px solid var(--line); }
 .bubble-actions button { flex: 1; background: transparent; border: none; color: white; font: inherit; font-size: 14px; letter-spacing: 1px; padding: 14px 0; cursor: pointer; }
 .bubble-actions button:first-child { border-right: 2px solid var(--line); }
-#result { display: none; margin-top: 20px; text-align: center; font-size: 14px; line-height: 1.5; padding: 15px; border: 1px dashed #fff; border-radius: 10px; background: rgba(0,0,0,0.5); }
+#result { display: none; margin-top: 20px; text-align: center; font-size: 14px; line-height: 1.5; padding: 15px; border: 1px dashed var(--accent); border-radius: 10px; background: rgba(0,0,0,0.5); }
 #result.show { display: block; }
-.code-val { display: block; font-size: 28px; font-weight: bold; letter-spacing: 4px; margin-top: 10px; color: #fff; }
+.code-val { display: block; font-size: 28px; font-weight: bold; letter-spacing: 4px; margin-top: 10px; color: var(--accent); text-shadow: 0 0 10px var(--glow); }
 .footer { position: fixed; bottom: 10px; left: 0; width: 100%; text-align: center; font-size: 10px; color: #7f9aa3; z-index: 2; pointer-events: none; }
 .shop { position: fixed; inset: 0; z-index: 10; display: none; background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center/cover; overflow-y: auto; }
 .shop.on { display: block; }
 .shop-in { width: min(440px,100%); margin: 0 auto; padding: 20px 16px 80px; }
-.back-btn { display: inline-block; color: #fff; background: rgba(255,255,255,0.1); border: 1px solid #fff; padding: 8px 16px; border-radius: 20px; font-size: 12px; text-decoration: none; margin-bottom: 20px; cursor: pointer; }
-.shop h2 { margin: 0 0 16px; font-size: 26px; font-weight: 800; text-shadow: 0 0 18px rgba(255,255,255,0.5); }
+.back-btn { display: inline-block; color: #fff; background: rgba(255,255,255,0.1); border: 1px solid var(--accent); padding: 8px 16px; border-radius: 20px; font-size: 12px; text-decoration: none; margin-bottom: 20px; cursor: pointer; }
+.shop h2 { margin: 0 0 16px; font-size: 26px; font-weight: 800; color: var(--accent); text-shadow: 0 0 18px var(--glow); }
 .prod { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 15px; display: grid; grid-template-columns: 84px 1fr; backdrop-filter: blur(10px); }
-.prod-top { grid-column: 1/-1; display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-bottom: 1px solid var(--line); font-size: 11px; color: #fff; }
-.prod-top i { width: 9px; height: 9px; border-radius: 50%; background: #fff; animation: blink 1.6s infinite; }
+.prod-top { grid-column: 1/-1; display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-bottom: 1px solid var(--line); font-size: 11px; color: var(--accent); }
+.prod-top i { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); animation: blink 1.6s infinite; }
 @keyframes blink { 50% { opacity: .25; } }
 .ph { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; margin: 10px 0 10px 10px; border: 1px dashed var(--line); border-radius: 8px; font-size: 20px; }
 .pbody { padding: 10px 12px; min-width: 0; }
-.pct { padding: 2px 6px; border-radius: 4px; background: #fff; color: #000; font-size: 10px; font-weight: 800; }
+.pct { padding: 2px 6px; border-radius: 4px; background: var(--accent); color: #000; font-size: 10px; font-weight: 800; }
 .pname { margin: 0 0 4px; font-size: 15px; font-weight: 800; }
 .prices { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 6px; }
 .old { color: #7f9aa3; text-decoration: line-through; font-size: 12px; }
-.now { color: #fff; font-size: 18px; font-weight: 800; }
+.now { color: var(--accent); font-size: 18px; font-weight: 800; }
 .pdesc { margin: 0 0 8px; font-size: 11px; line-height: 1.4; color: #7f9aa3; }
-.buy { display: flex; align-items: center; justify-content: center; height: 34px; border-radius: 6px; background: #fff; color: #000; font-size: 12px; font-weight: 800; border: 0; width: 100%; cursor: pointer; }
+.buy { display: flex; align-items: center; justify-content: center; height: 34px; border-radius: 6px; background: var(--accent); color: #000; font-size: 12px; font-weight: 800; border: 0; width: 100%; cursor: pointer; }
 .co { position: fixed; inset: 0; z-index: 20; display: none; overflow-y: auto; background: rgba(5,10,13,.96); backdrop-filter: blur(8px); }
 .co.on { display: block; }
 .co-in { width: min(440px,100%); margin: 0 auto; padding: 20px 16px; }
 .co-x { display: block; margin: 0 0 12px auto; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: #fff; font-size: 20px; cursor: pointer; }
 .step { display: none; } .step.on { display: block; }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; backdrop-filter: blur(10px); }
-.logo { text-align: center; font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 16px; }
+.logo { text-align: center; font-size: 24px; font-weight: 800; color: var(--accent); margin-bottom: 16px; text-shadow: 0 0 10px var(--glow); }
 .co p { margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: #7f9aa3; }
-.co .amt b { color: #fff; font-size: 22px; }
-.wv { width: 130px; margin: 6px auto 16px; text-align: center; padding: 10px 8px; border: 1px solid #fff; border-radius: 8px; background: #03080a; font-size: 12px; }
+.co .amt b { color: var(--accent); font-size: 22px; }
+.wv { width: 130px; margin: 6px auto 16px; text-align: center; padding: 10px 8px; border: 1px solid var(--accent); border-radius: 8px; background: #03080a; font-size: 12px; color: var(--accent); box-shadow: 0 0 10px var(--glow); }
 .phone { display: flex; gap: 8px; margin-bottom: 12px; }
 .phone select, .phone input { height: 48px; background: #03080a; border: 1px solid var(--line); border-radius: 6px; color: #fff; font: inherit; font-size: 12px; padding: 0 10px; outline: none; }
 .phone select { max-width: 45%; }
 .phone input { flex: 1; }
 .warn { padding: 10px 12px; margin-bottom: 14px; background: rgba(255,77,97,.12); border-radius: 6px; color: #ff6b7b; font-size: 12px; line-height: 1.5; }
 .err { display: none; margin: -4px 0 12px; color: #ff6b7b; font-size: 12px; } .err.show { display: block; }
-.go { width: 100%; height: 48px; border: 0; border-radius: 6px; background: #fff; color: #000; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; }
+.go { width: 100%; height: 48px; border: 0; border-radius: 6px; background: var(--accent); color: #000; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; }
 .box { background: #03080a; border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin: 8px 0 18px; }
 .lab { font-size: 11px; color: #7f9aa3; margin-top: 10px; } .box>.lab:first-child { margin-top: 0; }
 .val { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #fff; font-size: 20px; font-weight: 800; }
-.paid { display: flex; align-items: center; justify-content: center; height: 54px; border-radius: 27px; background: #fff; color: #000; font-size: 16px; font-weight: 800; text-decoration: none; margin-top: 10px; }
+.paid { display: flex; align-items: center; justify-content: center; height: 54px; border-radius: 27px; background: var(--accent); color: #000; font-size: 16px; font-weight: 800; text-decoration: none; margin-top: 10px; }
 </style>
 <!-- 🔒 SÉCURITÉ : Vérification de connexion -->
 <script>
@@ -95,16 +106,20 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
   }
 </script>
 </head>
-<body>
+<body data-color="white">
 
 <video id="bgv" autoplay muted loop playsinline preload="auto" poster="https://files.catbox.moe/9bf5n2.jpg" aria-hidden="true"><source src="https://files.catbox.moe/wg8jz6.mp4" type="video/mp4"></video>
 <div class="veil" aria-hidden="true"></div>
 
 <div class="app">
-  <div class="status-bar">
-    <div class="status-left" id="clock">10:12</div>
-    <div class="status-center"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M12.031 2c-5.514 0-9.986 4.474-9.986 9.987 0 1.761.459 3.481 1.331 5.002L2 22l5.149-1.349a9.94 9.94 0 0 0 4.882 1.278h.004c5.514 0 9.986-4.474 9.986-9.987 0-2.669-1.04-5.176-2.927-7.063A9.935 9.935 0 0 0 12.031 2zm5.83 14.16c-.244.688-1.417 1.314-1.957 1.386-.54.072-1.043.316-3.53-.662-2.992-1.179-4.884-4.25-5.03-4.447-.147-.198-1.177-1.565-1.177-2.985 0-1.42.737-2.115 1.003-2.404.266-.289.578-.361.773-.361h.552c.177 0 .414-.067.647.494.244.59.829 2.025.902 2.17.073.145.122.315.025.507-.098.193-.147.313-.294.484-.147.17-.309.38-.443.51-.148.145-.303.303-.13.594.173.29.768 1.266 1.646 2.047 1.13 1.006 2.077 1.32 2.37 1.467.294.147.465.123.64-.074.174-.198.743-.865.94-1.161.197-.295.395-.245.664-.147.27.098 1.71.807 2.002.954.294.147.49.22.563.345.074.125.074.723-.17 1.41z"/></svg> WhatsApp</div>
-    <div class="status-right"><span>SOS</span><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg><svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg></div>
+  
+  <!-- Les 5 couleurs remplacent la barre d'état iOS -->
+  <div class="color-picker">
+    <button data-color="white" aria-label="Blanc"></button>
+    <button data-color="cyan" aria-label="Cyan"></button>
+    <button data-color="green" aria-label="Vert"></button>
+    <button data-color="violet" aria-label="Violet"></button>
+    <button data-color="red" aria-label="Rouge"></button>
   </div>
 
   <div class="header">
@@ -113,8 +128,8 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
       <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:white;stroke-width:2;"><path d="M18.36 6.64a9 9 0 1 1-12.73 0M12 2v10"/></svg>
     </div>
     <div class="title-box">
-      <div class="title">BUG DEV PAPINO</div>
-      <div class="subtitle">today at 10:10 AM</div>
+      <div class="title">GALSENAPP</div>
+      <div class="subtitle">BUG DEV PAPINO</div>
     </div>
     <div class="menu" id="openShop" style="font-size: 24px; line-height: 1;">···</div>
   </div>
@@ -125,7 +140,7 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 
   <div class="action-card">
     <div class="row-split"><button type="button" id="btnClose">CLOSE</button><button type="button" id="btnNext">NEXT</button></div>
-    <div class="row-title">BUG DEV PAPINO BOT</div>
+    <div class="row-title">GALSENAPP BOT</div>
     <div class="row-input">
       <input id="countryCode" type="tel" inputmode="tel" value="+221" maxlength="5" placeholder="+221">
       <input id="phone" type="tel" inputmode="tel" value="933 443 01 26" maxlength="15" placeholder="Numéro">
@@ -155,7 +170,7 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
     <button class='co-x' id='coX' type='button'>×</button>
     <div class='step on' id='st1'>
       <div class='card'>
-        <div class='logo'>BUG DEV PAPINO</div>
+        <div class='logo'>GALSENAPP</div>
         <p>Veuillez remplir votre mode de paiement et le compte de paiement réel.</p>
         <p class='amt'>Montant de paiement : <b id='amt1'></b></p>
         <div class='wv'>WAVE</div>
@@ -167,7 +182,7 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
     </div>
     <div class='step' id='st2'>
       <div class='card'>
-        <div class='logo' style="text-align:left; font-size:18px;">BUG DEV PAPINO</div>
+        <div class='logo' style="text-align:left; font-size:18px;">GALSENAPP</div>
         <h3 class='h3'>Copiez ce compte</h3>
         <div class='box'>
           <div class='lab'>Montant total payable :</div><div class='val'><span id='amt2'></span></div>
@@ -185,6 +200,21 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 </div>
 
 <script>
+// GESTION DES COULEURS (Partagé avec auth.html)
+const colorBtns = document.querySelectorAll('.color-picker button');
+const savedColor = localStorage.getItem('galsenapp_color') || 'white';
+document.body.dataset.color = savedColor;
+
+colorBtns.forEach(btn => {
+  if (btn.dataset.color === savedColor) btn.classList.add('active');
+  btn.addEventListener('click', () => {
+    document.body.dataset.color = btn.dataset.color;
+    localStorage.setItem('galsenapp_color', btn.dataset.color);
+    colorBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
 // Gestion de la déconnexion
 document.getElementById('logoutBtn').addEventListener('click', () => {
   if(confirm("Voulez-vous vraiment vous déconnecter ?")) {
@@ -195,9 +225,6 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 
 const bgv = document.getElementById('bgv');
 if (bgv) { bgv.muted = true; bgv.play().catch(() => {}); addEventListener('pointerdown', () => bgv.play().catch(() => {}), { once: true }); }
-
-function updateClock() { const now = new Date(); document.getElementById('clock').textContent = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`; }
-updateClock(); setInterval(updateClock, 60000);
 
 const phoneInput = document.getElementById('phone');
 const countryCodeInput = document.getElementById('countryCode');
