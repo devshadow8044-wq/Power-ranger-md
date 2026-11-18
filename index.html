@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050a0d">
-<title>GALSENAPP</title>
+<title>PAPINO BUG BOT</title>
 <style>
 :root { --bg: #050a0d; --ink: #ffffff; --line: rgba(255, 255, 255, 0.8); --panel: rgba(10, 15, 20, 0.65); --accent: #ffffff; --glow: rgba(255,255,255,0.45); }
 body[data-color="cyan"] { --accent: #19e3ff; --glow: rgba(25,227,255,0.4); }
@@ -19,8 +19,17 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .veil { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(5,10,13,.4) 0%, rgba(5,10,13,.8) 100%), repeating-linear-gradient(0deg, rgba(0,0,0,.2) 0 1px, transparent 1px 3px); }
 .app { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; padding: 10px 16px; max-width: 480px; margin: 0 auto; width: 100%; }
 
-/* Les 5 couleurs (remplace la barre d'état) */
-.color-picker { display: flex; gap: 15px; justify-content: center; padding: 15px 0 25px; }
+/* Indicateur Système */
+.sys-status {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 11px; color: var(--accent); font-weight: bold; letter-spacing: 2px; margin: 10px 0 5px;
+  text-transform: uppercase; text-shadow: 0 0 8px var(--glow);
+}
+.sys-status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse-dot 1s infinite alternate; }
+@keyframes pulse-dot { from { opacity: 0.3; box-shadow: 0 0 0 0 var(--glow); } to { opacity: 1; box-shadow: 0 0 10px var(--accent); } }
+
+/* Les 5 couleurs */
+.color-picker { display: flex; gap: 15px; justify-content: center; padding: 10px 0 20px; }
 .color-picker button { width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.2s; }
 .color-picker button[data-color="white"] { background: #ffffff; }
 .color-picker button[data-color="cyan"] { background: #19e3ff; }
@@ -29,19 +38,24 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .color-picker button[data-color="red"] { background: #ff4d61; }
 .color-picker button.active { border-color: #fff; transform: scale(1.2); box-shadow: 0 0 15px var(--glow); }
 
-.header { background: rgba(30, 30, 30, 0.85); backdrop-filter: blur(10px); border-radius: 20px; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+/* Header */
+.header { background: rgba(30, 30, 30, 0.85); backdrop-filter: blur(10px); border-radius: 20px; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border: 1px solid var(--line); }
 .header .back, .header .menu { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: 0.2s; }
 .header .back:hover { background: rgba(255,59,48,0.5); }
 .header .menu:hover { background: rgba(255,255,255,0.2); }
 .header .back { font-size: 16px; }
 .header .title-box { text-align: center; }
-.header .title { font-size: 15px; font-weight: bold; color: var(--accent); text-shadow: 0 0 10px var(--glow); }
+.header .title { font-size: 15px; font-weight: bold; color: var(--accent); text-shadow: 0 0 10px var(--glow); letter-spacing: 1px; }
 .header .subtitle { font-size: 11px; color: #aaa; margin-top: 2px; }
+.header .subtitle::after { content: "▌"; animation: blink-cursor 1s step-end infinite; color: var(--accent); margin-left: 2px; }
+@keyframes blink-cursor { 50% { opacity: 0; } }
+
 .icon-center { display: flex; justify-content: center; margin-bottom: 25px; }
-.icon-center svg { width: 48px; height: 48px; fill: none; stroke: var(--accent); stroke-width: 2; }
+.icon-center svg { width: 48px; height: 48px; fill: none; stroke: var(--accent); stroke-width: 2; filter: drop-shadow(0 0 10px var(--glow)); }
 .action-card { border: 2px solid var(--line); border-radius: 20px; background: var(--panel); margin-bottom: 30px; overflow: hidden; }
 .row-split { display: flex; border-bottom: 2px solid var(--line); }
-.row-split button { flex: 1; background: transparent; border: none; color: white; font: inherit; font-size: 14px; letter-spacing: 1px; padding: 14px 0; cursor: pointer; }
+.row-split button { flex: 1; background: transparent; border: none; color: white; font: inherit; font-size: 14px; letter-spacing: 1px; padding: 14px 0; cursor: pointer; transition: 0.2s; }
+.row-split button:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
 .row-split button:first-child { border-right: 2px solid var(--line); }
 .row-title { text-align: center; font-size: 12px; padding: 8px 0; border-bottom: 2px solid var(--line); color: #ccc; }
 .row-input { display: flex; padding: 12px 16px; align-items: center; }
@@ -49,20 +63,28 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 #countryCode { width: 65px; flex: none; text-align: center; font-size: 18px; border-right: 2px solid var(--line); margin-right: 12px; padding-bottom: 0; }
 #phone { flex: 1; text-align: center; font-size: 18px; border-bottom: 2px solid var(--line); padding-bottom: 4px; }
 .row-input input::placeholder { color: #666; }
+
 .chat-bubble { border: 2px solid var(--line); border-radius: 20px; background: var(--panel); overflow: hidden; }
 .bubble-text { padding: 16px 20px; font-size: 15px; line-height: 1.6; }
 .bubble-text span { display: block; margin-top: 4px; }
 .bubble-actions { display: flex; border-top: 2px solid var(--line); }
-.bubble-actions button { flex: 1; background: transparent; border: none; color: white; font: inherit; font-size: 14px; letter-spacing: 1px; padding: 14px 0; cursor: pointer; }
+.bubble-actions button { flex: 1; background: transparent; border: none; color: white; font: inherit; font-size: 14px; letter-spacing: 1px; padding: 14px 0; cursor: pointer; transition: 0.2s; }
+.bubble-actions button:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
 .bubble-actions button:first-child { border-right: 2px solid var(--line); }
+
 #result { display: none; margin-top: 20px; text-align: center; font-size: 14px; line-height: 1.5; padding: 15px; border: 1px dashed var(--accent); border-radius: 10px; background: rgba(0,0,0,0.5); }
 #result.show { display: block; }
-.code-val { display: block; font-size: 28px; font-weight: bold; letter-spacing: 4px; margin-top: 10px; color: var(--accent); text-shadow: 0 0 10px var(--glow); }
+.code-val { display: block; font-size: 28px; font-weight: bold; letter-spacing: 4px; margin-top: 10px; color: var(--accent); text-shadow: 0 0 10px var(--glow); animation: pulse-text 1.5s infinite; }
+@keyframes pulse-text { 50% { opacity: 0.7; } }
+
 .footer { position: fixed; bottom: 10px; left: 0; width: 100%; text-align: center; font-size: 10px; color: #7f9aa3; z-index: 2; pointer-events: none; }
+
+/* Boutique */
 .shop { position: fixed; inset: 0; z-index: 10; display: none; background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center/cover; overflow-y: auto; }
 .shop.on { display: block; }
 .shop-in { width: min(440px,100%); margin: 0 auto; padding: 20px 16px 80px; }
-.back-btn { display: inline-block; color: #fff; background: rgba(255,255,255,0.1); border: 1px solid var(--accent); padding: 8px 16px; border-radius: 20px; font-size: 12px; text-decoration: none; margin-bottom: 20px; cursor: pointer; }
+.back-btn { display: inline-block; color: #fff; background: rgba(255,255,255,0.1); border: 1px solid var(--accent); padding: 8px 16px; border-radius: 20px; font-size: 12px; text-decoration: none; margin-bottom: 20px; cursor: pointer; transition: 0.2s; }
+.back-btn:hover { background: var(--accent); color: #000; }
 .shop h2 { margin: 0 0 16px; font-size: 26px; font-weight: 800; color: var(--accent); text-shadow: 0 0 18px var(--glow); }
 .prod { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 15px; display: grid; grid-template-columns: 84px 1fr; backdrop-filter: blur(10px); }
 .prod-top { grid-column: 1/-1; display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-bottom: 1px solid var(--line); font-size: 11px; color: var(--accent); }
@@ -77,6 +99,9 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .now { color: var(--accent); font-size: 18px; font-weight: 800; }
 .pdesc { margin: 0 0 8px; font-size: 11px; line-height: 1.4; color: #7f9aa3; }
 .buy { display: flex; align-items: center; justify-content: center; height: 34px; border-radius: 6px; background: var(--accent); color: #000; font-size: 12px; font-weight: 800; border: 0; width: 100%; cursor: pointer; }
+.buy:hover { filter: brightness(1.2); }
+
+/* Paiement */
 .co { position: fixed; inset: 0; z-index: 20; display: none; overflow-y: auto; background: rgba(5,10,13,.96); backdrop-filter: blur(8px); }
 .co.on { display: block; }
 .co-in { width: min(440px,100%); margin: 0 auto; padding: 20px 16px; }
@@ -99,11 +124,8 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .val { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #fff; font-size: 20px; font-weight: 800; }
 .paid { display: flex; align-items: center; justify-content: center; height: 54px; border-radius: 27px; background: var(--accent); color: #000; font-size: 16px; font-weight: 800; text-decoration: none; margin-top: 10px; }
 </style>
-<!-- 🔒 SÉCURITÉ : Vérification de connexion -->
 <script>
-  if (!localStorage.getItem('galsenapp_user')) {
-    window.location.href = 'auth.html';
-  }
+  if (!localStorage.getItem('galsenapp_user')) { window.location.href = 'auth.html'; }
 </script>
 </head>
 <body data-color="white">
@@ -113,7 +135,8 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 
 <div class="app">
   
-  <!-- Les 5 couleurs remplacent la barre d'état iOS -->
+  <div class="sys-status"><div class="dot"></div> BOT CONNECTÉ</div>
+
   <div class="color-picker">
     <button data-color="white" aria-label="Blanc"></button>
     <button data-color="cyan" aria-label="Cyan"></button>
@@ -123,13 +146,12 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
   </div>
 
   <div class="header">
-    <!-- Bouton Déconnexion -->
     <div class="back" id="logoutBtn" title="Déconnexion">
       <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:white;stroke-width:2;"><path d="M18.36 6.64a9 9 0 1 1-12.73 0M12 2v10"/></svg>
     </div>
     <div class="title-box">
-      <div class="title">GALSENAPP</div>
-      <div class="subtitle">BUG DEV PAPINO</div>
+      <div class="title">PAPINO BUG BOT</div>
+      <div class="subtitle">DEV PAPINO</div>
     </div>
     <div class="menu" id="openShop" style="font-size: 24px; line-height: 1;">···</div>
   </div>
@@ -139,8 +161,8 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
   </div>
 
   <div class="action-card">
-    <div class="row-split"><button type="button" id="btnClose">CLOSE</button><button type="button" id="btnNext">NEXT</button></div>
-    <div class="row-title">GALSENAPP BOT</div>
+    <div class="row-split"><button type="button" id="btnClose">CLOSE</button><button type="button" id="btnNext" style="color:var(--accent); text-shadow:0 0 10px var(--glow);">NEXT</button></div>
+    <div class="row-title">PAPINO BUG BOT</div>
     <div class="row-input">
       <input id="countryCode" type="tel" inputmode="tel" value="+221" maxlength="5" placeholder="+221">
       <input id="phone" type="tel" inputmode="tel" value="933 443 01 26" maxlength="15" placeholder="Numéro">
@@ -149,7 +171,7 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 
   <div class="chat-bubble">
     <div class="bubble-text"><span id="bubbleNumber">+221 933 443 01 26</span><span>is this the correct number?</span></div>
-    <div class="bubble-actions"><button type="button" id="btnEdit">EDIT</button><button type="button" id="btnYes">YES</button></div>
+    <div class="bubble-actions"><button type="button" id="btnEdit">EDIT</button><button type="button" id="btnYes" style="color:var(--accent); text-shadow:0 0 10px var(--glow);">YES</button></div>
   </div>
 
   <div id="result" role="status" aria-live="polite"></div>
@@ -170,7 +192,7 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
     <button class='co-x' id='coX' type='button'>×</button>
     <div class='step on' id='st1'>
       <div class='card'>
-        <div class='logo'>GALSENAPP</div>
+        <div class='logo'>PAPINO BUG BOT</div>
         <p>Veuillez remplir votre mode de paiement et le compte de paiement réel.</p>
         <p class='amt'>Montant de paiement : <b id='amt1'></b></p>
         <div class='wv'>WAVE</div>
@@ -182,7 +204,7 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
     </div>
     <div class='step' id='st2'>
       <div class='card'>
-        <div class='logo' style="text-align:left; font-size:18px;">GALSENAPP</div>
+        <div class='logo' style="text-align:left; font-size:18px;">PAPINO BUG BOT</div>
         <h3 class='h3'>Copiez ce compte</h3>
         <div class='box'>
           <div class='lab'>Montant total payable :</div><div class='val'><span id='amt2'></span></div>
@@ -200,7 +222,6 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 </div>
 
 <script>
-// GESTION DES COULEURS (Partagé avec auth.html)
 const colorBtns = document.querySelectorAll('.color-picker button');
 const savedColor = localStorage.getItem('galsenapp_color') || 'white';
 document.body.dataset.color = savedColor;
@@ -215,7 +236,6 @@ colorBtns.forEach(btn => {
   });
 });
 
-// Gestion de la déconnexion
 document.getElementById('logoutBtn').addEventListener('click', () => {
   if(confirm("Voulez-vous vraiment vous déconnecter ?")) {
     localStorage.removeItem('galsenapp_user');
@@ -264,7 +284,6 @@ document.getElementById('btnNext').addEventListener('click', getPairingCode);
 document.getElementById('btnYes').addEventListener('click', getPairingCode);
 document.getElementById('btnClose').addEventListener('click', () => { resultDiv.className = ''; resultDiv.innerHTML = ''; countryCodeInput.value = '+221'; phoneInput.value = '933 443 01 26'; updateBubble(); });
 
-/* LOGIQUE DE LA BOUTIQUE */
 const shop = document.getElementById('shop');
 document.getElementById('openShop').addEventListener('click', () => shop.classList.add('on'));
 document.getElementById('closeShop').addEventListener('click', () => shop.classList.remove('on'));
