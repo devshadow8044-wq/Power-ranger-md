@@ -1,23 +1,43 @@
-// Relais Vercel -> panel du bot (le site garde son code tel quel : il appelle /api/pair)
-const TARGET = process.env.PANEL_URL || "http://145.239.65.118:20010";
+// Relais Vercel -> panel du bot
+const TARGET = process.env.PANEL_URL || "http://145.239.65.118:20010"; // METS TON VRAI LIEN KATABUMP ICI
 
 module.exports = async (req, res) => {
+  // Autoriser CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Méthode non autorisée." });
+  }
+
   try {
-    const u = new URL(req.url, "http://x");
-    u.searchParams.delete("path");
-    const qs = u.searchParams.toString();
-    const r = await fetch(TARGET + u.pathname + (qs ? "?" + qs : ""), {
-      method: req.method,
-      headers: { "Content-Type": "application/json" },
-      body: req.method === "POST" ? JSON.stringify(req.body || {}) : undefined,
-      signal: AbortSignal.timeout(25000),
+    console.log(`[VERCEL] Appel vers le bot : ${TARGET}/api/pair`);
+    
+    const response = await fetch(`${TARGET}/api/pair`, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(req.body || {}),
+      signal: AbortSignal.timeout(20000),
     });
-    const txt = await r.text();
-    res.status(r.status);
-    res.setHeader("Content-Type", r.headers.get("content-type") || "application/json");
-    res.setHeader("Cache-Control", "no-store");
-    res.send(txt);
+
+    const data = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      throw new Error(data?.error || `Erreur HTTP ${response.status} du bot.`);
+    }
+
+    return res.status(200).json(data);
+
   } catch (e) {
-    res.status(502).json({ error: "Le serveur du bot ne répond pas (" + ((e.cause && e.cause.code) || e.name) + ")." });
+    console.error("[VERCEL] Erreur de connexion :", e.message);
+    return res.status(502).json({ error: "Le bot ne répond pas. Vérifie l'adresse PANEL_URL sur Vercel. (" + e.message + ")" });
   }
 };
