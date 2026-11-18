@@ -6,9 +6,9 @@
 <meta name="theme-color" content="#050a0d">
 <title>PAPINO BUG BOT</title>
 <style>
-:root { --bg: #050a0d; --ink: #ffffff; --line: rgba(255, 255, 255, 0.8); --panel: rgba(10, 15, 20, 0.65); --accent: #ffffff; --glow: rgba(255,255,255,0.45); }
+:root { --bg: #050a0d; --ink: #ffffff; --line: rgba(255, 255, 255, 0.8); --panel: rgba(10, 15, 20, 0.65); --accent: #ffffff; --glow: rgba(255,255,255,0.45); --success: #25D366; }
 body[data-color="cyan"] { --accent: #19e3ff; --glow: rgba(25,227,255,0.4); }
-body[data-color="green"] { --accent: #25D366; --glow: rgba(37,211,102,0.4); }
+body[data-color="green"] { --accent: #25D366; --glow: rgba(37,211,102,0.4); --success: #25D366; }
 body[data-color="violet"] { --accent: #b36bff; --glow: rgba(179,107,255,0.4); }
 body[data-color="red"] { --accent: #ff4d61; --glow: rgba(255,77,97,0.4); }
 
@@ -19,11 +19,7 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .veil { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(5,10,13,.4) 0%, rgba(5,10,13,.8) 100%), repeating-linear-gradient(0deg, rgba(0,0,0,.2) 0 1px, transparent 1px 3px); }
 .app { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; padding: 10px 16px; max-width: 480px; margin: 0 auto; width: 100%; }
 
-.sys-status {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  font-size: 11px; color: var(--accent); font-weight: bold; letter-spacing: 2px; margin: 10px 0 5px;
-  text-transform: uppercase; text-shadow: 0 0 8px var(--glow);
-}
+.sys-status { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; color: var(--accent); font-weight: bold; letter-spacing: 2px; margin: 10px 0 5px; text-transform: uppercase; text-shadow: 0 0 8px var(--glow); }
 .sys-status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse-dot 1s infinite alternate; }
 @keyframes pulse-dot { from { opacity: 0.3; box-shadow: 0 0 0 0 var(--glow); } to { opacity: 1; box-shadow: 0 0 10px var(--accent); } }
 
@@ -42,10 +38,7 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .header .menu:hover { background: rgba(255,255,255,0.2); }
 .header .back { font-size: 16px; }
 .header .title-box { text-align: center; }
-.header .title { 
-  font-size: 15px; font-weight: bold; color: var(--accent); letter-spacing: 1px;
-  animation: screen-hidden 6s ease-in-out infinite; 
-}
+.header .title { font-size: 15px; font-weight: bold; color: var(--accent); letter-spacing: 1px; animation: screen-hidden 6s ease-in-out infinite; }
 @keyframes screen-hidden {
   0%, 100% { opacity: 1; transform: scale(1); text-shadow: 0 0 20px var(--glow); }
   10% { opacity: 0.8; transform: scale(1.02); }
@@ -89,14 +82,28 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .bubble-actions button:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
 .bubble-actions button:first-child { border-right: 2px solid var(--line); }
 
-#result { display: none; margin-top: 20px; text-align: center; font-size: 14px; line-height: 1.5; padding: 15px; border: 1px dashed var(--accent); border-radius: 10px; background: rgba(0,0,0,0.5); }
-#result.show { display: block; }
-.code-val { display: block; font-size: 28px; font-weight: bold; letter-spacing: 4px; margin-top: 10px; color: var(--accent); text-shadow: 0 0 10px var(--glow); animation: pulse-text 1.5s infinite; }
+#result { display: none; margin-top: 20px; text-align: center; font-size: 14px; line-height: 1.5; padding: 20px; border: 2px solid var(--success); border-radius: 15px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); box-shadow: 0 0 30px rgba(37,211,102,0.3); }
+#result.show { display: block; animation: slideUp 0.4s ease; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.success-box { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.success-icon { width: 65px; height: 65px; border-radius: 50%; background: rgba(37,211,102,0.15); border: 2px solid var(--success); display: flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 0 20px rgba(37,211,102,0.4); animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+@keyframes pop-in { 0% { transform: scale(0); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.success-icon svg { width: 35px; height: 35px; stroke: var(--success); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 50; stroke-dashoffset: 50; animation: draw-check 0.6s 0.3s ease forwards; }
+@keyframes draw-check { to { stroke-dashoffset: 0; } }
+.success-title { color: var(--success); font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(37,211,102,0.5); }
+.success-text { color: #fff; font-size: 13px; margin-bottom: 15px; }
+.code-val { display: block; font-size: 26px; font-weight: bold; letter-spacing: 5px; margin-top: 10px; color: var(--accent); text-shadow: 0 0 10px var(--glow); animation: pulse-text 1.5s infinite; }
 @keyframes pulse-text { 50% { opacity: 0.7; } }
+
+.music-btn { position: fixed; bottom: 25px; right: 20px; z-index: 100; width: 50px; height: 50px; border-radius: 50%; background: var(--panel); border: 2px solid var(--accent); color: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 15px var(--glow); transition: all 0.3s ease; backdrop-filter: blur(10px); }
+.music-btn:hover { transform: scale(1.1); }
+.music-btn svg { width: 24px; height: 24px; fill: currentColor; }
+.music-btn.playing { animation: pulse-music 1.5s infinite; }
+@keyframes pulse-music { 0%, 100% { box-shadow: 0 0 10px var(--glow); } 50% { box-shadow: 0 0 25px var(--accent), 0 0 40px var(--accent); } }
 
 .footer { position: fixed; bottom: 10px; left: 0; width: 100%; text-align: center; font-size: 10px; color: #7f9aa3; z-index: 2; pointer-events: none; }
 
-/* Boutique */
 .shop { position: fixed; inset: 0; z-index: 10; display: none; background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center/cover; overflow-y: auto; }
 .shop.on { display: block; }
 .shop-in { width: min(440px,100%); margin: 0 auto; padding: 20px 16px 80px; }
@@ -118,7 +125,6 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .buy { display: flex; align-items: center; justify-content: center; height: 34px; border-radius: 6px; background: var(--accent); color: #000; font-size: 12px; font-weight: 800; border: 0; width: 100%; cursor: pointer; }
 .buy:hover { filter: brightness(1.2); }
 
-/* Paiement */
 .co { position: fixed; inset: 0; z-index: 20; display: none; overflow-y: auto; background: rgba(5,10,13,.96); backdrop-filter: blur(8px); }
 .co.on { display: block; }
 .co-in { width: min(440px,100%); margin: 0 auto; padding: 20px 16px; }
@@ -140,26 +146,9 @@ body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center c
 .lab { font-size: 11px; color: #7f9aa3; margin-top: 10px; } .box>.lab:first-child { margin-top: 0; }
 .val { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #fff; font-size: 20px; font-weight: 800; }
 .paid { display: flex; align-items: center; justify-content: center; height: 54px; border-radius: 27px; background: var(--accent); color: #000; font-size: 16px; font-weight: 800; text-decoration: none; margin-top: 10px; }
-
-/* ====== BOUTON MUSIQUE ====== */
-.music-btn {
-  position: fixed; bottom: 25px; right: 20px; z-index: 100;
-  width: 50px; height: 50px; border-radius: 50%;
-  background: var(--panel); border: 2px solid var(--accent);
-  color: var(--accent); display: flex; align-items: center; justify-content: center;
-  cursor: pointer; box-shadow: 0 0 15px var(--glow); transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-.music-btn:hover { transform: scale(1.1); }
-.music-btn svg { width: 24px; height: 24px; fill: currentColor; }
-.music-btn.playing { animation: pulse-music 1.5s infinite; }
-@keyframes pulse-music {
-  0%, 100% { box-shadow: 0 0 10px var(--glow); }
-  50% { box-shadow: 0 0 25px var(--accent), 0 0 40px var(--accent); }
-}
 </style>
 <script>
-  if (!localStorage.getItem('galsenapp_user')) { window.location.href = 'auth.html'; }
+  if (!localStorage.getItem('papino_user')) { window.location.href = 'auth.html'; }
 </script>
 </head>
 <body data-color="white">
@@ -291,28 +280,30 @@ const startMusic = () => {
 document.addEventListener('pointerdown', startMusic);
 updateMusicUI();
 
-/* === RESTE DU SCRIPT === */
+/* === COULEURS === */
 const colorBtns = document.querySelectorAll('.color-picker button');
-const savedColor = localStorage.getItem('galsenapp_color') || 'white';
+const savedColor = localStorage.getItem('papino_color') || 'white';
 document.body.dataset.color = savedColor;
 
 colorBtns.forEach(btn => {
   if (btn.dataset.color === savedColor) btn.classList.add('active');
   btn.addEventListener('click', () => {
     document.body.dataset.color = btn.dataset.color;
-    localStorage.setItem('galsenapp_color', btn.dataset.color);
+    localStorage.setItem('papino_color', btn.dataset.color);
     colorBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   });
 });
 
+/* === LOGOUT === */
 document.getElementById('logoutBtn').addEventListener('click', () => {
   if(confirm("Voulez-vous vraiment vous déconnecter ?")) {
-    localStorage.removeItem('galsenapp_user');
+    localStorage.removeItem('papino_user');
     window.location.href = 'auth.html';
   }
 });
 
+/* === INTERFACE === */
 const bgv = document.getElementById('bgv');
 if (bgv) { bgv.muted = true; bgv.play().catch(() => {}); addEventListener('pointerdown', () => bgv.play().catch(() => {}), { once: true }); }
 
@@ -337,16 +328,27 @@ async function getPairingCode() {
   const rawPhone = phoneInput.value.replace(/\D/g, '');
   const phone = '+' + code + rawPhone;
   
-  if (rawPhone.length < 7) { resultDiv.className = 'show'; resultDiv.textContent = 'Numéro invalide. Vérifie le numéro.'; return; }
+  if (rawPhone.length < 7) { resultDiv.className = 'show'; resultDiv.innerHTML = '<span style="color:red">Numéro invalide.</span>'; return; }
   resultDiv.className = 'show'; resultDiv.innerHTML = 'Génération du code en cours...';
 
   try {
     const r = await fetch('/api/pair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ number: phone }) });
     const data = await r.json().catch(() => ({}));
-    if (!r.ok) throw new Error(data.error || data.message || 'Erreur serveur.');
-    resultDiv.innerHTML = `Ton code de pairing :<span class="code-val">${data.pairingCode || 'Indisponible'}</span>`;
+    
+    if (!r.ok) throw new Error(data.error || 'Erreur serveur.');
+    
+    resultDiv.innerHTML = `
+      <div class="success-box">
+        <div class="success-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
+        </div>
+        <div class="success-title">Succès</div>
+        <div class="success-text">Le message a été envoyé automatiquement</div>
+        <div class="code-val">${data.pairingCode}</div>
+      </div>
+    `;
   } catch (err) {
-    resultDiv.textContent = err instanceof TypeError ? "Service indisponible pour le moment. Réessaie plus tard." : err.message;
+    resultDiv.innerHTML = `<span style="color:red">${err.message}</span>`;
   }
 }
 
@@ -354,6 +356,7 @@ document.getElementById('btnNext').addEventListener('click', getPairingCode);
 document.getElementById('btnYes').addEventListener('click', getPairingCode);
 document.getElementById('btnClose').addEventListener('click', () => { resultDiv.className = ''; resultDiv.innerHTML = ''; countryCodeInput.value = '+221'; phoneInput.value = '933 443 01 26'; updateBubble(); });
 
+/* === BOUTIQUE === */
 const shop = document.getElementById('shop');
 document.getElementById('openShop').addEventListener('click', () => shop.classList.add('on'));
 document.getElementById('closeShop').addEventListener('click', () => shop.classList.remove('on'));
