@@ -4,9 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050a0d">
-<title>GALSENAPP - Connexion</title>
+<title>PAPINO BUG BOT - Connexion</title>
 <style>
-/* Variables de couleurs modifiables */
 :root { 
   --bg: #09090b; 
   --ink: #ffffff; 
@@ -25,7 +24,6 @@ body[data-color="red"] { --accent: #ff4d61; --glow: rgba(255,77,97,0.4); }
 html, body { min-height: 100%; background: var(--bg); overflow-x: hidden; }
 
 body { 
-  /* LA PHOTO QUE TU AS ENVOYÉE */
   background: #09090b url("https://files.catbox.moe/qlbnfn.png") center center / cover fixed no-repeat; 
   color: var(--ink); 
   font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace; 
@@ -35,17 +33,26 @@ body {
   overflow-y: auto;
   transition: color 0.3s ease;
 }
-/* Voile sombre pour bien lire le texte sur l'image */
 body::before {
   content: ''; position: fixed; inset: 0; background: rgba(5, 10, 15, 0.75); z-index: 0; pointer-events: none;
 }
 
 .app { position: relative; z-index: 2; min-height: 100%; display: flex; flex-direction: column; padding: 20px 24px; max-width: 480px; margin: 0 auto; width: 100%; }
 
-/* === LES 5 COULEURS === */
-.color-picker {
-  display: flex; gap: 15px; justify-content: center; padding: 20px 0 30px;
+/* Indicateur Système */
+.sys-status {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 11px; color: var(--accent); font-weight: bold; letter-spacing: 2px; margin-bottom: 10px;
+  text-transform: uppercase; text-shadow: 0 0 8px var(--glow);
 }
+.sys-status .dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  animation: pulse-dot 1s infinite alternate;
+}
+@keyframes pulse-dot { from { opacity: 0.3; box-shadow: 0 0 0 0 var(--glow); } to { opacity: 1; box-shadow: 0 0 10px var(--accent); } }
+
+/* === LES 5 COULEURS === */
+.color-picker { display: flex; gap: 15px; justify-content: center; padding: 15px 0 25px; }
 .color-picker button {
   width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.2s;
 }
@@ -54,21 +61,30 @@ body::before {
 .color-picker button[data-color="green"] { background: #25D366; }
 .color-picker button[data-color="violet"] { background: #b36bff; }
 .color-picker button[data-color="red"] { background: #ff4d61; }
-.color-picker button.active {
-  border-color: #fff; transform: scale(1.2); box-shadow: 0 0 15px var(--glow);
-}
+.color-picker button.active { border-color: #fff; transform: scale(1.2); box-shadow: 0 0 15px var(--glow); animation: pulse-btn 1.5s infinite; }
+@keyframes pulse-btn { 0% { box-shadow: 0 0 10px var(--glow); } 50% { box-shadow: 0 0 25px var(--accent); } 100% { box-shadow: 0 0 10px var(--glow); } }
 
-/* En-tête très puissant */
+/* En-tête Puissant & Animé */
 .header { text-align: center; margin-bottom: 30px; }
-.header .title { font-size: 32px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); text-shadow: 0 0 20px var(--glow); }
+.header .title { 
+  font-size: 32px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; 
+  color: var(--accent); text-shadow: 0 0 20px var(--glow);
+  animation: flicker 3s infinite alternate;
+}
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { text-shadow: 0 0 20px var(--glow), 0 0 40px var(--accent); opacity: 1; }
+  20%, 24%, 55% { text-shadow: none; opacity: 0.7; }
+}
 .header .subtitle { font-size: 12px; color: #aaa; margin-top: 8px; letter-spacing: 2px; text-transform: uppercase; }
+.header .subtitle::after { content: "▌"; animation: blink-cursor 1s step-end infinite; color: var(--accent); margin-left: 2px; }
+@keyframes blink-cursor { 50% { opacity: 0; } }
 
 /* Conteneur des formulaires */
 .auth-container { display: none; animation: fadeIn 0.4s ease; width: 100%; }
 .auth-container.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Carte (Bulle) */
+/* Carte (Bulle) avec bordure lumineuse */
 .action-card { 
   background: var(--panel); 
   border: 1px solid var(--line); 
@@ -76,7 +92,16 @@ body::before {
   padding: 24px; 
   backdrop-filter: blur(15px); 
   box-shadow: 0 25px 50px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.05); 
+  position: relative;
+  overflow: hidden;
 }
+.action-card::before {
+  content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: scan 3s linear infinite;
+}
+@keyframes scan { 100% { left: 200%; } }
+
 .row-title { text-align: center; font-size: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--line); color: #fff; font-weight: bold; letter-spacing: 2px; margin-bottom: 20px; }
 
 /* Champs de saisie */
@@ -92,12 +117,14 @@ body::before {
 /* Bouton */
 .btn { 
   display: flex; align-items: center; justify-content: center; 
-  width: 100%; height: 56px; border-radius: 14px; border: none; 
+  width: 100%; height: 56px; border-radius: 14px; border: 2px solid var(--accent); 
   background: var(--accent); color: #000; font: inherit; font-size: 16px; font-weight: 800; letter-spacing: 1px; 
   cursor: pointer; transition: 0.3s; margin-top: 10px;
+  animation: button-glow 2s infinite alternate;
 }
-.btn:hover { box-shadow: 0 0 25px var(--glow); transform: translateY(-2px); }
-.btn:active { transform: translateY(0); }
+@keyframes button-glow { from { box-shadow: 0 0 10px var(--glow); } to { box-shadow: 0 0 25px var(--accent); } }
+.btn:hover { background: transparent; color: var(--accent); transform: scale(1.02); }
+.btn:active { transform: scale(0.98); }
 
 .switch-link { text-align: center; font-size: 13px; color: #aaa; margin-top: 24px; margin-bottom: 40px; }
 .switch-link span { color: var(--accent); text-decoration: none; cursor: pointer; font-weight: bold; border-bottom: 1px solid var(--accent); padding-bottom: 2px; }
@@ -113,6 +140,8 @@ body::before {
 
 <div class="app">
   
+  <div class="sys-status"><div class="dot"></div> SYSTEM ONLINE</div>
+
   <!-- 5 Couleurs -->
   <div class="color-picker">
     <button data-color="white" class="active" aria-label="Blanc"></button>
@@ -124,7 +153,7 @@ body::before {
 
   <!-- En-tête Puissant -->
   <div class="header">
-    <div class="title">GALSENAPP</div>
+    <div class="title">PAPINO BUG BOT</div>
     <div class="subtitle">L'application la plus puissante</div>
   </div>
   
@@ -141,7 +170,7 @@ body::before {
     <div class="switch-link">Pas de compte ? <span onclick="toggleAuth('register')">S'inscrire</span></div>
   </div>
 
-  <!-- INSCRIPTION (Sans photo de profil) -->
+  <!-- INSCRIPTION -->
   <div class="auth-container" id="registerSection">
     <div class="action-card">
       <div class="row-title">CRÉER UN COMPTE</div>
@@ -157,10 +186,8 @@ body::before {
 </div>
 
 <script>
-// Sécurité : Si déjà connecté, on redirige
 if (localStorage.getItem('galsenapp_user')) { window.location.href = 'index.html'; }
 
-// GESTION DES COULEURS
 const colorBtns = document.querySelectorAll('.color-picker button');
 const savedColor = localStorage.getItem('galsenapp_color') || 'white';
 document.body.dataset.color = savedColor;
@@ -185,7 +212,6 @@ function toggleAuth(section) {
 
 function showMessage(text, type) { const msg = document.getElementById('alertMsg'); msg.textContent = text; msg.className = 'msg ' + type; }
 
-// CONNEXION
 document.getElementById('btnLogin').addEventListener('click', () => {
   const user = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value.trim();
@@ -199,7 +225,6 @@ document.getElementById('btnLogin').addEventListener('click', () => {
   }, 1000);
 });
 
-// INSCRIPTION
 document.getElementById('btnRegister').addEventListener('click', () => {
   const name = document.getElementById('regName').value.trim();
   const phone = document.getElementById('regPhone').value.trim();
