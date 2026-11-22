@@ -135,7 +135,7 @@ svg.i{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke
 #sv{position:fixed;inset:0;z-index:30;background:linear-gradient(135deg,#5b21b6,#0b0b12);display:flex;align-items:center;justify-content:center;padding:30px;color:#fff;text-align:center;font-size:26px}
 .cst{font-size:13px;color:var(--mut)}
 .tk{margin-left:4px;color:var(--mut);font-size:12px}
-.tk.r{color:#34b7f1}
+.tk.r{color:#34b7f1;font-weight:700}
 .ph{display:block;max-width:100%;max-height:320px;border-radius:8px;cursor:pointer;margin-bottom:2px}
 .m.stk{background:none;box-shadow:none}
 .sx{font-size:64px;line-height:1.1}
