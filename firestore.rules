@@ -18,6 +18,10 @@ service cloud.firestore {
       match /contacts/{id} {
         allow read, write: if verified() && request.auth.uid == uid;
       }
+      // mes favoris (privés)
+      match /favorites/{id} {
+        allow read, write: if verified() && request.auth.uid == uid;
+      }
       // mes contacts bloqués (privés : personne d'autre ne les voit)
       match /blocked/{id} {
         allow read, write: if verified() && request.auth.uid == uid;
