@@ -12,7 +12,7 @@ requireAuth(async () => {
 
 function preview(c) {
   if (!c) return "";
-  const t = c.lastType === "voice" ? "🎤 Message vocal" : (c.last || "");
+  const t = c.lastType === "voice" ? "Message vocal" : (c.last || "");
   return (c.lastFrom === me.uid ? "Vous : " : "") + t;
 }
 
@@ -32,7 +32,7 @@ function render() {
   };
   if (!q || "annonces galsenapp".includes(q)) {
     const a = annDoc ? (annDoc.last || "Informations officielles") : "Informations officielles";
-    add("chat.html?c=" + ANN, "Annonces GalsenApp", annDoc && annDoc.lastType === "voice" ? "🎤 Message vocal" : a, annDoc && annDoc.lastAt ? when(annDoc.lastAt.toDate()) : "", null, true);
+    add("chat.html?c=" + ANN, "Annonces GalsenApp", annDoc && annDoc.lastType === "voice" ? "Message vocal" : a, annDoc && annDoc.lastAt ? when(annDoc.lastAt.toDate()) : "", null, true);
   }
   const rows = chats.filter(c => c.id !== ANN).map(c => {
     const other = c.members.find(m => m !== me.uid);
@@ -42,7 +42,7 @@ function render() {
   rows.forEach(r => add("chat.html?u=" + r.other, r.name, preview(r.c), r.c.lastAt ? when(r.c.lastAt.toDate()) : "", r.u.photo));
   if (!rows.length && !q) {
     const d = document.createElement("div"); d.className = "none";
-    d.innerHTML = "Aucune discussion pour l’instant.<br>Appuie sur ✏️ pour écrire à un contact.";
+    d.innerHTML = "Aucune discussion pour l’instant.<br>Appuie sur le bouton crayon pour écrire à un contact.";
     l.appendChild(d);
   }
 }
