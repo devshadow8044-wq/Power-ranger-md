@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GalsenApp – Discussion</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="hide">
+<div class="page" style="position:relative">
+ <div class="bar">
+  <a class="ic" href="index.html" title="Retour">←</a>
+  <div class="av" id="cav"></div><b id="ctitle"></b>
+  <button class="ic hide" id="more" title="Options">⋮</button>
+ </div>
+ <div class="menu hide" id="menu"><button id="blk" class="red"></button></div>
+ <div id="msgs"></div>
+ <div id="comp">
+  <input id="txt" placeholder="Écrire un message" autocomplete="off">
+  <span id="rec" class="hide">● <span id="rt">0:00</span></span>
+  <button class="rb hide" id="cancel" title="Annuler" style="background:#8696a0">✕</button>
+  <button class="rb" id="act" title="Vocal">🎤</button>
+ </div>
+ <div id="note" class="hide"></div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
+<script src="js/core.js"></script>
+<script src="js/chat.js"></script>
+</body>
+</html>
