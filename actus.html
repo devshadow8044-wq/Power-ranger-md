@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GalsenApp – Actus</title>
+<script>try{var t=localStorage.getItem("th");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="pg">
+ <div class="head"><h2>Actus</h2></div>
+ <div id="list">
+  <button class="item" id="my"><div class="av" id="mav"></div><div class="bx"><div class="r1"><b>Mon statut</b></div><div class="r2"><span class="lm" id="mst">Touchez pour ajouter un statut</span></div></div></button>
+  <div class="sec">Mises à jour récentes</div>
+  <div id="ul"></div>
+ </div>
+ <button id="fab" aria-label="Nouveau statut"><svg class="i" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg></button>
+</div>
+<div id="sv" class="hide"><div id="stx"></div></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
+<script src="firebase.js"></script>
+<script>
+requireUser(me => {
+  mountTabs("actus");
+  setAv($("#mav"), { name: me.displayName || me.email });
+  const add = async () => {
+    const t = prompt("Écris ton statut (il reste 24 h)"); if (!t || !t.trim()) return;
+    try { await db.collection("statuses").add({ uid: me.uid, name: me.displayName || me.email, text: t.trim(), at: TS() }); }
+    catch (e) { alert("Statut non publié."); }
+  };
+  $("#my").onclick = add; $("#fab").onclick = add;
+  $("#sv").onclick = () => $("#sv").classList.add("hide");
+  const since = firebase.firestore.Timestamp.fromMillis(Date.now() - 864e5);
+  db.collection("statuses").where("at", ">", since).orderBy("at", "desc").onSnapshot(s => {
+    const l = $("#ul"); l.innerHTML = ""; let mineLast = "";
+    s.docs.forEach(d => {
+      const m = d.data();
+      if (m.uid === me.uid) { mineLast = mineLast || m.text; return; }
+      const b = document.createElement("button"); b.className = "item";
+      b.innerHTML = '<div class="av rg"></div><div class="bx"><div class="r1"><b></b></div><div class="r2"><span class="lm"></span></div></div>';
+      b.querySelector(".av").textContent = ini(m.name); b.querySelector("b").textContent = m.name;
+      b.querySelector(".lm").textContent = m.at ? fmt(m.at.toDate()) : "";
+      b.onclick = () => { $("#stx").textContent = m.text; $("#sv").classList.remove("hide"); };
+      l.appendChild(b);
+    });
+    if (!l.children.length) l.innerHTML = '<div class="nb">Aucune mise à jour pour le moment.</div>';
+    $("#mst").textContent = mineLast || "Touchez pour ajouter un statut";
+  }, () => {});
+});
+</script>
+</body>
+</html>
