@@ -46,9 +46,12 @@ function showAppError(message) {
 function requireUser(cb) {
   auth.onAuthStateChanged(u => {
     if (!u || !u.emailVerified) { if (u) auth.signOut(); location.replace("index.html"); return; }
-    const ping = () => db.collection("users").doc(u.uid).set({ lastSeen: TS() }, { merge: true }).catch(() => {});
-    db.collection("users").doc(u.uid).set({ name: u.displayName || u.email, email: u.email.toLowerCase(), lastSeen: TS() }, { merge: true }).catch(() => {});
+    const userRef = db.collection("users").doc(u.uid);
+    const ping = () => userRef.set({ lastSeen: TS() }, { merge: true }).catch(() => {});
+    userRef.set({ name: u.displayName || u.email, email: u.email.toLowerCase(), lastSeen: TS() }, { merge: true }).catch(() => showAppError("Présence non actualisée. Vérifiez les règles Firestore."));
     setInterval(ping, 30000);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") ping(); });
+    window.addEventListener("focus", ping);
     cb(u);
   });
 }
