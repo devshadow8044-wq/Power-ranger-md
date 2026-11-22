@@ -1,6 +1,6 @@
 const qs = new URLSearchParams(location.search);
 const ann = qs.get("c") === ANN;
-let other = qs.get("u"), chatId, iBlocked = false;
+let other = qs.get("u"), chatId, iBlocked = false, isFav = false;
 let mr, chunks = [], cancelled = false, tick, t0;
 
 requireAuth(async () => {
@@ -15,6 +15,7 @@ requireAuth(async () => {
     $("#ctitle").textContent = name; paintAv($("#cav"), name, u.photo);
     $("#more").classList.remove("hide");
     mine("blocked").doc(other).onSnapshot(s => { iBlocked = s.exists; paintBlock(); });
+    mine("favorites").doc(other).onSnapshot(s => { isFav = s.exists; $("#fav").textContent = isFav ? "Retirer des favoris" : "Ajouter aux favoris"; });
   }
   paintBlock();
   db.collection("chats").doc(chatId).collection("messages").orderBy("at").limitToLast(100).onSnapshot(s => {
@@ -30,6 +31,7 @@ requireAuth(async () => {
       el.appendChild(t); box.appendChild(el);
     });
     box.scrollTop = box.scrollHeight;
+    lsSet("read_" + chatId, Date.now()); // discussion lue
   });
 });
 
@@ -49,6 +51,7 @@ async function toggleBlock() {
   else if (confirm("Bloquer ce contact ? Il ne pourra plus t’envoyer de messages.")) await mine("blocked").doc(other).set({ at: firebase.firestore.FieldValue.serverTimestamp() });
 }
 $("#blk").onclick = toggleBlock;
+$("#fav").onclick = () => { $("#menu").classList.add("hide"); isFav ? mine("favorites").doc(other).delete() : mine("favorites").doc(other).set({ at: firebase.firestore.FieldValue.serverTimestamp() }); };
 $("#more").onclick = e => { e.stopPropagation(); $("#menu").classList.toggle("hide"); };
 document.addEventListener("click", () => $("#menu").classList.add("hide"));
 
