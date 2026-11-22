@@ -18,7 +18,7 @@ function render() {
     el.querySelector("span").textContent = o.name;
     el.querySelector("small").textContent = o.sub;
     (o.btns || []).forEach(b => {
-      const x = document.createElement("button"); x.className = "act" + (b.sec ? " sec" : ""); x.textContent = b.t;
+      const x = document.createElement("button"); x.className = "act" + (b.sec ? " sec" : ""); if (b.ic) x.innerHTML = ic(b.ic); else x.textContent = b.t;
       x.onclick = e => { e.preventDefault(); e.stopPropagation(); b.fn(); };
       el.appendChild(x);
     });
@@ -27,16 +27,16 @@ function render() {
   const mineList = P.contacts.filter(c => (c.name + c.phone).toLowerCase().includes(q)).sort((a, b) => a.name.localeCompare(b.name));
   const on = mineList.filter(c => c.user), off = mineList.filter(c => !c.user);
   if (on.length) title("Sur GalsenApp");
-  on.forEach(c => row({ name: c.name, sub: c.user.about || c.phone, photo: c.user.photo, href: "chat.html?u=" + c.user.id, btns: [{ t: "🗑", sec: 1, fn: () => del(c) }] }));
+  on.forEach(c => row({ name: c.name, sub: c.user.about || c.phone, photo: c.user.photo, href: "chat.html?u=" + c.user.id, btns: [{ ic: "trash", sec: 1, fn: () => del(c) }] }));
   if (off.length) title("Inviter sur GalsenApp");
-  off.forEach(c => row({ name: c.name, sub: c.phone + " · pas encore sur l’app", btns: [{ t: "Inviter", fn: () => inviteSms(c.phone, c.name) }, { t: "🗑", sec: 1, fn: () => del(c) }] }));
+  off.forEach(c => row({ name: c.name, sub: c.phone + " · pas encore sur l’app", btns: [{ t: "Inviter", fn: () => inviteSms(c.phone, c.name) }, { ic: "trash", sec: 1, fn: () => del(c) }] }));
   const known = new Set(P.contacts.filter(c => c.user).map(c => c.user.id));
   const others = P.users.filter(u => !known.has(u.id) && (u.name || "").toLowerCase().includes(q));
   if (others.length) title("Autres personnes sur GalsenApp");
   others.forEach(u => row({ name: u.name, sub: u.about || "Disponible sur GalsenApp", photo: u.photo, href: "chat.html?u=" + u.id }));
   if (!l.children.length) {
     const d = document.createElement("div"); d.className = "none";
-    d.innerHTML = "Aucun contact.<br>Appuie sur ➕ pour en ajouter un.";
+    d.innerHTML = "Aucun contact.<br>Appuie sur le bouton + pour en ajouter un.";
     l.appendChild(d);
   }
 }
