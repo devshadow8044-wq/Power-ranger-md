@@ -34,7 +34,7 @@ $("#save").onclick = async () => {
     await me.updateProfile({ displayName: name });
     await db.collection("users").doc(me.uid).set(d, { merge: true });
     cur = { ...cur, ...d }; photo = null;
-    $("#ok").textContent = "✓ Profil enregistré";
+    $("#ok").textContent = "Profil enregistré";
   } catch (e) { $("#ok").textContent = "Erreur : impossible d’enregistrer."; }
 };
 
