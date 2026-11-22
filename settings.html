@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GalsenApp – Paramètres</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="hide">
+<div class="page">
+ <div class="bar"><b>Paramètres</b></div>
+ <div class="content">
+  <div class="prof">
+   <label class="pic" for="file"><div class="av big" id="pav"></div><i>📷</i></label>
+   <input type="file" id="file" accept="image/*" class="hide">
+   <button class="link hide" id="rmpic">Supprimer la photo</button>
+  </div>
+  <div class="card">
+   <div class="f"><label for="nm">Nom</label><input id="nm" maxlength="40"></div>
+   <div class="f"><label for="ab">Statut</label><input id="ab" maxlength="80" placeholder="Disponible sur GalsenApp"></div>
+   <div class="f"><label for="ph">Téléphone</label><input id="ph" type="tel" placeholder="+221 77 000 00 00"></div>
+   <div class="f"><label>Email</label><input id="em" disabled></div>
+  </div>
+  <div class="ok" id="ok"></div>
+  <div style="padding:0 14px"><button class="go" id="save">Enregistrer</button></div>
+  <div class="card" style="margin-bottom:18px">
+   <a class="row" href="blocked.html"><span class="ri">🚫</span><div>Contacts bloqués<small id="bc"></small></div></a>
+   <button class="row" id="inv"><span class="ri">✉️</span><div>Inviter des amis<small>Envoyer le lien par SMS</small></div></button>
+   <button class="row red" id="out"><span class="ri">🚪</span><div>Se déconnecter</div></button>
+  </div>
+ </div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
+<script src="js/core.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>
