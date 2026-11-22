@@ -7,11 +7,17 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="hide">
-<div class="page" style="position:relative">
- <div class="bar"><b>Galsen<span style="color:#a78bfa">App</span></b></div>
- <input class="search" id="search" placeholder="Rechercher une discussion">
+<div class="page">
+ <div class="bar big"><b>GalsenApp</b><button class="ic" id="mb" title="Menu" data-ic="dots"></button></div>
+ <div class="menu hide" id="menu"><a href="contacts.html">Nouveau contact</a><a href="blocked.html">Contacts bloqués</a><a href="settings.html">Paramètres</a><button id="out">Se déconnecter</button></div>
+ <div class="sw"><span data-ic="search"></span><input id="search" placeholder="Rechercher…" autocomplete="off"></div>
+ <div class="chips">
+  <button class="chip on" data-f="all">Toutes</button>
+  <button class="chip" data-f="unread">Non lues <i id="uc"></i></button>
+  <button class="chip" data-f="fav">Favoris</button>
+ </div>
  <div class="content" id="list"></div>
- <a class="fab" href="contacts.html" title="Nouvelle discussion" data-ic="pencil"></a>
+ <a class="fab" href="contacts.html" title="Nouvelle discussion" data-ic="newchat"></a>
 </div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
