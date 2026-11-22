@@ -16,6 +16,28 @@ const ANN = "annonces";
 let me = null;
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
+
+// ---------- icônes (SVG, pas d'emoji) ----------
+const ICONS = {
+  back: '<path d="M15 5l-7 7 7 7"/>', close: '<path d="M6 6l12 12M18 6L6 18"/>', plus: '<path d="M12 5v14M5 12h14"/>',
+  send: '<path d="M3 11l18-8-8 18-2-8z" fill="currentColor"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>',
+  pencil: '<path d="M4 20l4-1 11-11-3-3L5 16z"/>',
+  camera: '<path d="M4 8h4l2-2h4l2 2h4v11H4z"/><circle cx="12" cy="13.5" r="3.2"/>',
+  block: '<circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/>',
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+  logout: '<path d="M10 4H5v16h5M15 8l4 4-4 4M19 12H9"/>',
+  chat: '<path d="M4 5h16v11H9l-5 4z"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.5 0 4 2 4 5"/>',
+  settings: '<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+  trash: '<path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/>',
+  megaphone: '<path d="M4 10v4h3l8 4V6L7 10zM18 9a4 4 0 010 6"/>',
+  download: '<path d="M12 4v10M8 10l4 4 4-4M5 20h14"/>',
+  dots: '<circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/>'
+};
+const ic = n => '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[n] + "</svg>";
+document.querySelectorAll("[data-ic]").forEach(e => e.insertAdjacentHTML("afterbegin", ic(e.dataset.ic)));
+
 // ---------- utilitaires ----------
 const ini = s => (s || "?").trim().slice(0, 1).toUpperCase();
 const isOwner = () => me && me.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
@@ -33,7 +55,7 @@ function when(d) {
 function paintAv(el, name, photo, ann) {
   el.className = el.className.replace(/\bann\b/, "").trim() + (ann ? " ann" : "");
   el.style.backgroundImage = photo ? "url(" + photo + ")" : "";
-  el.textContent = photo ? "" : (ann ? "📢" : ini(name));
+  if (photo) el.textContent = ""; else if (ann) el.innerHTML = ic("megaphone"); else el.textContent = ini(name);
 }
 // photo carrée réduite (≈ 8 Ko) pour tenir dans Firestore
 function imgToData(file, size = 192) {
@@ -56,9 +78,9 @@ function inviteSms(phone, name) {
 }
 // barre du bas
 function tabbar(active) {
-  const t = [["index.html", "💬", "Discussions"], ["contacts.html", "👥", "Contacts"], ["settings.html", "⚙️", "Paramètres"]];
+  const t = [["index.html", "chat", "Discussions"], ["contacts.html", "users", "Contacts"], ["settings.html", "settings", "Paramètres"]];
   const n = document.createElement("nav"); n.className = "tabbar";
-  n.innerHTML = t.map(x => '<a href="' + x[0] + '" class="' + (x[0] === active ? "on" : "") + '"><span>' + x[1] + "</span>" + x[2] + "</a>").join("");
+  n.innerHTML = t.map(x => '<a href="' + x[0] + '" class="' + (x[0] === active ? "on" : "") + '"><span>' + ic(x[1]) + "</span>" + x[2] + "</a>").join("");
   document.querySelector(".page").appendChild(n);
 }
 // charge utilisateurs, contacts et bloqués
