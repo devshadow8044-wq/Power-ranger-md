@@ -75,9 +75,16 @@ requireUser(me => {
     };
     a.ontimeupdate = paint;
     a.onended = () => { btn.textContent = "▶"; a.currentTime = 0; paint(); };
+    a.onpause = () => { btn.textContent = "▶"; };
+    a.onerror = () => { btn.textContent = "▶"; showAppError("Ce format de vocal n’est pas lisible sur cet appareil."); };
     btn.onclick = () => {
-      if (a.paused) { if (playing && playing !== a) { playing.pause(); playing._b.textContent = "▶"; } playing = a; a.play(); btn.textContent = "⏸"; }
-      else { a.pause(); btn.textContent = "▶"; }
+      if (a.paused) {
+        if (playing && playing !== a) playing.pause();
+        playing = a;
+        const started = a.play();
+        if (started && started.catch) started.catch(() => showAppError("Lecture du vocal impossible. Réessayez ou vérifiez le volume."));
+        btn.textContent = "⏸";
+      } else a.pause();
     };
     bars.onclick = e => { const r = bars.getBoundingClientRect(), t = total(); if (t) { a.currentTime = t * (e.clientX - r.left) / r.width; paint(); } };
     paint(); col.append(bars, tx); w.append(av, btn, col); return w;
@@ -99,13 +106,26 @@ requireUser(me => {
     if (me_ && !ann) { const k = document.createElement("span"); k.className = "tk" + (m.readAt ? " r" : ""); k.textContent = m.readAt ? "✓✓" : "✓"; t.appendChild(k); }
     el.appendChild(t); return el;
   }
-  let first = true;
+  let first = true, visibleDocs = [], marking = new Set();
+  const markVisibleAsRead = () => {
+    if (ann || document.visibilityState !== "visible") return;
+    visibleDocs.forEach(d => {
+      const m = d.data();
+      if (m.from === me.uid || m.readAt || marking.has(d.id)) return;
+      marking.add(d.id);
+      d.ref.update({ readAt: TS() }).catch(() => showAppError("Le message est lu, mais l’accusé de lecture n’a pas pu être envoyé."))
+        .finally(() => marking.delete(d.id));
+    });
+  };
+  document.addEventListener("visibilitychange", markVisibleAsRead);
+  window.addEventListener("focus", markVisibleAsRead);
   msgsOf(id).orderBy("at").limitToLast(100).onSnapshot(s => {
+    visibleDocs = s.docs;
     const box = $("#msgs"); box.innerHTML = "";
     s.docs.forEach(d => {
       const m = d.data(); box.appendChild(bubble(m));
-      if (!ann && m.from !== me.uid && !m.readAt && document.visibilityState === "visible") d.ref.update({ readAt: TS() }).catch(() => {});
     });
+    markVisibleAsRead();
     if (!first && s.docChanges().some(c => c.type === "added" && c.doc.data().from !== me.uid)) sndRecv();
     first = false; box.scrollTop = box.scrollHeight;
     try { const l = JSON.parse(localStorage.getItem("gl") || "{}"); l[me.uid + ":" + id] = Date.now(); localStorage.setItem("gl", JSON.stringify(l)); } catch (e) {}
@@ -146,7 +166,7 @@ $("#act").onclick = async () => {
     }
     const st = await navigator.mediaDevices.getUserMedia({ audio: true });
     chunks = []; cancelled = false;
-    const mime = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find(t => !MediaRecorder.isTypeSupported || MediaRecorder.isTypeSupported(t));
+    const mime = ["audio/mp4", "audio/webm;codecs=opus", "audio/webm", "audio/ogg;codecs=opus"].find(t => !MediaRecorder.isTypeSupported || MediaRecorder.isTypeSupported(t));
     try { mr = new MediaRecorder(st, mime ? { mimeType: mime, audioBitsPerSecond: 24000 } : { audioBitsPerSecond: 24000 }); }
     catch (e) { st.getTracks().forEach(t => t.stop()); throw e; }
     mr.ondataavailable = e => chunks.push(e.data);
@@ -155,13 +175,15 @@ $("#act").onclick = async () => {
       const keep = !cancelled, dur = Math.max(1, Math.round((Date.now() - t0) / 1000)); stopUI();
       if (!keep || !chunks.length) return;
       const blob = new Blob(chunks, { type: chunks[0].type || (mime || "audio/webm") });
+      if (!blob.type || !blob.size) { showAppError("L’enregistrement est vide. Autorisez le micro puis réessayez."); return; }
       if (blob.size > 700000) { showAppError("Vocal trop volumineux. Enregistrez un message plus court."); return; }
       const r = new FileReader();
       r.onload = () => send({ type: "voice", audio: r.result, dur, mime: blob.type });
       r.onerror = () => showAppError("Le vocal n’a pas pu être préparé. Réessayez.");
       r.readAsDataURL(blob);
     };
-    mr.start(); t0 = Date.now();
+    try { mr.start(); } catch (e) { st.getTracks().forEach(t => t.stop()); mr = null; throw e; }
+    t0 = Date.now();
     if (navigator.vibrate) navigator.vibrate(25);
     document.body.classList.add("recording");
     $("#txt").classList.add("hide"); $("#ebtn").classList.add("hide"); $("#emo").classList.add("hide"); $("#rec").classList.remove("hide"); $("#cancel").classList.remove("hide");
