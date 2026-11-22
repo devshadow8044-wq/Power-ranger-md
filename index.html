@@ -1,408 +1,264 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#050a0d">
-<title>PAPINO BUG BOT</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GalsenApp</title>
 <style>
-:root { --bg: #050a0d; --ink: #ffffff; --line: rgba(255, 255, 255, 0.8); --panel: rgba(10, 15, 20, 0.65); --accent: #ffffff; --glow: rgba(255,255,255,0.45); --success: #25D366; }
-body[data-color="cyan"] { --accent: #19e3ff; --glow: rgba(25,227,255,0.4); }
-body[data-color="green"] { --accent: #25D366; --glow: rgba(37,211,102,0.4); --success: #25D366; }
-body[data-color="violet"] { --accent: #b36bff; --glow: rgba(179,107,255,0.4); }
-body[data-color="red"] { --accent: #ff4d61; --glow: rgba(255,77,97,0.4); }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { min-height: 100%; background: var(--bg); overflow-x: hidden; }
-body { background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center center / cover fixed no-repeat; color: var(--ink); font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace; height: 100vh; display: flex; flex-direction: column; }
-#bgv { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; background: #050a0d; }
-.veil { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(5,10,13,.4) 0%, rgba(5,10,13,.8) 100%), repeating-linear-gradient(0deg, rgba(0,0,0,.2) 0 1px, transparent 1px 3px); }
-.app { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; padding: 10px 16px; max-width: 480px; margin: 0 auto; width: 100%; }
-
-.sys-status { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; color: var(--accent); font-weight: bold; letter-spacing: 2px; margin: 10px 0 5px; text-transform: uppercase; text-shadow: 0 0 8px var(--glow); }
-.sys-status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse-dot 1s infinite alternate; }
-@keyframes pulse-dot { from { opacity: 0.3; box-shadow: 0 0 0 0 var(--glow); } to { opacity: 1; box-shadow: 0 0 10px var(--accent); } }
-
-.color-picker { display: flex; gap: 15px; justify-content: center; padding: 10px 0 20px; }
-.color-picker button { width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.2s; }
-.color-picker button[data-color="white"] { background: #ffffff; }
-.color-picker button[data-color="cyan"] { background: #19e3ff; }
-.color-picker button[data-color="green"] { background: #25D366; }
-.color-picker button[data-color="violet"] { background: #b36bff; }
-.color-picker button[data-color="red"] { background: #ff4d61; }
-.color-picker button.active { border-color: #fff; transform: scale(1.2); box-shadow: 0 0 15px var(--glow); }
-
-.header { background: rgba(30, 30, 30, 0.85); backdrop-filter: blur(10px); border-radius: 20px; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border: 1px solid var(--line); }
-.header .back, .header .menu { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: 0.2s; }
-.header .back:hover { background: rgba(255,59,48,0.5); }
-.header .menu:hover { background: rgba(255,255,255,0.2); }
-.header .back { font-size: 16px; }
-.header .title-box { text-align: center; }
-.header .title { font-size: 15px; font-weight: bold; color: var(--accent); letter-spacing: 1px; animation: screen-hidden 6s ease-in-out infinite; }
-@keyframes screen-hidden {
-  0%, 100% { opacity: 1; transform: scale(1); text-shadow: 0 0 20px var(--glow); }
-  10% { opacity: 0.8; transform: scale(1.02); }
-  15% { opacity: 0; transform: scale(0.98); } 
-  20% { opacity: 0; transform: scale(0.98); } 
-  22% { opacity: 1; transform: scale(1); text-shadow: 2px 0 #ff4d61, -2px 0 #19e3ff; } 
-  28% { opacity: 1; transform: translate(1px, 0); text-shadow: 0 0 20px var(--glow); }
-  40% { opacity: 1; }
-  42% { opacity: 0; } 
-  45% { opacity: 1; }
-  60% { opacity: 1; transform: scale(1); }
-  65% { opacity: 0; transform: scale(0.98); } 
-  70% { opacity: 0; transform: scale(0.98); }
-  75% { opacity: 1; transform: scale(1); text-shadow: -2px 0 #ff4d61, 2px 0 #19e3ff; } 
-  80% { opacity: 1; transform: translate(-1px, 1px); text-shadow: 0 0 20px var(--glow); }
-  85% { opacity: 1; transform: translate(0); }
+:root{--g:#7c3aed;--gd:#5b21b6;--bg:#0b0b12;--out:#6d28d9;--in:#1c1b2a;--tx:#f4f1ff;--mut:#a9a6c0;--line:#2a2840;--side:#12111c;--hd:#181726;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx);background:var(--side)}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input{font:inherit;color:inherit}
+.hide{display:none!important}
+/* connexion */
+#auth{height:100%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 20% 0,#4c1d95,#0b0b12 60%);padding:20px}
+#auth form{background:var(--side);width:100%;max-width:380px;padding:28px;border-radius:12px;display:flex;flex-direction:column;gap:12px}
+#auth h1{font-size:30px;color:#a78bfa}
+#auth input{padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--hd)}
+#auth .go{background:linear-gradient(135deg,#8b5cf6,#5b21b6);color:#fff;padding:14px;border-radius:12px;font-weight:600;box-shadow:0 6px 20px rgba(124,58,237,.45);transition:transform .15s,box-shadow .15s}#auth .go:hover{transform:translateY(-1px);box-shadow:0 8px 26px rgba(124,58,237,.65)}
+#auth .sw{color:#a78bfa;font-size:14px}
+#err{color:#ff8a9b;font-size:14px;min-height:18px}
+/* application */
+#app{height:100%;display:grid;grid-template-columns:min(380px,100%) 1fr}
+#side{display:flex;flex-direction:column;border-right:1px solid var(--line);min-height:0;background:var(--side)}
+.bar{background:var(--hd);padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;display:flex;align-items:center;gap:12px;min-height:60px}
+.bar b{flex:1;font-size:18px}
+#search{margin:8px 12px;padding:9px 14px;border:0;border-radius:8px;background:var(--hd)}
+#list{overflow:auto;flex:1}
+.item{display:flex;gap:12px;align-items:center;padding:12px 14px;width:100%;text-align:left;border-bottom:1px solid var(--line)}
+.item:hover,.item.on{background:var(--hd)}
+.av{width:46px;height:46px;border-radius:50%;background:#3b3858;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+.av.ann{background:var(--g)}
+.item small{display:block;color:var(--mut);font-size:13px}
+#main{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--bg)}
+#empty{margin:auto;color:var(--mut);text-align:center;padding:20px}
+#chat{display:flex;flex-direction:column;height:100%;min-height:0}
+#back{display:none;font-size:22px}
+#msgs{flex:1;overflow:auto;padding:14px 8%;display:flex;flex-direction:column;gap:4px}
+.m{max-width:75%;padding:7px 10px 5px;border-radius:8px;background:var(--in);align-self:flex-start;box-shadow:0 1px 1px rgba(0,0,0,.13);word-wrap:break-word}
+.m.me{background:var(--out);align-self:flex-end}
+.m .n{font-size:12.5px;font-weight:600;color:#a78bfa;margin-bottom:2px}
+.m .t{font-size:11px;color:var(--mut);text-align:right;margin-top:2px}
+.m audio{height:36px;max-width:100%}
+#comp{background:var(--hd);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:center}
+#txt{flex:1;padding:11px 14px;border:0;border-radius:22px;background:var(--side)}
+.rb{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#5b21b6);color:#fff;font-size:19px;flex:none;box-shadow:0 3px 12px rgba(124,58,237,.5)}
+#rec{flex:1;color:#d33;font-weight:600;padding:0 8px}
+#note{padding:14px;text-align:center;color:var(--mut);background:var(--hd);padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+@media(max-width:700px){
+ #app{grid-template-columns:1fr}
+ #main{display:none}
+ #app.open #side{display:none}
+ #app.open #main{display:flex}
+ #back{display:block}
+ #msgs{padding:12px}
 }
-.header .subtitle { font-size: 11px; color: #aaa; margin-top: 2px; }
-.header .subtitle::after { content: "▌"; animation: blink-cursor 1s step-end infinite; color: var(--accent); margin-left: 2px; }
-@keyframes blink-cursor { 50% { opacity: 0; } }
-
-.icon-center { display: flex; justify-content: center; margin-bottom: 25px; }
-.icon-center svg { width: 48px; height: 48px; fill: none; stroke: var(--accent); stroke-width: 2; filter: drop-shadow(0 0 10px var(--glow)); }
-.action-card { border: 2px solid var(--line); border-radius: 20px; background: var(--panel); margin-bottom: 30px; overflow: hidden; }
-.row-split { display: flex; border-bottom: 2px solid var(--line); }
-.row-split button { flex: 1; background: transparent; border: none; color: white; font: inherit; font-size: 14px; letter-spacing: 1px; padding: 14px 0; cursor: pointer; transition: 0.2s; }
-.row-split button:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
-.row-split button:first-child { border-right: 2px solid var(--line); }
-.row-title { text-align: center; font-size: 12px; padding: 8px 0; border-bottom: 2px solid var(--line); color: #ccc; }
-.row-input { display: flex; padding: 12px 16px; align-items: center; }
-.row-input input { background: transparent; border: none; color: white; font: inherit; outline: none; }
-#countryCode { width: 65px; flex: none; text-align: center; font-size: 18px; border-right: 2px solid var(--line); margin-right: 12px; padding-bottom: 0; }
-#phone { flex: 1; text-align: center; font-size: 18px; border-bottom: 2px solid var(--line); padding-bottom: 4px; }
-.row-input input::placeholder { color: #666; }
-
-.chat-bubble { border: 2px solid var(--line); border-radius: 20px; background: var(--panel); overflow: hidden; }
-.bubble-text { padding: 16px 20px; font-size: 15px; line-height: 1.6; }
-.bubble-text span { display: block; margin-top: 4px; }
-.bubble-actions { display: flex; border-top: 2px solid var(--line); }
-.bubble-actions button { flex: 1; background: transparent; border: none; color: white; font: inherit; font-size: 14px; letter-spacing: 1px; padding: 14px 0; cursor: pointer; transition: 0.2s; }
-.bubble-actions button:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
-.bubble-actions button:first-child { border-right: 2px solid var(--line); }
-
-#result { display: none; margin-top: 20px; text-align: center; font-size: 14px; line-height: 1.5; padding: 20px; border: 2px solid var(--success); border-radius: 15px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); box-shadow: 0 0 30px rgba(37,211,102,0.3); }
-#result.show { display: block; animation: slideUp 0.4s ease; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-.success-box { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.success-icon { width: 65px; height: 65px; border-radius: 50%; background: rgba(37,211,102,0.15); border: 2px solid var(--success); display: flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 0 20px rgba(37,211,102,0.4); animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-@keyframes pop-in { 0% { transform: scale(0); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.success-icon svg { width: 35px; height: 35px; stroke: var(--success); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 50; stroke-dashoffset: 50; animation: draw-check 0.6s 0.3s ease forwards; }
-@keyframes draw-check { to { stroke-dashoffset: 0; } }
-.success-title { color: var(--success); font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(37,211,102,0.5); }
-.success-text { color: #fff; font-size: 13px; margin-bottom: 15px; }
-.code-val { display: block; font-size: 26px; font-weight: bold; letter-spacing: 5px; margin-top: 10px; color: var(--accent); text-shadow: 0 0 10px var(--glow); animation: pulse-text 1.5s infinite; }
-@keyframes pulse-text { 50% { opacity: 0.7; } }
-
-.music-btn { position: fixed; bottom: 25px; right: 20px; z-index: 100; width: 50px; height: 50px; border-radius: 50%; background: var(--panel); border: 2px solid var(--accent); color: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 15px var(--glow); transition: all 0.3s ease; backdrop-filter: blur(10px); }
-.music-btn:hover { transform: scale(1.1); }
-.music-btn svg { width: 24px; height: 24px; fill: currentColor; }
-.music-btn.playing { animation: pulse-music 1.5s infinite; }
-@keyframes pulse-music { 0%, 100% { box-shadow: 0 0 10px var(--glow); } 50% { box-shadow: 0 0 25px var(--accent), 0 0 40px var(--accent); } }
-
-.footer { position: fixed; bottom: 10px; left: 0; width: 100%; text-align: center; font-size: 10px; color: #7f9aa3; z-index: 2; pointer-events: none; }
-
-.shop { position: fixed; inset: 0; z-index: 10; display: none; background: var(--bg) url("https://files.catbox.moe/9bf5n2.jpg") center/cover; overflow-y: auto; }
-.shop.on { display: block; }
-.shop-in { width: min(440px,100%); margin: 0 auto; padding: 20px 16px 80px; }
-.back-btn { display: inline-block; color: #fff; background: rgba(255,255,255,0.1); border: 1px solid var(--accent); padding: 8px 16px; border-radius: 20px; font-size: 12px; text-decoration: none; margin-bottom: 20px; cursor: pointer; transition: 0.2s; }
-.back-btn:hover { background: var(--accent); color: #000; }
-.shop h2 { margin: 0 0 16px; font-size: 26px; font-weight: 800; color: var(--accent); text-shadow: 0 0 18px var(--glow); }
-.prod { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 15px; display: grid; grid-template-columns: 84px 1fr; backdrop-filter: blur(10px); }
-.prod-top { grid-column: 1/-1; display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-bottom: 1px solid var(--line); font-size: 11px; color: var(--accent); }
-.prod-top i { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); animation: blink 1.6s infinite; }
-@keyframes blink { 50% { opacity: .25; } }
-.ph { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; margin: 10px 0 10px 10px; border: 1px dashed var(--line); border-radius: 8px; font-size: 20px; }
-.pbody { padding: 10px 12px; min-width: 0; }
-.pct { padding: 2px 6px; border-radius: 4px; background: var(--accent); color: #000; font-size: 10px; font-weight: 800; }
-.pname { margin: 0 0 4px; font-size: 15px; font-weight: 800; }
-.prices { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 6px; }
-.old { color: #7f9aa3; text-decoration: line-through; font-size: 12px; }
-.now { color: var(--accent); font-size: 18px; font-weight: 800; }
-.pdesc { margin: 0 0 8px; font-size: 11px; line-height: 1.4; color: #7f9aa3; }
-.buy { display: flex; align-items: center; justify-content: center; height: 34px; border-radius: 6px; background: var(--accent); color: #000; font-size: 12px; font-weight: 800; border: 0; width: 100%; cursor: pointer; }
-.buy:hover { filter: brightness(1.2); }
-
-.co { position: fixed; inset: 0; z-index: 20; display: none; overflow-y: auto; background: rgba(5,10,13,.96); backdrop-filter: blur(8px); }
-.co.on { display: block; }
-.co-in { width: min(440px,100%); margin: 0 auto; padding: 20px 16px; }
-.co-x { display: block; margin: 0 0 12px auto; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: #fff; font-size: 20px; cursor: pointer; }
-.step { display: none; } .step.on { display: block; }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; backdrop-filter: blur(10px); }
-.logo { text-align: center; font-size: 24px; font-weight: 800; color: var(--accent); margin-bottom: 16px; text-shadow: 0 0 10px var(--glow); }
-.co p { margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: #7f9aa3; }
-.co .amt b { color: var(--accent); font-size: 22px; }
-.wv { width: 130px; margin: 6px auto 16px; text-align: center; padding: 10px 8px; border: 1px solid var(--accent); border-radius: 8px; background: #03080a; font-size: 12px; color: var(--accent); box-shadow: 0 0 10px var(--glow); }
-.phone { display: flex; gap: 8px; margin-bottom: 12px; }
-.phone select, .phone input { height: 48px; background: #03080a; border: 1px solid var(--line); border-radius: 6px; color: #fff; font: inherit; font-size: 12px; padding: 0 10px; outline: none; }
-.phone select { max-width: 45%; }
-.phone input { flex: 1; }
-.warn { padding: 10px 12px; margin-bottom: 14px; background: rgba(255,77,97,.12); border-radius: 6px; color: #ff6b7b; font-size: 12px; line-height: 1.5; }
-.err { display: none; margin: -4px 0 12px; color: #ff6b7b; font-size: 12px; } .err.show { display: block; }
-.go { width: 100%; height: 48px; border: 0; border-radius: 6px; background: var(--accent); color: #000; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; }
-.box { background: #03080a; border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin: 8px 0 18px; }
-.lab { font-size: 11px; color: #7f9aa3; margin-top: 10px; } .box>.lab:first-child { margin-top: 0; }
-.val { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #fff; font-size: 20px; font-weight: 800; }
-.paid { display: flex; align-items: center; justify-content: center; height: 54px; border-radius: 27px; background: var(--accent); color: #000; font-size: 16px; font-weight: 800; text-decoration: none; margin-top: 10px; }
 </style>
-<script>
-  if (!localStorage.getItem('papino_user')) { window.location.href = 'auth.html'; }
-</script>
 </head>
-<body data-color="white">
+<body>
 
-<audio id="bgMusic" src="https://files.catbox.moe/5ovdzj.m4a" loop preload="auto"></audio>
-<button class="music-btn" id="musicToggle" aria-label="Musique">
-  <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-</button>
-
-<video id="bgv" autoplay muted loop playsinline preload="auto" poster="https://files.catbox.moe/9bf5n2.jpg" aria-hidden="true"><source src="https://files.catbox.moe/wg8jz6.mp4" type="video/mp4"></video>
-<div class="veil" aria-hidden="true"></div>
-
-<div class="app">
-  
-  <div class="sys-status"><div class="dot"></div> BOT CONNECTÉ</div>
-
-  <div class="color-picker">
-    <button data-color="white" aria-label="Blanc"></button>
-    <button data-color="cyan" aria-label="Cyan"></button>
-    <button data-color="green" aria-label="Vert"></button>
-    <button data-color="violet" aria-label="Violet"></button>
-    <button data-color="red" aria-label="Rouge"></button>
-  </div>
-
-  <div class="header">
-    <div class="back" id="logoutBtn" title="Déconnexion">
-      <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:white;stroke-width:2;"><path d="M18.36 6.64a9 9 0 1 1-12.73 0M12 2v10"/></svg>
-    </div>
-    <div class="title-box">
-      <div class="title">PAPINO BUG BOT</div>
-      <div class="subtitle">DEV PAPINO</div>
-    </div>
-    <div class="menu" id="openShop" style="font-size: 24px; line-height: 1;">···</div>
-  </div>
-
-  <div class="icon-center">
-    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z" stroke-dasharray="4 4"/><path d="M12 6a6 6 0 0 0-6 6 6 6 0 0 0 6 6 6 6 0 0 0 6-6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/><circle cx="12" cy="12" r="2"/></svg>
-  </div>
-
-  <div class="action-card">
-    <div class="row-split"><button type="button" id="btnClose">CLOSE</button><button type="button" id="btnNext" style="color:var(--accent); text-shadow:0 0 10px var(--glow);">NEXT</button></div>
-    <div class="row-title">PAPINO BUG BOT</div>
-    <div class="row-input">
-      <input id="countryCode" type="tel" inputmode="tel" value="+221" maxlength="5" placeholder="+221">
-      <input id="phone" type="tel" inputmode="tel" value="933 443 01 26" maxlength="15" placeholder="Numéro">
-    </div>
-  </div>
-
-  <div class="chat-bubble">
-    <div class="bubble-text"><span id="bubbleNumber">+221 933 443 01 26</span><span>is this the correct number?</span></div>
-    <div class="bubble-actions"><button type="button" id="btnEdit">EDIT</button><button type="button" id="btnYes" style="color:var(--accent); text-shadow:0 0 10px var(--glow);">YES</button></div>
-  </div>
-
-  <div id="result" role="status" aria-live="polite"></div>
+<div id="auth">
+ <form id="af">
+  <h1>GalsenApp</h1>
+  <input id="nm" placeholder="Votre nom" autocomplete="name">
+  <input id="ph" type="tel" placeholder="Numéro de téléphone (ex. +221 77 000 00 00)" autocomplete="tel">
+  <input id="em" type="email" placeholder="Adresse email" autocomplete="email" required>
+  <input id="pw" type="password" placeholder="Mot de passe (6 caractères minimum)" autocomplete="current-password" required>
+  <div id="err"></div>
+  <button class="go" id="ab">Se connecter</button>
+  <button type="button" class="sw" id="sw">Pas de compte ? Créer un compte</button>
+ </form>
 </div>
 
-<div class="footer">Powered by DEV PAPINO ©2026</div>
-
-<section class="shop" id="shop">
-  <div class="shop-in">
-    <div class="back-btn" id="closeShop">← Retour</div>
-    <h2>Boutique</h2>
-    <div id="products"></div>
+<div id="app" class="hide">
+ <aside id="side">
+  <div class="bar"><b>GalsenApp</b><button id="out" title="Se déconnecter">Déconnexion</button></div>
+  <input id="search" placeholder="Rechercher un nom ou un email">
+  <div id="list"></div>
+ </aside>
+ <section id="main">
+  <div id="empty">Choisissez une discussion pour commencer.</div>
+  <div id="chat" class="hide">
+   <div class="bar"><button id="back">←</button><div class="av" id="cav"></div><b id="ctitle"></b></div>
+   <div id="msgs"></div>
+   <div id="comp">
+    <input id="txt" placeholder="Écrire un message" autocomplete="off">
+    <span id="rec" class="hide">● <span id="rt">0:00</span></span>
+    <button class="rb hide" id="cancel" title="Annuler" style="background:#8696a0">✕</button>
+    <button class="rb" id="act" title="Vocal">🎤</button>
+   </div>
+   <div id="note" class="hide">Seul le propriétaire de GalsenApp peut écrire ici.</div>
   </div>
-</section>
-
-<div class='co' id='co' role='dialog' aria-modal='true'>
-  <div class='co-in'>
-    <button class='co-x' id='coX' type='button'>×</button>
-    <div class='step on' id='st1'>
-      <div class='card'>
-        <div class='logo'>PAPINO BUG BOT</div>
-        <p>Veuillez remplir votre mode de paiement et le compte de paiement réel.</p>
-        <p class='amt'>Montant de paiement : <b id='amt1'></b></p>
-        <div class='wv'>WAVE</div>
-        <div class='phone'><select id='ctry' aria-label='Pays'></select><input id='pnum' type='tel' inputmode='tel' placeholder='Votre compte de paiement'></div>
-        <div class='err' id='perr'></div>
-        <div class='warn'>Veuillez remplir votre compte de paiement avec précision.</div>
-        <button class='go' id='confirm' type='button'>Confirmer →</button>
-      </div>
-    </div>
-    <div class='step' id='st2'>
-      <div class='card'>
-        <div class='logo' style="text-align:left; font-size:18px;">PAPINO BUG BOT</div>
-        <h3 class='h3'>Copiez ce compte</h3>
-        <div class='box'>
-          <div class='lab'>Montant total payable :</div><div class='val'><span id='amt2'></span></div>
-          <div class='lab'>WAVE Compte :</div><div class='val'><span id='wnum'>755545742</span></div>
-          <div class='lab'>Nom du compte :</div><div class='val'><span id='wname'>PAPINO G</span></div>
-        </div>
-        <h3 class='h3'>Paiement achevé ?</h3>
-        <div class='box'>
-          <div class='val'><span style='color:#7f9aa3; font-size:12px;'>Montant payé :</span><span style="font-size:14px;">XOF 0</span></div>
-          <a class='paid' id='paid' href='#' target='_blank'>J’AI PAYÉ</a>
-        </div>
-      </div>
-    </div>
-  </div>
+ </section>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
 <script>
-/* === LOGIQUE MUSIQUE === */
-const bgMusic = document.getElementById('bgMusic');
-const musicBtn = document.getElementById('musicToggle');
-let isPlaying = localStorage.getItem('papino_music') !== 'off';
-
-function updateMusicUI() {
-  if (isPlaying) {
-    musicBtn.classList.add('playing');
-    musicBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>';
-  } else {
-    musicBtn.classList.remove('playing');
-    musicBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>';
-  }
-}
-
-musicBtn.addEventListener('click', () => {
-  isPlaying = !isPlaying;
-  localStorage.setItem('papino_music', isPlaying ? 'on' : 'off');
-  if (isPlaying) bgMusic.play().catch(()=>{});
-  else bgMusic.pause();
-  updateMusicUI();
+// ====== À REMPLIR ======
+const OWNER_EMAIL = "votre-email@exemple.com"; // le seul compte qui peut écrire dans les annonces
+const RECAPTCHA_SITE_KEY = "VOTRE_CLE_RECAPTCHA_V3"; // anti-robot (App Check + reCAPTCHA v3)
+firebase.initializeApp({
+  apiKey: "VOTRE_API_KEY",
+  authDomain: "VOTRE_PROJET.firebaseapp.com",
+  projectId: "VOTRE_PROJET",
+  appId: "VOTRE_APP_ID"
 });
+if (!RECAPTCHA_SITE_KEY.startsWith("VOTRE")) firebase.appCheck().activate(RECAPTCHA_SITE_KEY, true);
+// =======================
 
-const startMusic = () => {
-  if (isPlaying) bgMusic.play().catch(()=>{});
-  document.removeEventListener('pointerdown', startMusic);
+const auth = firebase.auth(), db = firebase.firestore();
+const $ = s => document.querySelector(s);
+const ANN = "annonces";
+let me, users = [], cur = null, unsub = null, signup = false;
+let mr, chunks = [], cancelled = false, tick, t0;
+
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); // reste connecté
+
+// ---- connexion / inscription ----
+const setMode = s => {
+  signup = s;
+  $("#nm").classList.toggle("hide", !s);
+  $("#ph").classList.toggle("hide", !s);
+  $("#ab").textContent = s ? "Créer mon compte" : "Se connecter";
+  $("#sw").textContent = s ? "Déjà un compte ? Se connecter" : "Pas de compte ? Créer un compte";
+  $("#err").textContent = "";
 };
-document.addEventListener('pointerdown', startMusic);
-updateMusicUI();
-
-/* === COULEURS === */
-const colorBtns = document.querySelectorAll('.color-picker button');
-const savedColor = localStorage.getItem('papino_color') || 'white';
-document.body.dataset.color = savedColor;
-
-colorBtns.forEach(btn => {
-  if (btn.dataset.color === savedColor) btn.classList.add('active');
-  btn.addEventListener('click', () => {
-    document.body.dataset.color = btn.dataset.color;
-    localStorage.setItem('papino_color', btn.dataset.color);
-    colorBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  });
-});
-
-/* === LOGOUT === */
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  if(confirm("Voulez-vous vraiment vous déconnecter ?")) {
-    localStorage.removeItem('papino_user');
-    window.location.href = 'auth.html';
-  }
-});
-
-/* === INTERFACE === */
-const bgv = document.getElementById('bgv');
-if (bgv) { bgv.muted = true; bgv.play().catch(() => {}); addEventListener('pointerdown', () => bgv.play().catch(() => {}), { once: true }); }
-
-const phoneInput = document.getElementById('phone');
-const countryCodeInput = document.getElementById('countryCode');
-const bubbleNumber = document.getElementById('bubbleNumber');
-
-function updateBubble() {
-  let code = countryCodeInput.value.trim() || "+221";
-  let num = phoneInput.value.trim() || "933 443 01 26";
-  bubbleNumber.textContent = `${code} ${num}`;
-}
-phoneInput.addEventListener('input', updateBubble);
-countryCodeInput.addEventListener('input', updateBubble);
-updateBubble(); 
-
-document.getElementById('btnEdit').addEventListener('click', () => { phoneInput.focus(); phoneInput.select(); });
-
-const resultDiv = document.getElementById('result');
-async function getPairingCode() {
-  const code = countryCodeInput.value.replace(/\D/g, '');
-  const rawPhone = phoneInput.value.replace(/\D/g, '');
-  const phone = '+' + code + rawPhone;
-  
-  if (rawPhone.length < 7) { resultDiv.className = 'show'; resultDiv.innerHTML = '<span style="color:red">Numéro invalide.</span>'; return; }
-  resultDiv.className = 'show'; resultDiv.innerHTML = 'Génération du code en cours...';
-
+setMode(false);
+$("#sw").onclick = () => setMode(!signup);
+$("#af").onsubmit = async e => {
+  e.preventDefault(); $("#err").style.color = ""; $("#err").textContent = "";
+  const em = $("#em").value.trim(), pw = $("#pw").value, nm = $("#nm").value.trim();
   try {
-    const r = await fetch('/api/pair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ number: phone }) });
-    const data = await r.json().catch(() => ({}));
-    
-    if (!r.ok) throw new Error(data.error || 'Erreur serveur.');
-    
-    resultDiv.innerHTML = `
-      <div class="success-box">
-        <div class="success-icon">
-            <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
-        </div>
-        <div class="success-title">Succès</div>
-        <div class="success-text">Le message a été envoyé automatiquement</div>
-        <div class="code-val">${data.pairingCode}</div>
-      </div>
-    `;
-  } catch (err) {
-    resultDiv.innerHTML = `<span style="color:red">${err.message}</span>`;
+    if (signup) {
+      const ph = $("#ph").value.replace(/[^\d+]/g, "");
+      if (!nm) return $("#err").textContent = "Entrez votre nom.";
+      if (ph.replace(/\D/g, "").length < 8) return $("#err").textContent = "Entrez un numéro de téléphone valide.";
+      const c = await auth.createUserWithEmailAndPassword(em, pw);
+      await c.user.updateProfile({ displayName: nm });
+      await db.collection("users").doc(c.user.uid).set({ name: nm, email: em.toLowerCase(), phone: ph });
+      await c.user.sendEmailVerification();
+      await auth.signOut(); setMode(false);
+      $("#err").style.color = "#a78bfa";
+      $("#err").textContent = "Compte créé. Cliquez sur le lien reçu par email, puis connectez-vous.";
+    } else {
+      const c = await auth.signInWithEmailAndPassword(em, pw);
+      if (!c.user.emailVerified) { await auth.signOut(); $("#err").textContent = "Confirmez d’abord votre email (pensez aux spams)."; }
+    }
+  } catch (x) {
+    const m = { "auth/email-already-in-use": "Cet email est déjà utilisé.", "auth/weak-password": "Mot de passe trop court (6 caractères minimum).", "auth/invalid-credential": "Email ou mot de passe incorrect.", "auth/invalid-email": "Adresse email invalide." };
+    $("#err").textContent = m[x.code] || "Erreur : " + x.code;
   }
+};
+$("#out").onclick = () => auth.signOut();
+
+auth.onAuthStateChanged(u => {
+  if (u && !u.emailVerified) { me = null; return; }
+  me = u;
+  $("#auth").classList.toggle("hide", !!u);
+  $("#app").classList.toggle("hide", !u);
+  if (!u) { if (unsub) unsub(); cur = null; return; }
+  db.collection("users").doc(u.uid).set({ name: u.displayName || u.email, email: u.email.toLowerCase() }, { merge: true });
+  db.collection("users").onSnapshot(s => { users = s.docs.map(d => ({ id: d.id, ...d.data() })).filter(x => x.id !== u.uid); renderList(); });
+});
+
+// ---- liste des discussions ----
+const ini = s => (s || "?").trim().slice(0, 1).toUpperCase();
+const isOwner = () => me && me.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+const cid = o => [me.uid, o].sort().join("_");
+function renderList() {
+  const q = $("#search").value.toLowerCase(), l = $("#list");
+  l.innerHTML = "";
+  const add = (id, title, sub, ann) => {
+    const b = document.createElement("button");
+    b.className = "item" + (cur === id ? " on" : "");
+    b.innerHTML = '<div class="av' + (ann ? " ann" : "") + '"></div><div><span></span><small></small></div>';
+    b.querySelector(".av").textContent = ann ? "📢" : ini(title);
+    b.querySelector("span").textContent = title;
+    b.querySelector("small").textContent = sub;
+    b.onclick = () => openChat(id, title, ann);
+    l.appendChild(b);
+  };
+  if (!q || "annonces galsenapp".includes(q)) add(ANN, "Annonces GalsenApp", "Informations officielles", true);
+  users.filter(u => (u.name + u.email).toLowerCase().includes(q)).forEach(u => add(cid(u.id), u.name, u.email, false));
 }
+$("#search").oninput = renderList;
 
-document.getElementById('btnNext').addEventListener('click', getPairingCode);
-document.getElementById('btnYes').addEventListener('click', getPairingCode);
-document.getElementById('btnClose').addEventListener('click', () => { resultDiv.className = ''; resultDiv.innerHTML = ''; countryCodeInput.value = '+221'; phoneInput.value = '933 443 01 26'; updateBubble(); });
+// ---- discussion ----
+function openChat(id, title, ann) {
+  cur = id;
+  $("#empty").classList.add("hide"); $("#chat").classList.remove("hide");
+  $("#app").classList.add("open");
+  $("#ctitle").textContent = title;
+  const av = $("#cav"); av.textContent = ann ? "📢" : ini(title); av.className = "av" + (ann ? " ann" : "");
+  const canWrite = !ann || isOwner();
+  $("#comp").classList.toggle("hide", !canWrite);
+  $("#note").classList.toggle("hide", canWrite);
+  renderList();
+  if (unsub) unsub();
+  unsub = db.collection("chats").doc(id).collection("messages").orderBy("at").limitToLast(100).onSnapshot(s => {
+    const box = $("#msgs"); box.innerHTML = "";
+    s.docs.forEach(d => {
+      const m = d.data(), el = document.createElement("div");
+      el.className = "m" + (m.from === me.uid ? " me" : "");
+      if (ann) { const n = document.createElement("div"); n.className = "n"; n.textContent = m.name || "GalsenApp"; el.appendChild(n); }
+      if (m.type === "voice") { const a = document.createElement("audio"); a.controls = true; a.src = m.audio; el.appendChild(a); }
+      else { const p = document.createElement("div"); p.textContent = m.text; el.appendChild(p); }
+      const t = document.createElement("div"); t.className = "t";
+      t.textContent = (m.at ? m.at.toDate() : new Date()).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+      el.appendChild(t); box.appendChild(el);
+    });
+    box.scrollTop = box.scrollHeight;
+  });
+}
+$("#back").onclick = () => { $("#app").classList.remove("open"); };
 
-/* === BOUTIQUE === */
-const shop = document.getElementById('shop');
-document.getElementById('openShop').addEventListener('click', () => shop.classList.add('on'));
-document.getElementById('closeShop').addEventListener('click', () => shop.classList.remove('on'));
+const send = data => db.collection("chats").doc(cur).collection("messages").add({
+  from: me.uid, name: me.displayName || me.email, at: firebase.firestore.FieldValue.serverTimestamp(), ...data
+}).catch(() => alert("Message non envoyé. Vérifiez votre connexion."));
 
-const PRODUCTS = [
-  {name:'APK BAN',ico:'🚫',old:2000,price:1500,desc:'Application pour gérer et débloquer les numéros bannis.'},
-  {name:'Bot personnalisé',ico:'🤖',old:3000,price:1500,desc:'Un bot WhatsApp fait sur mesure.'},
-  {name:'Power bot MD',ico:'⚡',old:4000,price:2000,desc:'Bot WhatsApp multi-appareils complet.'},
-  {name:'Check ban',ico:'🔍',old:2000,price:1500,desc:'Vérifie si un numéro WhatsApp est banni.'},
-  {name:'Formation DEV',ico:'💻',old:3000,price:2000,desc:'Formation pour apprendre la programmation.'},
-  {name:'Apprendre à créer un bot',ico:'🎓',old:4000,price:2500,desc:'Apprends à créer ton propre bot de A à Z.'},
-  {name:'Bot Telegram',ico:'✈️',old:2000,price:1500,desc:'Bot Telegram prêt à l’emploi.'},
-  {name:'Support ban',ico:'🛟',old:1000,price:500,desc:'Aide pour récupérer un compte banni.'},
-  {name:'Telegram premium',ico:'⭐',old:2000,price:1500,desc:'Abonnement Telegram Premium.'},
-  {name:'Movie box premium',ico:'🎬',old:3000,price:1500,desc:'Accès Premium à Movie Box.'},
-  {name:'Numéro virtuel',ico:'📞',old:3000,price:1500,desc:'Numéro virtuel pour vérifier tes comptes.'},
-  {name:'Site web personnalisé',ico:'🌐',old:3000,price:2000,desc:'Site web créé sur mesure.'},
-  {name:'Bot Telegram personnalisé',ico:'🧩',old:3000,price:2000,desc:'Bot Telegram fait sur mesure.'}
-];
+// ---- texte ----
+const sendText = () => { const v = $("#txt").value.trim(); if (v) { send({ type: "text", text: v }); $("#txt").value = ""; sync(); } };
+$("#txt").onkeydown = e => { if (e.key === "Enter") sendText(); };
+const sync = () => { $("#act").textContent = $("#txt").value.trim() ? "➤" : "🎤"; };
+$("#txt").oninput = sync;
 
-const list = document.getElementById('products');
-PRODUCTS.forEach(p => {
-  const card = document.createElement('article'); card.className = 'prod';
-  card.innerHTML = `<div class="prod-top"><i></i><span>disponible</span></div><div class="ph">${p.ico}</div><div class="pbody"><h3 class="pname">${p.name}</h3><div class="prices"><span class="old">${p.old} F</span><span class="now">${p.price} F</span><span class="pct">-${Math.round((1-p.price/p.old)*100)}%</span></div><p class="pdesc">${p.desc}</p><button class="buy">Acheter →</button></div>`;
-  card.querySelector('.buy').addEventListener('click', () => openCo(p)); list.appendChild(card);
-});
-
-const COUNTRIES = [['Sénégal','221'],['Côte d’Ivoire','225'],['Mali','223'],['Burkina Faso','226'],['Ouganda','256'],['Guinée','224'],['Niger','227'],['Cameroun','237']];
-const co = document.getElementById('co'), st1 = document.getElementById('st1'), st2 = document.getElementById('st2');
-const ctry = document.getElementById('ctry'), pnum = document.getElementById('pnum'), perr = document.getElementById('perr');
-COUNTRIES.forEach((c, i) => { let o = document.createElement('option'); o.value = i; o.textContent = c[0] + ' +' + c[1]; ctry.appendChild(o); });
-
-let cur = null;
-function openCo(p) { cur = p; pnum.value = ''; perr.className = 'err'; st1.classList.add('on'); st2.classList.remove('on'); document.getElementById('amt1').textContent = 'XOF ' + p.price; document.getElementById('amt2').textContent = 'XOF ' + p.price; co.classList.add('on'); co.scrollTop = 0; }
-function closeCo() { co.classList.remove('on'); }
-document.getElementById('coX').addEventListener('click', closeCo);
-
-document.getElementById('confirm').addEventListener('click', () => {
-  const d = pnum.value.replace(/\D/g, '').replace(/^0+/, '');
-  if (d.length < 7 || d.length > 12) { perr.textContent = 'Numéro invalide.'; perr.className = 'err show'; return; }
-  const c = COUNTRIES[ctry.value];
-  const acc = '+' + c[1] + ' ' + d;
-  const msg = 'Bonjour, j’ai payé via Wave.\nProduit : ' + cur.name + '\nMontant : ' + cur.price + ' F\nPays : ' + c[0] + '\nCompte : ' + acc;
-  document.getElementById('paid').href = 'https://wa.me/221755545742?text=' + encodeURIComponent(msg);
-  st1.classList.remove('on'); st2.classList.add('on'); co.scrollTop = 0;
-});
+// ---- vocal (stocké dans le message, 60 s maximum) ----
+const stopUI = () => {
+  clearInterval(tick); mr = null;
+  ["#rec", "#cancel"].forEach(s => $(s).classList.add("hide"));
+  $("#txt").classList.remove("hide"); sync();
+};
+$("#act").onclick = async () => {
+  if ($("#txt").value.trim()) return sendText();
+  if (mr) { mr.stop(); return; }
+  try {
+    const st = await navigator.mediaDevices.getUserMedia({ audio: true });
+    chunks = []; cancelled = false;
+    mr = new MediaRecorder(st, { audioBitsPerSecond: 24000 });
+    mr.ondataavailable = e => chunks.push(e.data);
+    mr.onstop = () => {
+      st.getTracks().forEach(t => t.stop());
+      const keep = !cancelled; stopUI();
+      if (!keep) return;
+      const r = new FileReader();
+      r.onload = () => send({ type: "voice", audio: r.result });
+      r.readAsDataURL(new Blob(chunks, { type: mr ? mr.mimeType : chunks[0].type }));
+    };
+    mr.start(); t0 = Date.now();
+    $("#txt").classList.add("hide"); $("#rec").classList.remove("hide"); $("#cancel").classList.remove("hide");
+    $("#act").textContent = "➤";
+    tick = setInterval(() => {
+      const s = Math.floor((Date.now() - t0) / 1000);
+      $("#rt").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+      if (s >= 60 && mr) mr.stop();
+    }, 500);
+  } catch (e) { alert("Autorisez l’accès au micro pour envoyer un vocal."); }
+};
+$("#cancel").onclick = () => { cancelled = true; if (mr) mr.stop(); };
 </script>
 </body>
 </html>
