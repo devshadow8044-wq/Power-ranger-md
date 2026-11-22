@@ -33,6 +33,8 @@ const ICONS = {
   trash: '<path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/>',
   megaphone: '<path d="M4 10v4h3l8 4V6L7 10zM18 9a4 4 0 010 6"/>',
   download: '<path d="M12 4v10M8 10l4 4 4-4M5 20h14"/>',
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>',
+  newchat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M12 8v5M9.5 10.5h5"/>',
   dots: '<circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/>'
 };
 const ic = n => '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[n] + "</svg>";
@@ -44,6 +46,8 @@ const isOwner = () => me && me.email.toLowerCase() === OWNER_EMAIL.toLowerCase()
 const cid = o => [me.uid, o].sort().join("_");
 const phoneKey = s => (s || "").replace(/\D/g, "").slice(-9); // compare les numéros avec ou sans indicatif
 const mine = c => db.collection("users").doc(me.uid).collection(c);
+const lsGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
 const hhmm = d => d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
 function when(d) {
   if (!d) return "";
@@ -85,14 +89,14 @@ function tabbar(active) {
 }
 // charge utilisateurs, contacts et bloqués
 async function loadPeople() {
-  const [us, cs, bs] = await Promise.all([db.collection("users").get(), mine("contacts").get(), mine("blocked").get()]);
+  const [us, cs, bs, fs] = await Promise.all([db.collection("users").get(), mine("contacts").get(), mine("blocked").get(), mine("favorites").get()]);
   const users = us.docs.map(d => ({ id: d.id, ...d.data() })).filter(u => u.id !== me.uid);
   const contacts = cs.docs.map(d => ({ id: d.id, ...d.data() }));
-  const blocked = new Set(bs.docs.map(d => d.id));
+  const blocked = new Set(bs.docs.map(d => d.id)), favs = new Set(fs.docs.map(d => d.id));
   const byId = {}; users.forEach(u => byId[u.id] = u);
   contacts.forEach(c => { c.user = users.find(u => phoneKey(u.phone) && phoneKey(u.phone) === phoneKey(c.phone)) || null; });
   const nameOf = id => { const c = contacts.find(c => c.user && c.user.id === id); return c ? c.name : (byId[id] ? byId[id].name : "Utilisateur"); };
-  return { users, contacts, blocked, byId, nameOf };
+  return { users, contacts, blocked, favs, byId, nameOf };
 }
 
 // ---------- garde : page réservée aux comptes connectés ----------
