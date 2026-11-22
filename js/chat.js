@@ -65,7 +65,7 @@ async function send(data) {
 }
 const sendText = () => { const v = $("#txt").value.trim(); if (v) { send({ type: "text", text: v }); $("#txt").value = ""; sync(); } };
 $("#txt").onkeydown = e => { if (e.key === "Enter") sendText(); };
-const sync = () => { $("#act").textContent = $("#txt").value.trim() ? "➤" : "🎤"; };
+const sync = () => { $("#act").innerHTML = ic($("#txt").value.trim() ? "send" : "mic"); };
 $("#txt").oninput = sync;
 
 // ---- vocal (stocké dans le message, 60 s maximum) ----
@@ -92,7 +92,7 @@ $("#act").onclick = async () => {
     };
     mr.start(); t0 = Date.now();
     $("#txt").classList.add("hide"); $("#rec").classList.remove("hide"); $("#cancel").classList.remove("hide");
-    $("#act").textContent = "➤";
+    $("#act").innerHTML = ic("send");
     tick = setInterval(() => {
       const s = Math.floor((Date.now() - t0) / 1000);
       $("#rt").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
