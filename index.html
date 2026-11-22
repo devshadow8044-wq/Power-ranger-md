@@ -12,13 +12,30 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 input{font:inherit;color:inherit}
 .hide{display:none!important}
 /* connexion */
-#auth{height:100%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 20% 0,#4c1d95,#0b0b12 60%);padding:20px}
-#auth form{background:var(--side);width:100%;max-width:380px;padding:28px;border-radius:12px;display:flex;flex-direction:column;gap:12px}
-#auth h1{font-size:30px;color:#a78bfa}
-#auth input{padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--hd)}
-#auth .go{background:linear-gradient(135deg,#8b5cf6,#5b21b6);color:#fff;padding:14px;border-radius:12px;font-weight:600;box-shadow:0 6px 20px rgba(124,58,237,.45);transition:transform .15s,box-shadow .15s}#auth .go:hover{transform:translateY(-1px);box-shadow:0 8px 26px rgba(124,58,237,.65)}
-#auth .sw{color:#a78bfa;font-size:14px}
-#err{color:#ff8a9b;font-size:14px;min-height:18px}
+#auth{min-height:100%;display:flex;justify-content:center;background:radial-gradient(circle at 0 0,#5b1d8f 0,#0b0b12 45%),#0b0b12}
+#af{width:100%;max-width:440px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:calc(20px + env(safe-area-inset-top,0px)) 22px calc(22px + env(safe-area-inset-bottom,0px))}
+.top{display:flex;align-items:center;gap:12px}
+.top b{font-size:22px;flex:1}
+.top i{font-style:normal;color:#a78bfa}
+#dots{display:flex;gap:6px}
+.dot{width:10px;height:10px;border-radius:5px;background:#3b3858;transition:width .2s,background .2s}
+.dot.on{width:34px;background:#a78bfa}
+#tt{font-size:34px;line-height:1.1;margin:44px 0 8px;font-weight:700}
+#st{color:var(--mut);margin-bottom:28px}
+.tabs{display:flex;background:var(--hd);border:1px solid var(--line);border-radius:30px;padding:5px;margin-bottom:24px}
+.tabs button{flex:1;padding:13px;border-radius:25px;color:var(--mut);font-weight:600}
+.tabs button.on{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;box-shadow:0 4px 18px rgba(124,58,237,.5)}
+.f{margin-bottom:14px}
+.f label{display:block;color:var(--mut);margin:0 0 6px 4px;font-size:14px}
+.f input{width:100%;height:52px;padding:0 18px;border:1px solid var(--line);border-radius:26px;background:var(--hd)}
+.f input:focus{outline:2px solid #a78bfa;border-color:transparent}
+.f input.bad{border-color:#ff8a9b}
+.e{display:block;color:#ff8a9b;font-size:14px;margin:6px 0 0 4px}
+#err{color:#ff8a9b;font-size:14px;margin:6px 4px}
+.sp{flex:1}
+.go{height:56px;border-radius:28px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-weight:700;font-size:17px;box-shadow:0 8px 26px rgba(124,58,237,.5)}
+.go:active{transform:scale(.98)}
+#bk{color:#a78bfa;margin-top:10px;padding:10px}
 /* application */
 #app{height:100%;display:grid;grid-template-columns:min(380px,100%) 1fr}
 #side{display:flex;flex-direction:column;border-right:1px solid var(--line);min-height:0;background:var(--side)}
@@ -59,15 +76,23 @@ input{font:inherit;color:inherit}
 <body>
 
 <div id="auth">
- <form id="af">
-  <h1>GalsenApp</h1>
-  <input id="nm" placeholder="Votre nom" autocomplete="name">
-  <input id="ph" type="tel" placeholder="Numéro de téléphone (ex. +221 77 000 00 00)" autocomplete="tel">
-  <input id="em" type="email" placeholder="Adresse email" autocomplete="email" required>
-  <input id="pw" type="password" placeholder="Mot de passe (6 caractères minimum)" autocomplete="current-password" required>
+ <form id="af" novalidate>
+  <div class="top">
+   <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#6d28d9"/></linearGradient></defs><circle cx="22" cy="22" r="22" fill="url(#lg)"/><path d="M22 12c-5.5 0-10 3.9-10 8.7 0 2.2 1 4.2 2.6 5.7L13.5 31l4.8-1.8c1.1.3 2.3.5 3.7.5 5.5 0 10-3.9 10-8.7S27.5 12 22 12z" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/></svg>
+   <b>Galsen<i>App</i></b>
+   <div id="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+  </div>
+  <h1 id="tt"></h1><p id="st"></p>
+  <div class="tabs"><button type="button" id="tabS">Inscription</button><button type="button" id="tabL">Connexion</button></div>
+  <div class="f" data-s="1"><label for="fn">Prénom</label><input id="fn" placeholder="Samy" autocomplete="given-name"><small class="e"></small></div>
+  <div class="f" data-s="1"><label for="ln">Nom</label><input id="ln" placeholder="Diallo" autocomplete="family-name"><small class="e"></small></div>
+  <div class="f" data-s="2"><label for="ph">Numéro de téléphone</label><input id="ph" type="tel" placeholder="+221 77 000 00 00" autocomplete="tel"><small class="e"></small></div>
+  <div class="f" data-s="2" data-l="1"><label for="em">Email</label><input id="em" type="email" placeholder="toi@exemple.com" autocomplete="email"><small class="e"></small></div>
+  <div class="f" data-s="3" data-l="1"><label for="pw">Mot de passe</label><input id="pw" type="password" placeholder="6 caractères minimum" autocomplete="current-password"><small class="e"></small></div>
   <div id="err"></div>
-  <button class="go" id="ab">Se connecter</button>
-  <button type="button" class="sw" id="sw">Pas de compte ? Créer un compte</button>
+  <div class="sp"></div>
+  <button class="go" id="ab"></button>
+  <button type="button" id="bk">← Retour</button>
  </form>
 </div>
 
@@ -118,41 +143,66 @@ let mr, chunks = [], cancelled = false, tick, t0;
 
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); // reste connecté
 
-// ---- connexion / inscription ----
-const setMode = s => {
-  signup = s;
-  $("#nm").classList.toggle("hide", !s);
-  $("#ph").classList.toggle("hide", !s);
-  $("#ab").textContent = s ? "Créer mon compte" : "Se connecter";
-  $("#sw").textContent = s ? "Déjà un compte ? Se connecter" : "Pas de compte ? Créer un compte";
-  $("#err").textContent = "";
+// ---- connexion / inscription (3 étapes) ----
+let step = 1; signup = true;
+const T = { 1: ["Créons ton compte", "Commence par ton prénom et ton nom.", "Suivant →"], 2: ["Tes contacts", "Ajoute ton numéro et ton email.", "Suivant →"], 3: ["Dernière étape", "Choisis un mot de passe sûr.", "Créer mon compte"], L: ["Content de te revoir", "Connecte-toi à ton compte.", "Se connecter"] };
+const V = {
+  fn: v => v.trim() ? "" : "Ton prénom est requis",
+  ln: v => v.trim() ? "" : "Ton nom est requis",
+  ph: v => v.replace(/\D/g, "").length >= 8 ? "" : "Entre un numéro valide",
+  em: v => /^\S+@\S+\.\S+$/.test(v.trim()) ? "" : "Entre un email valide",
+  pw: v => v.length >= 6 ? "" : "6 caractères minimum"
 };
-setMode(false);
-$("#sw").onclick = () => setMode(!signup);
+function paint() {
+  const k = signup ? step : "L";
+  $("#tt").textContent = T[k][0]; $("#st").textContent = T[k][1]; $("#ab").textContent = T[k][2];
+  document.querySelectorAll(".f").forEach(f => {
+    f.classList.toggle("hide", !(signup ? f.dataset.s == step : f.dataset.l));
+    f.querySelector(".e").textContent = ""; f.querySelector("input").classList.remove("bad");
+  });
+  document.querySelectorAll(".dot").forEach((d, i) => d.classList.toggle("on", i < step));
+  $("#dots").classList.toggle("hide", !signup);
+  $("#bk").classList.toggle("hide", !(signup && step > 1));
+  $("#tabS").classList.toggle("on", signup); $("#tabL").classList.toggle("on", !signup);
+  $("#err").textContent = "";
+}
+function check() {
+  let ok = true;
+  document.querySelectorAll(".f:not(.hide)").forEach(f => {
+    const i = f.querySelector("input"), m = V[i.id](i.value);
+    f.querySelector(".e").textContent = m; i.classList.toggle("bad", !!m);
+    if (m) ok = false;
+  });
+  return ok;
+}
+$("#tabS").onclick = () => { signup = true; step = 1; paint(); };
+$("#tabL").onclick = () => { signup = false; paint(); };
+$("#bk").onclick = () => { step--; paint(); };
 $("#af").onsubmit = async e => {
   e.preventDefault(); $("#err").style.color = ""; $("#err").textContent = "";
-  const em = $("#em").value.trim(), pw = $("#pw").value, nm = $("#nm").value.trim();
+  if (!check()) return;
+  if (signup && step < 3) { step++; paint(); return; }
+  const em = $("#em").value.trim(), pw = $("#pw").value;
   try {
     if (signup) {
-      const ph = $("#ph").value.replace(/[^\d+]/g, "");
-      if (!nm) return $("#err").textContent = "Entrez votre nom.";
-      if (ph.replace(/\D/g, "").length < 8) return $("#err").textContent = "Entrez un numéro de téléphone valide.";
+      const nm = $("#fn").value.trim() + " " + $("#ln").value.trim(), ph = $("#ph").value.replace(/[^\d+]/g, "");
       const c = await auth.createUserWithEmailAndPassword(em, pw);
       await c.user.updateProfile({ displayName: nm });
       await db.collection("users").doc(c.user.uid).set({ name: nm, email: em.toLowerCase(), phone: ph });
       await c.user.sendEmailVerification();
-      await auth.signOut(); setMode(false);
-      $("#err").style.color = "#a78bfa";
-      $("#err").textContent = "Compte créé. Cliquez sur le lien reçu par email, puis connectez-vous.";
+      await auth.signOut(); signup = false; step = 1; paint();
+      $("#err").style.color = "#c4b5fd";
+      $("#err").textContent = "Compte créé ! Clique sur le lien reçu par email, puis connecte-toi.";
     } else {
       const c = await auth.signInWithEmailAndPassword(em, pw);
-      if (!c.user.emailVerified) { await auth.signOut(); $("#err").textContent = "Confirmez d’abord votre email (pensez aux spams)."; }
+      if (!c.user.emailVerified) { await auth.signOut(); $("#err").textContent = "Confirme d’abord ton email (regarde aussi les spams)."; }
     }
   } catch (x) {
-    const m = { "auth/email-already-in-use": "Cet email est déjà utilisé.", "auth/weak-password": "Mot de passe trop court (6 caractères minimum).", "auth/invalid-credential": "Email ou mot de passe incorrect.", "auth/invalid-email": "Adresse email invalide." };
+    const m = { "auth/email-already-in-use": "Cet email est déjà utilisé.", "auth/weak-password": "Mot de passe trop court.", "auth/invalid-credential": "Email ou mot de passe incorrect.", "auth/invalid-email": "Email invalide.", "auth/too-many-requests": "Trop d’essais. Réessaie plus tard." };
     $("#err").textContent = m[x.code] || "Erreur : " + x.code;
   }
 };
+paint();
 $("#out").onclick = () => auth.signOut();
 
 auth.onAuthStateChanged(u => {
