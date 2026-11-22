@@ -31,14 +31,14 @@ requireUser(me => {
   try { lastRead = JSON.parse(localStorage.getItem("gl") || "{}"); } catch (e) {}
   const rk = id => me.uid + ":" + id;
   const pv = m => m.type === "voice" ? "🎤 Message vocal" : m.type === "image" ? "📷 Photo" : m.type === "sticker" ? "Sticker " + m.text : m.text;
-  db.collection("users").onSnapshot(s => { users = s.docs.map(d => ({ id: d.id, ...d.data() })).filter(x => x.id !== me.uid); render(); }, () => {});
+  db.collection("users").onSnapshot(s => { users = s.docs.map(d => ({ id: d.id, ...d.data() })).filter(x => x.id !== me.uid); render(); }, e => showAppError("Impossible de charger les utilisateurs. Vérifiez les règles Firestore."));
   function watch(id) {
     if (subs[id]) return; subs[id] = 1;
     msgsOf(id).orderBy("at").limitToLast(30).onSnapshot(s => {
       const a = s.docs.map(d => d.data()), lr = lastRead[rk(id)] || 0;
       info[id] = { last: a[a.length - 1], u: a.filter(m => m.from !== me.uid && m.at && m.at.toMillis() > lr).length };
       render();
-    }, () => {});
+    }, e => showAppError("Impossible de charger une discussion. Vérifiez les règles Firestore."));
   }
   function render() {
     const q = $("#search").value.toLowerCase().trim(), qd = digits(q), l = $("#list");
