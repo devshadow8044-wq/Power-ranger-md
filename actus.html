@@ -49,7 +49,7 @@ requireUser(me => {
     });
     if (!l.children.length) l.innerHTML = '<div class="nb">Aucune mise à jour pour le moment.</div>';
     $("#mst").textContent = mineLast || "Touchez pour ajouter un statut";
-  }, () => {});
+  }, e => showAppError("Impossible de charger les actus. Vérifiez la connexion et les règles Firestore."));
 });
 </script>
 </body>
