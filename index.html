@@ -3,104 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>GalsenApp</title>
-<style>
-:root{--g:#7c3aed;--gd:#5b21b6;--bg:#f4f1fb;--out:#ede9fe;--in:#fff;--tx:#111b21;--mut:#667781;--line:#ebe9f2;--side:#fff;--hd:#f0eef6;--on:#ede9fe;--nm:#6d28d9}
-@media(prefers-color-scheme:dark){:root{--bg:#0b0b12;--out:#6d28d9;--in:#1c1b2a;--tx:#f4f1ff;--mut:#a9a6c0;--line:#2a2840;--side:#12111c;--hd:#181726;--on:#2a2152;--nm:#c4b5fd}}
-*{box-sizing:border-box;margin:0}
-html,body{height:100%;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx);background:var(--side)}
-button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
-input{font:inherit;color:inherit}
-.hide{display:none!important}
-/* connexion */
-#auth{--hd:#181726;--line:#2a2840;--mut:#a9a6c0;--tx:#f4f1ff;--side:#12111c;color:#f4f1ff;color-scheme:dark;min-height:100%;display:flex;justify-content:center;background:radial-gradient(circle at 0 0,#5b1d8f 0,#0b0b12 45%),#0b0b12}
-#af{width:100%;max-width:440px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:calc(20px + env(safe-area-inset-top,0px)) 22px calc(22px + env(safe-area-inset-bottom,0px))}
-.top{display:flex;align-items:center;gap:12px}
-.top b{font-size:22px;flex:1}
-.top i{font-style:normal;color:#a78bfa}
-#dots{display:flex;gap:6px}
-.dot{width:10px;height:10px;border-radius:5px;background:#3b3858;transition:width .2s,background .2s}
-.dot.on{width:34px;background:#a78bfa}
-#tt{font-size:34px;line-height:1.1;margin:44px 0 8px;font-weight:700}
-#st{color:var(--mut);margin-bottom:28px}
-.tabs{display:flex;background:var(--hd);border:1px solid var(--line);border-radius:30px;padding:5px;margin-bottom:24px}
-.tabs button{flex:1;padding:13px;border-radius:25px;color:var(--mut);font-weight:600}
-.tabs button.on{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;box-shadow:0 4px 18px rgba(124,58,237,.5)}
-.f{margin-bottom:14px}
-.f label{display:block;color:var(--mut);margin:0 0 6px 4px;font-size:14px}
-.f input{width:100%;height:52px;padding:0 18px;border:1px solid var(--line);border-radius:26px;background:var(--hd)}
-.f input:focus{outline:2px solid #a78bfa;border-color:transparent}
-.f input.bad{border-color:#ff8a9b}
-.e{display:block;color:#ff8a9b;font-size:14px;margin:6px 0 0 4px}
-#err{color:#ff8a9b;font-size:14px;margin:6px 4px}
-.sp{flex:1}
-.go{height:56px;border-radius:28px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-weight:700;font-size:17px;box-shadow:0 8px 26px rgba(124,58,237,.5)}
-.go:active{transform:scale(.98)}
-#bk{color:#a78bfa;margin-top:10px;padding:10px}
-/* application */
-#app{height:100%;display:grid;grid-template-columns:min(400px,100%) 1fr}
-#side{position:relative;display:flex;flex-direction:column;border-right:1px solid var(--line);min-height:0;background:var(--side)}
-.head{display:flex;align-items:center;padding:calc(14px + env(safe-area-inset-top,0px)) 10px 6px 18px}
-.head h2{flex:1;font-size:28px;letter-spacing:-.5px}
-.ib{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.ib:hover{background:var(--hd)}
-svg.i{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-#menu{position:absolute;right:14px;top:calc(62px + env(safe-area-inset-top,0px));background:var(--side);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.25);z-index:5;min-width:190px;overflow:hidden}
-#menu button{display:block;width:100%;text-align:left;padding:14px 18px}
-#menu button:hover{background:var(--hd)}
-#searchw{padding:8px 16px 10px}
-#search{width:100%;height:48px;padding:0 20px;border:0;border-radius:24px;background:var(--hd)}
-#list{overflow:auto;flex:1}
-.item{display:flex;gap:14px;align-items:center;padding:11px 16px;width:100%;text-align:left}
-.item:hover,.item.on{background:var(--hd)}
-.av{width:54px;height:54px;border-radius:50%;background:#7c6fa8;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:20px;flex:none}
-.av.ann{background:linear-gradient(135deg,#8b5cf6,#5b21b6)}
-.bx{flex:1;min-width:0}
-.r1{display:flex;align-items:baseline;gap:8px}
-.r1 b{flex:1;font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tm{font-size:12.5px;color:var(--mut)}
-.tm.u{color:var(--nm);font-weight:600}
-.r2{display:flex;align-items:center;gap:8px;margin-top:3px}
-.lm{flex:1;color:var(--mut);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bd{min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--g);color:#fff;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center}
-#tabs{display:flex;border-top:1px solid var(--line);background:var(--side);padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px))}
-#tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12.5px;color:var(--mut)}
-.pill{position:relative;width:62px;height:34px;border-radius:17px;display:flex;align-items:center;justify-content:center}
-#tabs .on{color:var(--tx);font-weight:700}
-#tabs .on .pill{background:var(--on)}
-.pb{position:absolute;top:-6px;right:2px;min-width:18px;height:18px;font-size:11px}
-#fab{position:absolute;right:20px;bottom:92px;width:62px;height:62px;border-radius:20px;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.35)}
-@media(prefers-color-scheme:dark){#fab{background:linear-gradient(135deg,#8b5cf6,#5b21b6)}}
-#soon{margin:auto;color:var(--mut);padding:30px;text-align:center}
-#main{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--bg)}
-#empty{margin:auto;color:var(--mut);text-align:center;padding:20px}
-#chat{display:flex;flex-direction:column;height:100%;min-height:0}
-.bar{background:var(--hd);padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;display:flex;align-items:center;gap:12px;min-height:64px}
-.bar b{flex:1;font-size:18px}
-#back{display:none}
-#msgs{flex:1;overflow:auto;padding:14px 8%;display:flex;flex-direction:column;gap:4px}
-.m{max-width:75%;padding:7px 10px 5px;border-radius:10px;background:var(--in);align-self:flex-start;box-shadow:0 1px 1px rgba(0,0,0,.13);word-wrap:break-word}
-.m.me{background:var(--out);align-self:flex-end}
-.m .n{font-size:12.5px;font-weight:600;color:var(--nm);margin-bottom:2px}
-.m .t{font-size:11px;color:var(--mut);text-align:right;margin-top:2px}
-.m audio{height:36px;max-width:100%}
-#comp{background:var(--hd);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:center}
-#txt{flex:1;padding:12px 16px;border:0;border-radius:24px;background:var(--side)}
-.rb{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-size:19px;flex:none;box-shadow:0 3px 12px rgba(124,58,237,.5)}
-#rec{flex:1;color:#d33;font-weight:600;padding:0 8px}
-#note{padding:14px;text-align:center;color:var(--mut);background:var(--hd);padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
-@media(max-width:700px){
- #app{grid-template-columns:1fr}
- #main{display:none}
- #app.open #side{display:none}
- #app.open #main{display:flex}
- #back{display:flex}
- #msgs{padding:12px}
-}
-</style>
+<title>GalsenApp – Connexion</title>
+<script>try{var t=localStorage.getItem("th");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <div id="auth">
  <form id="af" novalidate>
   <div class="top">
@@ -122,65 +29,14 @@ svg.i{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke
  </form>
 </div>
 
-<div id="app" class="hide">
- <aside id="side">
-  <div class="head"><h2>GalsenApp</h2>
-   <button class="ib" id="cam" aria-label="Appareil photo"><svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
-   <button class="ib" id="dots" aria-label="Menu"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="12" cy="19" r="1.3"/></svg></button>
-  </div>
-  <div id="menu" class="hide"><button id="out">Déconnexion</button></div>
-  <div id="searchw"><input id="search" placeholder="Rechercher…" aria-label="Rechercher"></div>
-  <div id="list"></div>
-  <div id="soon" class="hide"></div>
-  <button id="fab" aria-label="Nouvelle discussion"><svg class="i" viewBox="0 0 24 24"><path d="M5 5h14v10H10l-5 4z"/><path d="M12 7.5v5M9.5 10h5"/></svg></button>
-  <nav id="tabs">
-   <button class="on" data-t="chats"><span class="pill"><svg class="i" viewBox="0 0 24 24"><path d="M5 5h14v10H10l-5 4z"/></svg><span class="bd pb hide" id="tbd"></span></span>Discussions</button>
-   <button data-t="calls"><span class="pill"><svg class="i" viewBox="0 0 24 24"><path d="M6 4l3 1 1 4-2 1.5a11 11 0 0 0 5.5 5.5L15 14l4 1 1 3-2 2C10 20 4 13 4 6z"/></svg></span>Appels</button>
-   <button data-t="status"><span class="pill"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/></svg></span>Actus</button>
-   <button data-t="tools"><span class="pill"><svg class="i" viewBox="0 0 24 24"><path d="M4 9l1-4h14l1 4M5 9v10h14V9M4 9h16M10 19v-5h4v5"/></svg></span>Outils</button>
-  </nav>
- </aside>
- <section id="main">
-  <div id="empty">Choisissez une discussion pour commencer.</div>
-  <div id="chat" class="hide">
-   <div class="bar"><button class="ib" id="back" aria-label="Retour"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="av" id="cav"></div><b id="ctitle"></b></div>
-   <div id="msgs"></div>
-   <div id="comp">
-    <input id="txt" placeholder="Écrire un message" autocomplete="off">
-    <span id="rec" class="hide">● <span id="rt">0:00</span></span>
-    <button class="rb hide" id="cancel" title="Annuler" style="background:#8696a0">✕</button>
-    <button class="rb" id="act" title="Vocal">🎤</button>
-   </div>
-   <div id="note" class="hide">Seul le propriétaire de GalsenApp peut écrire ici.</div>
-  </div>
- </section>
-</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
+<script src="firebase.js"></script>
 <script>
-// ====== À REMPLIR ======
-const OWNER_EMAIL = "devshadow8044@gmail.com"; // le seul compte qui peut écrire dans les annonces
-const RECAPTCHA_SITE_KEY = "VOTRE_CLE_RECAPTCHA_V3"; // anti-robot (App Check + reCAPTCHA v3)
-firebase.initializeApp({
-  apiKey: "AIzaSyCm-fwQCxNyLBMDzWrVKK53C8Sr8gk2y5Y",
-  authDomain: "galsenapp-ec10e.firebaseapp.com",
-  projectId: "galsenapp-ec10e",
-  appId: "1:445125146195:web:88cd4a367661709a1cb8a6"
-});
-if (!RECAPTCHA_SITE_KEY.startsWith("VOTRE")) firebase.appCheck().activate(RECAPTCHA_SITE_KEY, true);
-// =======================
-
-const auth = firebase.auth(), db = firebase.firestore();
-const $ = s => document.querySelector(s);
-const ANN = "annonces";
-let me, users = [], cur = null, unsub = null, signup = false;
-let mr, chunks = [], cancelled = false, tick, t0;
-
-auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); // reste connecté
-
+let signup;
 // ---- connexion / inscription (3 étapes) ----
 let step = 1; signup = true;
 const T = { 1: ["Créons ton compte", "Commence par ton prénom et ton nom.", "Suivant →"], 2: ["Tes contacts", "Ajoute ton numéro et ton email.", "Suivant →"], 3: ["Dernière étape", "Choisis un mot de passe sûr.", "Créer mon compte"], L: ["Content de te revoir", "Connecte-toi à ton compte.", "Se connecter"] };
@@ -241,159 +97,7 @@ $("#af").onsubmit = async e => {
   }
 };
 paint();
-$("#out").onclick = () => auth.signOut();
-
-auth.onAuthStateChanged(u => {
-  if (u && !u.emailVerified) { me = null; return; }
-  me = u;
-  $("#auth").classList.toggle("hide", !!u);
-  $("#app").classList.toggle("hide", !u);
-  if (!u) { if (unsub) unsub(); cur = null; return; }
-  db.collection("users").doc(u.uid).set({ name: u.displayName || u.email, email: u.email.toLowerCase() }, { merge: true });
-  db.collection("users").onSnapshot(s => { users = s.docs.map(d => ({ id: d.id, ...d.data() })).filter(x => x.id !== u.uid); renderList(); });
-});
-
-// ---- liste des discussions ----
-const ini = s => (s || "?").trim().slice(0, 1).toUpperCase();
-const isOwner = () => me && me.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
-const cid = o => [me.uid, o].sort().join("_");
-const msgsOf = id => db.collection("chats").doc(id).collection("messages");
-let lastRead = {}, info = {}, subs = {};
-try { lastRead = JSON.parse(localStorage.getItem("gl") || "{}"); } catch (e) {}
-const saveRead = () => { try { localStorage.setItem("gl", JSON.stringify(lastRead)); } catch (e) {} };
-const rk = id => me.uid + ":" + id;
-function fmt(d) {
-  const n = new Date(), y = new Date(n); y.setDate(n.getDate() - 1);
-  if (d.toDateString() === n.toDateString()) return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
-  if (d.toDateString() === y.toDateString()) return "Hier";
-  return d.toLocaleDateString("fr-FR");
-}
-function watch(id) {
-  if (subs[id]) return;
-  subs[id] = msgsOf(id).orderBy("at").limitToLast(30).onSnapshot(s => {
-    if (!me) return;
-    const a = s.docs.map(d => d.data()), lr = lastRead[rk(id)] || 0;
-    info[id] = { last: a[a.length - 1], u: cur === id ? 0 : a.filter(m => m.from !== me.uid && m.at && m.at.toMillis() > lr).length };
-    renderList();
-  }, () => {});
-}
-function renderList() {
-  if (!me) return;
-  if (subs.__u !== me.uid) { Object.values(subs).forEach(f => typeof f === "function" && f()); subs = { __u: me.uid }; info = {}; }
-  const q = $("#search").value.toLowerCase().trim(), l = $("#list");
-  const rows = [{ id: ANN, title: "Annonces GalsenApp", sub: "Informations officielles", ann: true }]
-    .concat(users.map(u => ({ id: cid(u.id), title: u.name || u.email, sub: u.email })));
-  rows.forEach(r => watch(r.id));
-  const ts = r => info[r.id] && info[r.id].last && info[r.id].last.at ? info[r.id].last.at.toMillis() : 0;
-  const tot = rows.reduce((n, r) => n + ((info[r.id] || {}).u || 0), 0);
-  const f = rows.filter(r => (r.title + " " + r.sub).toLowerCase().includes(q));
-  f.sort((a, b) => a.ann ? -1 : b.ann ? 1 : ts(b) - ts(a));
-  l.innerHTML = "";
-  f.forEach(r => {
-    const i = info[r.id] || {}, last = i.last;
-    const b = document.createElement("button");
-    b.className = "item" + (cur === r.id ? " on" : "");
-    b.innerHTML = '<div class="av"></div><div class="bx"><div class="r1"><b></b><span class="tm"></span></div><div class="r2"><span class="lm"></span><span class="bd hide"></span></div></div>';
-    const av = b.querySelector(".av"); av.textContent = r.ann ? "📢" : ini(r.title); if (r.ann) av.classList.add("ann");
-    b.querySelector("b").textContent = r.title;
-    const tm = b.querySelector(".tm");
-    tm.textContent = last && last.at ? fmt(last.at.toDate()) : ""; tm.classList.toggle("u", !!i.u);
-    b.querySelector(".lm").textContent = last ? (last.from === me.uid ? "Vous : " : "") + (last.type === "voice" ? "🎤 Message vocal" : last.text) : r.sub;
-    const bd = b.querySelector(".bd"); if (i.u) { bd.textContent = i.u; bd.classList.remove("hide"); }
-    b.onclick = () => openChat(r.id, r.title, !!r.ann);
-    l.appendChild(b);
-  });
-  const tb = $("#tbd"); tb.textContent = tot > 99 ? "99+" : tot; tb.classList.toggle("hide", !tot);
-}
-$("#search").oninput = renderList;
-$("#cam").onclick = () => alert("L’envoi de photos arrive bientôt.");
-$("#dots").onclick = () => $("#menu").classList.toggle("hide");
-document.addEventListener("click", e => { if (!e.target.closest("#dots,#menu")) $("#menu").classList.add("hide"); });
-$("#fab").onclick = () => { $("#list").scrollTop = 0; $("#search").focus(); };
-document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => {
-  document.querySelectorAll("#tabs button").forEach(x => x.classList.toggle("on", x === b));
-  const c = b.dataset.t === "chats";
-  ["#list", "#searchw", "#fab"].forEach(s => $(s).classList.toggle("hide", !c));
-  $("#soon").classList.toggle("hide", c);
-  $("#soon").textContent = b.textContent.trim() + " : bientôt disponible.";
-});
-
-// ---- discussion ----
-function openChat(id, title, ann) {
-  cur = id;
-  lastRead[rk(id)] = Date.now(); saveRead();
-  if (info[id]) info[id].u = 0;
-  $("#empty").classList.add("hide"); $("#chat").classList.remove("hide");
-  $("#app").classList.add("open");
-  $("#ctitle").textContent = title;
-  const av = $("#cav"); av.textContent = ann ? "📢" : ini(title); av.className = "av" + (ann ? " ann" : "");
-  const canWrite = !ann || isOwner();
-  $("#comp").classList.toggle("hide", !canWrite);
-  $("#note").classList.toggle("hide", canWrite);
-  renderList();
-  if (unsub) unsub();
-  unsub = msgsOf(id).orderBy("at").limitToLast(100).onSnapshot(s => {
-    if (!me) return;
-    lastRead[rk(id)] = Date.now(); saveRead();
-    const box = $("#msgs"); box.innerHTML = "";
-    s.docs.forEach(d => {
-      const m = d.data(), el = document.createElement("div");
-      el.className = "m" + (m.from === me.uid ? " me" : "");
-      if (ann) { const n = document.createElement("div"); n.className = "n"; n.textContent = m.name || "GalsenApp"; el.appendChild(n); }
-      if (m.type === "voice") { const a = document.createElement("audio"); a.controls = true; a.src = m.audio; el.appendChild(a); }
-      else { const p = document.createElement("div"); p.textContent = m.text; el.appendChild(p); }
-      const t = document.createElement("div"); t.className = "t";
-      t.textContent = (m.at ? m.at.toDate() : new Date()).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
-      el.appendChild(t); box.appendChild(el);
-    });
-    box.scrollTop = box.scrollHeight;
-  });
-}
-$("#back").onclick = () => { $("#app").classList.remove("open"); cur = null; if (unsub) unsub(); renderList(); };
-
-const send = data => msgsOf(cur).add({
-  from: me.uid, name: me.displayName || me.email, at: firebase.firestore.FieldValue.serverTimestamp(), ...data
-}).catch(() => alert("Message non envoyé. Vérifiez votre connexion."));
-
-// ---- texte ----
-const sendText = () => { const v = $("#txt").value.trim(); if (v) { send({ type: "text", text: v }); $("#txt").value = ""; sync(); } };
-$("#txt").onkeydown = e => { if (e.key === "Enter") sendText(); };
-const sync = () => { $("#act").textContent = $("#txt").value.trim() ? "➤" : "🎤"; };
-$("#txt").oninput = sync;
-
-// ---- vocal (stocké dans le message, 60 s maximum) ----
-const stopUI = () => {
-  clearInterval(tick); mr = null;
-  ["#rec", "#cancel"].forEach(s => $(s).classList.add("hide"));
-  $("#txt").classList.remove("hide"); sync();
-};
-$("#act").onclick = async () => {
-  if ($("#txt").value.trim()) return sendText();
-  if (mr) { mr.stop(); return; }
-  try {
-    const st = await navigator.mediaDevices.getUserMedia({ audio: true });
-    chunks = []; cancelled = false;
-    mr = new MediaRecorder(st, { audioBitsPerSecond: 24000 });
-    mr.ondataavailable = e => chunks.push(e.data);
-    mr.onstop = () => {
-      st.getTracks().forEach(t => t.stop());
-      const keep = !cancelled; stopUI();
-      if (!keep || !chunks.length) return;
-      const r = new FileReader();
-      r.onload = () => send({ type: "voice", audio: r.result });
-      r.readAsDataURL(new Blob(chunks, { type: chunks[0].type }));
-    };
-    mr.start(); t0 = Date.now();
-    $("#txt").classList.add("hide"); $("#rec").classList.remove("hide"); $("#cancel").classList.remove("hide");
-    $("#act").textContent = "➤";
-    tick = setInterval(() => {
-      const s = Math.floor((Date.now() - t0) / 1000);
-      $("#rt").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
-      if (s >= 60 && mr) mr.stop();
-    }, 500);
-  } catch (e) { alert("Autorisez l’accès au micro pour envoyer un vocal."); }
-};
-$("#cancel").onclick = () => { cancelled = true; if (mr) mr.stop(); };
+auth.onAuthStateChanged(u => { if (u && u.emailVerified) location.replace("chats.html"); });
 </script>
 </body>
 </html>
