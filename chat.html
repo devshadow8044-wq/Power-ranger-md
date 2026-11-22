@@ -109,10 +109,10 @@ requireUser(me => {
     if (!first && s.docChanges().some(c => c.type === "added" && c.doc.data().from !== me.uid)) sndRecv();
     first = false; box.scrollTop = box.scrollHeight;
     try { const l = JSON.parse(localStorage.getItem("gl") || "{}"); l[me.uid + ":" + id] = Date.now(); localStorage.setItem("gl", JSON.stringify(l)); } catch (e) {}
-  }, () => {});
+  }, e => showAppError("Impossible de charger les messages. Vérifiez la connexion et les règles Firestore."));
 
   const send = data => msgsOf(id).add({ from: me.uid, name: me.displayName || me.email, at: TS(), ...data })
-    .then(sndSend).catch(() => alert("Message non envoyé. Vérifiez votre connexion."));
+    .then(sndSend).catch(e => showAppError(e.code === "permission-denied" ? "Envoi refusé par les règles Firestore." : "Message non envoyé. Vérifiez la connexion."));
   const sync = () => { $("#act").innerHTML = $("#txt").value.trim() ? SEND : MIC; };
   const sendText = () => { const v = $("#txt").value.trim(); if (v) { send({ type: "text", text: v }); $("#txt").value = ""; sync(); } };
   $("#txt").onkeydown = e => { if (e.key === "Enter") sendText(); };
@@ -133,27 +133,37 @@ requireUser(me => {
 
 // ---- vocal (stocké dans le message, 60 s maximum) ----
 const stopUI = () => {
-  clearInterval(tick); mr = null;
+  clearInterval(tick); mr = null; document.body.classList.remove("recording");
   ["#rec", "#cancel"].forEach(s => $(s).classList.add("hide"));
   $("#txt").classList.remove("hide"); $("#ebtn").classList.remove("hide"); sync();
 };
 $("#act").onclick = async () => {
   if ($("#txt").value.trim()) return sendText();
-  if (mr) { mr.stop(); return; }
+  if (mr) { if (navigator.vibrate) navigator.vibrate(15); mr.stop(); return; }
   try {
+    if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+      showAppError("L’enregistrement vocal nécessite un navigateur récent et une connexion HTTPS."); return;
+    }
     const st = await navigator.mediaDevices.getUserMedia({ audio: true });
     chunks = []; cancelled = false;
-    mr = new MediaRecorder(st, { audioBitsPerSecond: 24000 });
+    const mime = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find(t => !MediaRecorder.isTypeSupported || MediaRecorder.isTypeSupported(t));
+    try { mr = new MediaRecorder(st, mime ? { mimeType: mime, audioBitsPerSecond: 24000 } : { audioBitsPerSecond: 24000 }); }
+    catch (e) { st.getTracks().forEach(t => t.stop()); throw e; }
     mr.ondataavailable = e => chunks.push(e.data);
     mr.onstop = () => {
       st.getTracks().forEach(t => t.stop());
       const keep = !cancelled, dur = Math.max(1, Math.round((Date.now() - t0) / 1000)); stopUI();
       if (!keep || !chunks.length) return;
+      const blob = new Blob(chunks, { type: chunks[0].type || (mime || "audio/webm") });
+      if (blob.size > 700000) { showAppError("Vocal trop volumineux. Enregistrez un message plus court."); return; }
       const r = new FileReader();
-      r.onload = () => send({ type: "voice", audio: r.result, dur });
-      r.readAsDataURL(new Blob(chunks, { type: chunks[0].type }));
+      r.onload = () => send({ type: "voice", audio: r.result, dur, mime: blob.type });
+      r.onerror = () => showAppError("Le vocal n’a pas pu être préparé. Réessayez.");
+      r.readAsDataURL(blob);
     };
     mr.start(); t0 = Date.now();
+    if (navigator.vibrate) navigator.vibrate(25);
+    document.body.classList.add("recording");
     $("#txt").classList.add("hide"); $("#ebtn").classList.add("hide"); $("#emo").classList.add("hide"); $("#rec").classList.remove("hide"); $("#cancel").classList.remove("hide");
     $("#act").innerHTML = SEND;
     tick = setInterval(() => {
@@ -161,7 +171,7 @@ $("#act").onclick = async () => {
       $("#rt").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
       if (s >= 60 && mr) mr.stop();
     }, 500);
-  } catch (e) { alert("Autorisez l’accès au micro pour envoyer un vocal."); }
+  } catch (e) { showAppError(e.name === "NotAllowedError" ? "Autorisez l’accès au micro pour envoyer un vocal." : "Micro indisponible. Vérifiez les autorisations et réessayez."); }
 };
 $("#cancel").onclick = () => { cancelled = true; if (mr) mr.stop(); };
 
