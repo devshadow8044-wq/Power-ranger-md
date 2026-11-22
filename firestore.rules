@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Compte connecté ET email confirmé
+    function verified() { return request.auth != null && request.auth.token.email_verified == true; }
+    function isOwner() { return verified() && request.auth.token.email.lower() == 'devshadow8044@gmail.com'; }
+
+    match /users/{uid} {
+      allow read: if verified();
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    match /chats/{chatId}/messages/{msgId} {
+      allow read: if verified() &&
+        (chatId == 'annonces' || request.auth.uid in chatId.split('_'));
+      allow create: if verified() && request.resource.data.from == request.auth.uid &&
+        ((chatId == 'annonces' && isOwner()) ||
+         (chatId != 'annonces' && request.auth.uid in chatId.split('_')));
+    }
+  }
+}
