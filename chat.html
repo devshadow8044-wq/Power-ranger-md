@@ -4,30 +4,193 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>GalsenApp – Discussion</title>
-<link rel="stylesheet" href="css/style.css">
+<script>try{var t=localStorage.getItem("th");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="style.css">
 </head>
-<body class="hide">
-<div class="page" style="position:relative">
- <div class="bar">
-  <a class="ic" href="index.html" title="Retour" data-ic="back"></a>
-  <div class="av" id="cav"></div><b id="ctitle"></b>
-  <button class="ic hide" id="more" title="Options" data-ic="dots"></button>
- </div>
- <div class="menu hide" id="menu"><button id="fav"></button><button id="blk" class="red"></button></div>
+<body>
+<div class="pg" id="chat">
+ <div class="bar"><button class="ib" id="back" aria-label="Retour"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="av" id="cav"></div><div class="bx"><b id="ctitle"></b><div class="cst" id="cst"></div></div></div>
  <div id="msgs"></div>
+ <div id="emo" class="hide"><div id="etabs"></div><div id="eg"></div></div>
  <div id="comp">
-  <input id="txt" placeholder="Écrire un message" autocomplete="off">
-  <span id="rec" class="hide">● <span id="rt">0:00</span></span>
-  <button class="rb hide" id="cancel" title="Annuler" style="background:#8696a0" data-ic="close"></button>
-  <button class="rb" id="act" title="Vocal" data-ic="mic"></button>
+  <div class="pill2">
+   <button class="ib" id="ebtn" aria-label="Emojis">😊</button>
+   <input id="txt" placeholder="Message" autocomplete="off">
+   <span id="rec" class="hide"><span class="dt">●</span> <span id="rt">0:00</span></span>
+   <button class="rb hide" id="cancel" title="Annuler" style="background:#8696a0;width:40px;height:40px">✕</button>
+   <button class="ib" id="clip" aria-label="Photo"><svg class="i" viewBox="0 0 24 24"><path d="M20 11l-8 8a5 5 0 0 1-7-7l9-9a3.5 3.5 0 0 1 5 5l-9 9a2 2 0 0 1-3-3l8-8"/></svg></button>
+   <button class="ib" id="cam2" aria-label="Caméra"><svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+  </div>
+  <button class="rb" id="act" aria-label="Vocal"></button>
  </div>
- <div id="note" class="hide"></div>
+ <div id="note" class="hide">Seul le propriétaire de GalsenApp peut écrire ici.</div>
 </div>
+<div id="vw" class="hide"><img alt="Photo"></div>
+<input type="file" id="f1" accept="image/*" hidden>
+<input type="file" id="f2" accept="image/*" capture="environment" hidden>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
-<script src="js/core.js"></script>
-<script src="js/chat.js"></script>
+<script src="firebase.js"></script>
+<script>
+let mr, chunks = [], cancelled = false, tick, t0, playing = null;
+const SEND = '<svg class="i" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-3-7z"/></svg>', MIC = '<svg class="i" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
+const fm = t => Math.floor(t / 60) + ":" + String(Math.floor(t % 60)).padStart(2, "0");
+requireUser(me => {
+  const id = new URLSearchParams(location.search).get("id") || "", ann = id === ANN;
+  if (!id || (!ann && !id.split("_").includes(me.uid))) { location.replace("chats.html"); return; }
+  const oid = ann ? null : id.split("_").find(x => x !== me.uid);
+  let other = {}, mine = { name: me.displayName || me.email };
+  const canWrite = !ann || me.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+  $("#comp").classList.toggle("hide", !canWrite); $("#note").classList.toggle("hide", canWrite);
+  $("#back").onclick = () => { location.href = "chats.html"; };
+  $("#vw").onclick = () => $("#vw").classList.add("hide");
+  const seen = d => { const t = d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }), f = fmt(d); return f === t ? "aujourd’hui à " + t : f === "Hier" ? "hier à " + t : "le " + f; };
+  function head() {
+    if (ann) { $("#ctitle").textContent = "Annonces GalsenApp"; $("#cst").textContent = "Informations officielles"; setAv($("#cav"), null, true); return; }
+    $("#ctitle").textContent = other.name || other.email || "Utilisateur"; setAv($("#cav"), other);
+    $("#cst").textContent = online(other) ? "en ligne" : other.lastSeen ? "vu " + seen(other.lastSeen.toDate()) : "";
+  }
+  head();
+  if (!ann) db.collection("users").doc(oid).onSnapshot(d => { other = d.data() || {}; head(); });
+  db.collection("users").doc(me.uid).onSnapshot(d => { mine = d.data() || mine; });
+  setInterval(head, 20000);
+
+  function voiceEl(m, u) {
+    const w = document.createElement("div"); w.className = "vn";
+    const av = document.createElement("div"); av.className = "av vav"; setAv(av, u);
+    const mic = document.createElement("span"); mic.className = "vmic"; mic.textContent = "🎤"; av.appendChild(mic);
+    const a = new Audio(m.audio), btn = document.createElement("button"), col = document.createElement("div"), bars = document.createElement("div"), kn = document.createElement("b"), tx = document.createElement("span");
+    btn.className = "vp"; btn.textContent = "▶"; btn.setAttribute("aria-label", "Lire le vocal");
+    bars.className = "vw"; kn.className = "kn"; tx.className = "vt"; col.className = "vc"; a._b = btn;
+    let seed = 7; for (const c of (m.audio || "").slice(-40)) seed = (seed * 31 + c.charCodeAt(0)) % 9973;
+    for (let i = 0; i < 30; i++) { seed = (seed * 7 + 13) % 97; const b = document.createElement("i"); b.style.height = (seed % 5 === 0 ? 45 + seed % 50 : 10) + "%"; bars.appendChild(b); }
+    bars.appendChild(kn);
+    const total = () => m.dur || (isFinite(a.duration) ? a.duration : 0);
+    const paint = () => {
+      const t = total(), p = t ? Math.min(1, a.currentTime / t) : 0;
+      bars.querySelectorAll("i").forEach((b, i, l) => b.classList.toggle("on", i / l.length < p));
+      kn.style.left = (p * 100) + "%"; tx.style.textAlign = "left"; tx.textContent = fm(a.paused && !a.currentTime ? t : a.currentTime);
+    };
+    a.ontimeupdate = paint;
+    a.onended = () => { btn.textContent = "▶"; a.currentTime = 0; paint(); };
+    btn.onclick = () => {
+      if (a.paused) { if (playing && playing !== a) { playing.pause(); playing._b.textContent = "▶"; } playing = a; a.play(); btn.textContent = "⏸"; }
+      else { a.pause(); btn.textContent = "▶"; }
+    };
+    bars.onclick = e => { const r = bars.getBoundingClientRect(), t = total(); if (t) { a.currentTime = t * (e.clientX - r.left) / r.width; paint(); } };
+    paint(); col.append(bars, tx); w.append(av, btn, col); return w;
+  }
+  function bubble(m) {
+    const el = document.createElement("div"), me_ = m.from === me.uid;
+    el.className = "m" + (me_ ? " me" : "") + (m.type === "sticker" ? " stk" : "");
+    const add = (cls, txt) => { const p = document.createElement("div"); if (cls) p.className = cls; p.textContent = txt; el.appendChild(p); };
+    if (ann) add("n", m.name || "GalsenApp");
+    if (m.type === "voice") el.appendChild(voiceEl(m, me_ ? mine : other));
+    else if (m.type === "image") {
+      const i = document.createElement("img"); i.className = "ph"; i.src = m.img; i.alt = "Photo";
+      i.onclick = () => { $("#vw img").src = m.img; $("#vw").classList.remove("hide"); }; el.appendChild(i);
+      if (m.text) add("", m.text);
+    } else if (m.type === "sticker") add("sx", m.text);
+    else add("", m.text);
+    const t = document.createElement("div"); t.className = "t";
+    t.textContent = (m.at ? m.at.toDate() : new Date()).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+    if (me_ && !ann) { const k = document.createElement("span"); k.className = "tk" + (m.readAt ? " r" : ""); k.textContent = m.readAt ? "✓✓" : "✓"; t.appendChild(k); }
+    el.appendChild(t); return el;
+  }
+  let first = true;
+  msgsOf(id).orderBy("at").limitToLast(100).onSnapshot(s => {
+    const box = $("#msgs"); box.innerHTML = "";
+    s.docs.forEach(d => {
+      const m = d.data(); box.appendChild(bubble(m));
+      if (!ann && m.from !== me.uid && !m.readAt && document.visibilityState === "visible") d.ref.update({ readAt: TS() }).catch(() => {});
+    });
+    if (!first && s.docChanges().some(c => c.type === "added" && c.doc.data().from !== me.uid)) sndRecv();
+    first = false; box.scrollTop = box.scrollHeight;
+    try { const l = JSON.parse(localStorage.getItem("gl") || "{}"); l[me.uid + ":" + id] = Date.now(); localStorage.setItem("gl", JSON.stringify(l)); } catch (e) {}
+  }, () => {});
+
+  const send = data => msgsOf(id).add({ from: me.uid, name: me.displayName || me.email, at: TS(), ...data })
+    .then(sndSend).catch(() => alert("Message non envoyé. Vérifiez votre connexion."));
+  const sync = () => { $("#act").innerHTML = $("#txt").value.trim() ? SEND : MIC; };
+  const sendText = () => { const v = $("#txt").value.trim(); if (v) { send({ type: "text", text: v }); $("#txt").value = ""; sync(); } };
+  $("#txt").onkeydown = e => { if (e.key === "Enter") sendText(); };
+  $("#txt").oninput = sync; sync();
+
+  // photos
+  async function sendPhoto(f) {
+    if (!f) return;
+    try {
+      let d = await toData(f, 1280, .72); if (d.length > 900000) d = await toData(f, 800, .6);
+      const cap = $("#txt").value.trim(); $("#txt").value = ""; sync();
+      send({ type: "image", img: d, text: cap });
+    } catch (e) { alert("Photo non envoyée."); }
+  }
+  $("#clip").onclick = () => $("#f1").click(); $("#cam2").onclick = () => $("#f2").click();
+  $("#f1").onchange = e => { sendPhoto(e.target.files[0]); e.target.value = ""; };
+  $("#f2").onchange = e => { sendPhoto(e.target.files[0]); e.target.value = ""; };
+
+// ---- vocal (stocké dans le message, 60 s maximum) ----
+const stopUI = () => {
+  clearInterval(tick); mr = null;
+  ["#rec", "#cancel"].forEach(s => $(s).classList.add("hide"));
+  $("#txt").classList.remove("hide"); $("#ebtn").classList.remove("hide"); sync();
+};
+$("#act").onclick = async () => {
+  if ($("#txt").value.trim()) return sendText();
+  if (mr) { mr.stop(); return; }
+  try {
+    const st = await navigator.mediaDevices.getUserMedia({ audio: true });
+    chunks = []; cancelled = false;
+    mr = new MediaRecorder(st, { audioBitsPerSecond: 24000 });
+    mr.ondataavailable = e => chunks.push(e.data);
+    mr.onstop = () => {
+      st.getTracks().forEach(t => t.stop());
+      const keep = !cancelled, dur = Math.max(1, Math.round((Date.now() - t0) / 1000)); stopUI();
+      if (!keep || !chunks.length) return;
+      const r = new FileReader();
+      r.onload = () => send({ type: "voice", audio: r.result, dur });
+      r.readAsDataURL(new Blob(chunks, { type: chunks[0].type }));
+    };
+    mr.start(); t0 = Date.now();
+    $("#txt").classList.add("hide"); $("#ebtn").classList.add("hide"); $("#emo").classList.add("hide"); $("#rec").classList.remove("hide"); $("#cancel").classList.remove("hide");
+    $("#act").innerHTML = SEND;
+    tick = setInterval(() => {
+      const s = Math.floor((Date.now() - t0) / 1000);
+      $("#rt").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+      if (s >= 60 && mr) mr.stop();
+    }, 500);
+  } catch (e) { alert("Autorisez l’accès au micro pour envoyer un vocal."); }
+};
+$("#cancel").onclick = () => { cancelled = true; if (mr) mr.stop(); };
+
+
+// ---- emojis ----
+const EM = [
+ ["😀", "😀😃😄😁😆😅😂🤣😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🥳😏😒😞😔😟😕🙁😣😖😫😩🥺😢😭😤😠😡🤬🤯😳🥵🥶😱😨😰😥😓🤗🤔🤭🤫😶😐😑😬🙄😯😦😧😮😲🥱😴🤤😪😵🤐🥴🤢🤮🤧😷🤒🤕🤑🤠😈👿👻💀👽🤖💩"],
+ ["👍", "👍👎👊✊🤛🤜👏🙌👐🤲🤝🙏✌️🤞🤟🤘👌🤌🤏👈👉👆👇☝️✋🤚🖐️🖖👋🤙💪🦾✍️🤳💅👀👅👄🧠🫶"],
+ ["❤️", "❤️🧡💛💚💙💜🖤🤍🤎💔❣️💕💞💓💗💖💘💝💟💋🔥✨⭐🌟💫💥💯💢💦💨🎉🎊🎁🎈"],
+ ["🍔", "🍎🍌🍉🍇🍓🍒🍑🍍🥭🥥🥑🍆🌽🥕🍞🧀🍗🍖🍔🍟🍕🌭🥪🌮🌯🍝🍜🍲🍣🍤🍦🍩🍪🎂🍰🍫🍬🍭☕🍵🥤🍺🍻🥂🍷"],
+ ["🐶", "🐶🐱🐭🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐸🐵🐔🐧🐦🦅🦋🐝🐢🐍🐙🐬🐳🌹🌸🌻🌴🌍🌙☀️⚽🏀🎮🎵🎧📱💻📷🚗✈️🏠💰🎓👑"],
+ ["🇸🇳", "🇸🇳🇫🇷🇨🇮🇲🇱🇬🇳🇧🇫🇳🇬🇬🇭🇨🇲🇲🇦🇩🇿🇹🇳🇺🇸🇬🇧🇨🇦🇧🇪🇪🇸🇮🇹🇩🇪🇧🇷"]
+];
+const seg = t => window.Intl && Intl.Segmenter ? [...new Intl.Segmenter().segment(t)].map(x => x.segment) : Array.from(t);
+function ins(e) {
+  const t = $("#txt"), a = t.selectionStart == null ? t.value.length : t.selectionStart, b = t.selectionEnd == null ? a : t.selectionEnd;
+  t.value = t.value.slice(0, a) + e + t.value.slice(b);
+  const p = a + e.length; t.setSelectionRange(p, p); sync();
+}
+function showEmo(i) {
+  document.querySelectorAll("#etabs button").forEach((b, j) => b.classList.toggle("on", j === i));
+  const g = $("#eg"); g.innerHTML = ""; g.scrollTop = 0;
+  seg(EM[i][1]).forEach(e => { const b = document.createElement("button"); b.textContent = e; b.onclick = () => EM[i][2] ? send({ type: "sticker", text: e }) : ins(e); g.appendChild(b); });
+}
+EM.push(["⭐", "😂🥰😎😭🔥❤️👍🙏🎉😍🤝💯🤣😘🙌💪😴🤔😡🥳👋😢🤗🙈🤩😅🫡🥺😤🤯", 1]);
+EM.forEach((c, i) => { const b = document.createElement("button"); b.textContent = c[0]; b.setAttribute("aria-label", "Catégorie d’emojis"); b.onclick = () => showEmo(i); $("#etabs").appendChild(b); });
+showEmo(0);
+$("#ebtn").onclick = () => $("#emo").classList.toggle("hide");
+});
+</script>
 </body>
 </html>
