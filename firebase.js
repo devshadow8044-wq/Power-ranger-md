@@ -32,6 +32,17 @@ function setAv(el, u, ann) {
   if (u && u.photo) { el.style.backgroundImage = 'url("' + u.photo + '")'; el.textContent = ""; }
   else { el.style.backgroundImage = ""; el.textContent = ini(u && (u.name || u.email)); }
 }
+function showAppError(message) {
+  let box = document.getElementById("app-error");
+  if (!box) {
+    box = document.createElement("div"); box.id = "app-error"; box.setAttribute("role", "status");
+    document.body.appendChild(box);
+  }
+  box.textContent = message;
+  box.classList.add("show");
+  clearTimeout(box._timer);
+  box._timer = setTimeout(() => box.classList.remove("show"), 7000);
+}
 function requireUser(cb) {
   auth.onAuthStateChanged(u => {
     if (!u || !u.emailVerified) { if (u) auth.signOut(); location.replace("index.html"); return; }
@@ -64,14 +75,16 @@ const sndSend = () => beep(520, 780), sndRecv = () => beep(780, 520);
 // photo réduite en JPEG
 function toData(file, max, q) {
   return new Promise((ok, ko) => {
+    if (!file || !file.type || !file.type.startsWith("image/")) return ko(new Error("Fichier image invalide"));
     const r = new FileReader();
     r.onload = () => {
       const i = new Image();
       i.onload = () => {
         const k = Math.min(1, max / Math.max(i.width, i.height)), c = document.createElement("canvas");
         c.width = Math.round(i.width * k); c.height = Math.round(i.height * k);
-        c.getContext("2d").drawImage(i, 0, 0, c.width, c.height);
-        ok(c.toDataURL("image/jpeg", q));
+        const ctx = c.getContext("2d"); if (!ctx) return ko(new Error("Canvas indisponible"));
+        ctx.drawImage(i, 0, 0, c.width, c.height);
+        try { ok(c.toDataURL("image/jpeg", q)); } catch (e) { ko(e); }
       };
       i.onerror = ko; i.src = r.result;
     };
