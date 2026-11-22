@@ -1,12 +1,11 @@
 {
-  "headers": [{
-    "source": "/(.*)",
-    "headers": [
-      {"key": "X-Frame-Options", "value": "DENY"},
-      {"key": "X-Content-Type-Options", "value": "nosniff"},
-      {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"},
-      {"key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains"},
-      {"key": "Permissions-Policy", "value": "microphone=(self), camera=()"}
-    ]
-  }]
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/chats", "destination": "/chats.html" },
+    { "source": "/chat", "destination": "/chat.html" },
+    { "source": "/actus", "destination": "/actus.html" },
+    { "source": "/appels", "destination": "/appels.html" },
+    { "source": "/parametres", "destination": "/parametres.html" },
+    { "source": "/admin", "destination": "/admin.html" }
+  ]
 }
