@@ -17,10 +17,11 @@
   <button class="rb2" id="sb" aria-label="Rechercher"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button></header>
  <h1 class="hello" id="hi"></h1>
  <p class="role" id="role"></p>
- <div class="stats">
-  <div class="stc"><b id="n1">0</b><span>En cours</span></div>
-  <div class="stc"><b id="n2">0</b><span>Ouvriers actifs</span></div>
-  <div class="stc"><b id="n3">0</b><span>Terminés</span></div>
+ <div class="qa">
+  <button class="qb" data-q="profil"><img src="https://files.catbox.moe/x3jqcs.jpeg" alt="" referrerpolicy="no-referrer"><span>Profil</span></button>
+  <button class="qb" data-q="service"><img src="https://files.catbox.moe/za6n2f.jpg" alt="" referrerpolicy="no-referrer"><span>Service client</span></button>
+  <button class="qb" data-q="apropos"><img src="https://files.catbox.moe/7z2nx5.jpg" alt="" referrerpolicy="no-referrer"><span>À propos</span></button>
+  <button class="qb" data-q="avis"><img src="https://files.catbox.moe/2yjuh6.jpg" alt="" referrerpolicy="no-referrer"><span>Avis</span></button>
  </div>
  <div class="chips"><button class="on" data-f="all">Tous</button><button data-f="en_cours">En cours</button><button data-f="termine">Terminés</button></div>
  <input id="qw" class="hide" placeholder="Chercher un chantier ou un lieu…" aria-label="Chercher">
@@ -52,9 +53,6 @@ auth.onAuthStateChanged(u => {
   $("#avt").textContent = ini(n); $("#sn").textContent = n; $("#sm").textContent = u.email + (patron ? " · Patron" : " · Maçon");
   let all = [], f = "all", q = "";
   function draw() {
-    const act = all.filter(c => c.status !== "termine"), crew = new Set();
-    act.forEach(c => (c.macons || []).forEach(x => crew.add(x)));
-    $("#n1").textContent = act.length; $("#n2").textContent = crew.size; $("#n3").textContent = all.length - act.length;
     const ql = q.toLowerCase();
     const list = all.filter(c => (f === "all" || (f === "termine" ? c.status === "termine" : c.status !== "termine")) && (!ql || ((c.name || "") + " " + (c.place || "")).toLowerCase().includes(ql)))
       .sort((a, b) => (b.at ? b.at.toMillis() : 0) - (a.at ? a.at.toMillis() : 0));
@@ -86,6 +84,7 @@ auth.onAuthStateChanged(u => {
   $("#avt").onclick = () => sheet(true); $("#cx").onclick = () => sheet(false);
   $("#sheet").onclick = e => { if (e.target.id === "sheet") sheet(false); };
   $("#outb").onclick = () => auth.signOut();
+  document.querySelectorAll(".qb").forEach(b => b.onclick = () => { if (b.dataset.q === "profil") sheet(true); else toast("Bientôt disponible"); });
   document.querySelectorAll("#nav button").forEach(b => b.onclick = () => {
     if (b.dataset.v === "me") sheet(true); else if (b.dataset.v !== "home") toast("Bientôt disponible");
   });
