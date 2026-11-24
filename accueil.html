@@ -81,12 +81,12 @@ auth.onAuthStateChanged(u => {
   $("#sb").onclick = () => { $("#qw").classList.toggle("hide"); if (!$("#qw").classList.contains("hide")) $("#qw").focus(); };
   $("#qw").oninput = e => { q = e.target.value; draw(); };
   const sheet = v => $("#sheet").classList.toggle("hide", !v);
-  $("#avt").onclick = () => sheet(true); $("#cx").onclick = () => sheet(false);
+  $("#avt").onclick = () => { location.href = "compte.html"; }; $("#cx").onclick = () => sheet(false);
   $("#sheet").onclick = e => { if (e.target.id === "sheet") sheet(false); };
   $("#outb").onclick = () => auth.signOut();
-  document.querySelectorAll(".qb").forEach(b => b.onclick = () => { if (b.dataset.q === "profil") sheet(true); else toast("Bientôt disponible"); });
+  document.querySelectorAll(".qb").forEach(b => b.onclick = () => { if (b.dataset.q === "profil") location.href = "compte.html"; else toast("Bientôt disponible"); });
   document.querySelectorAll("#nav button").forEach(b => b.onclick = () => {
-    if (b.dataset.v === "me") sheet(true); else if (b.dataset.v === "crew") location.href = "ouvriers.html"; else if (b.dataset.v !== "home") toast("Bientôt disponible");
+    if (b.dataset.v === "me") location.href = "compte.html"; else if (b.dataset.v === "crew") location.href = "ouvriers.html"; else if (b.dataset.v !== "home") toast("Bientôt disponible");
   });
 });
 </script>
