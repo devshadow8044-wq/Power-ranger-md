@@ -103,15 +103,15 @@ input{font:inherit;color:inherit}
 
 /* ouvriers : grille de cartes carrées, doré */
 .wg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.wc{position:relative;overflow:hidden;isolation:isolate;aspect-ratio:1/1.45;display:flex;flex-direction:column;gap:7px;padding:12px;border-radius:22px;border:2px solid transparent;
+.wc{position:relative;overflow:hidden;isolation:isolate;aspect-ratio:1/1.5;display:flex;flex-direction:column;gap:7px;padding:12px;border-radius:22px;border:2px solid transparent;
  background:linear-gradient(160deg,#1b1b24,#12121a) padding-box,linear-gradient(135deg,#fff3b0 0%,#f7d154 20%,#b8860b 42%,#ffe27a 62%,#d4a017 82%,#fff0a8 100%) border-box;
  box-shadow:0 6px 16px rgba(0,0,0,.35)}
 .ph{flex:1;min-height:130px;border-radius:17px;border:2px solid #f7d154;box-shadow:0 0 0 2px rgba(184,134,11,.55),0 4px 12px rgba(245,197,66,.25);background:var(--lime);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:40px;overflow:hidden}
 .ph img{width:100%;height:100%;object-fit:cover}
-.wn{font-size:17px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px}
-.wl{display:flex;align-items:center;gap:6px;color:var(--mut);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.wl svg{flex:none;width:16px;height:16px;fill:none;stroke:#f7d154;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.wl span{overflow:hidden;text-overflow:ellipsis}
+.wn{font-size:16px;font-weight:800;line-height:1.15;white-space:normal;overflow-wrap:anywhere;margin-top:4px}
+.wl{display:flex;align-items:flex-start;gap:6px;color:var(--mut);font-size:13.5px;line-height:1.2;white-space:normal}
+.wl svg{flex:none;width:16px;height:16px;margin-top:1px;fill:none;stroke:#f7d154;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.wl span{min-width:0;overflow-wrap:anywhere}
 .wl.m{color:#f7d154;font-weight:700}
 .wst{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:#3ddc6a}
 .wst.off{color:#7b7b88}
