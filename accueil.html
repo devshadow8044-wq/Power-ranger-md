@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0f">
+<title>App Maçon – Accueil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bg"></div>
+<main class="pagew">
+ <header class="hd"><div class="avt" id="avt" role="button" aria-label="Mon compte"></div><div class="sp"></div>
+  <button class="rb2" id="sb" aria-label="Rechercher"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button></header>
+ <h1 class="hello" id="hi"></h1>
+ <p class="role" id="role"></p>
+ <div class="stats">
+  <div class="stc"><b id="n1">0</b><span>En cours</span></div>
+  <div class="stc"><b id="n2">0</b><span>Ouvriers actifs</span></div>
+  <div class="stc"><b id="n3">0</b><span>Terminés</span></div>
+ </div>
+ <div class="chips"><button class="on" data-f="all">Tous</button><button data-f="en_cours">En cours</button><button data-f="termine">Terminés</button></div>
+ <input id="qw" class="hide" placeholder="Chercher un chantier ou un lieu…" aria-label="Chercher">
+ <div class="sech"><h2>Chantiers</h2><span id="cnt">0</span></div>
+ <div id="cl"><div class="empty">Chargement…</div></div>
+</main>
+<nav id="nav"><button class="on" data-v="home"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/></svg><span>Accueil</span></button><button data-v="work"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg><span>Travail</span></button><button data-v="crew"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17.5 14c2.8 0 4 1.8 4 5"/></svg><span>Ouvriers</span></button><button data-v="me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span>Compte</span></button></nav>
+<div id="sheet" class="hide"><div class="sh2"><h3 id="sn"></h3><p id="sm"></p><button class="go" id="outb">Se déconnecter</button><button class="cx" id="cx">Fermer</button></div></div>
+<div id="toast" class="hide"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
+<script src="firebase.js"></script>
+<script>
+const ini = s => s.trim().split(/\s+/).slice(0, 2).map(w => w[0] || "").join("").toUpperCase();
+const ago = d => {
+  const m = Math.floor((Date.now() - d) / 60000);
+  if (m < 1) return "à l’instant"; if (m < 60) return "il y a " + m + " min";
+  const h = Math.floor(m / 60); if (h < 24) return "il y a " + h + " h";
+  const j = Math.floor(h / 24); return "il y a " + j + " jour" + (j > 1 ? "s" : "");
+};
+const toast = t => { const e = $("#toast"); e.textContent = t; e.classList.remove("hide"); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.add("hide"), 1800); };
+auth.onAuthStateChanged(u => {
+  if (!u || !u.emailVerified) { if (u) auth.signOut(); location.replace("index.html"); return; }
+  const patron = u.email.toLowerCase() === OWNER_EMAIL.toLowerCase(), n = u.displayName || u.email;
+  $("#hi").textContent = "Salut, " + n.split(" ")[0];
+  $("#role").textContent = patron ? "Patron · tous les chantiers" : "Maçon · tes chantiers";
+  $("#avt").textContent = ini(n); $("#sn").textContent = n; $("#sm").textContent = u.email + (patron ? " · Patron" : " · Maçon");
+  let all = [], f = "all", q = "";
+  function draw() {
+    const act = all.filter(c => c.status !== "termine"), crew = new Set();
+    act.forEach(c => (c.macons || []).forEach(x => crew.add(x)));
+    $("#n1").textContent = act.length; $("#n2").textContent = crew.size; $("#n3").textContent = all.length - act.length;
+    const ql = q.toLowerCase();
+    const list = all.filter(c => (f === "all" || (f === "termine" ? c.status === "termine" : c.status !== "termine")) && (!ql || ((c.name || "") + " " + (c.place || "")).toLowerCase().includes(ql)))
+      .sort((a, b) => (b.at ? b.at.toMillis() : 0) - (a.at ? a.at.toMillis() : 0));
+    $("#cnt").textContent = list.length;
+    const box = $("#cl"); box.innerHTML = "";
+    if (!list.length) { const e = document.createElement("div"); e.className = "empty"; e.textContent = all.length ? "Aucun résultat." : "Aucun chantier pour le moment."; box.appendChild(e); return; }
+    list.forEach(c => {
+      const r = document.createElement("div"), p = Math.max(0, Math.min(100, +c.progress || 0));
+      r.className = "cl";
+      r.innerHTML = '<div class="cav"></div><div class="cm"><b></b><small></small><div class="pgb"><i></i></div></div><div class="ct"><b></b><span></span></div>';
+      r.querySelector(".cav").textContent = (c.name || "?").trim().slice(0, 1).toUpperCase();
+      r.querySelector(".cm b").textContent = c.name || "Chantier";
+      r.querySelector(".cm small").textContent = [c.place, c.status === "termine" ? "Terminé" : "En cours"].filter(Boolean).join(" · ");
+      r.querySelector(".pgb i").style.width = p + "%";
+      r.querySelector(".ct b").textContent = p + "%";
+      r.querySelector(".ct span").textContent = c.at ? ago(c.at.toDate()) : "";
+      box.appendChild(r);
+    });
+  }
+  const base = db.collection("chantiers"), query = patron ? base : base.where("macons", "array-contains", u.uid);
+  query.onSnapshot(s => { all = s.docs.map(d => ({ id: d.id, ...d.data() })); draw(); },
+    () => { $("#cl").innerHTML = '<div class="empty">Impossible de charger les chantiers. Vérifie les règles Firebase.</div>'; });
+  document.querySelectorAll(".chips button").forEach(b => b.onclick = () => {
+    document.querySelectorAll(".chips button").forEach(x => x.classList.toggle("on", x === b)); f = b.dataset.f; draw();
+  });
+  $("#sb").onclick = () => { $("#qw").classList.toggle("hide"); if (!$("#qw").classList.contains("hide")) $("#qw").focus(); };
+  $("#qw").oninput = e => { q = e.target.value; draw(); };
+  const sheet = v => $("#sheet").classList.toggle("hide", !v);
+  $("#avt").onclick = () => sheet(true); $("#cx").onclick = () => sheet(false);
+  $("#sheet").onclick = e => { if (e.target.id === "sheet") sheet(false); };
+  $("#outb").onclick = () => auth.signOut();
+  document.querySelectorAll("#nav button").forEach(b => b.onclick = () => {
+    if (b.dataset.v === "me") sheet(true); else if (b.dataset.v !== "home") toast("Bientôt disponible");
+  });
+});
+</script>
+</body>
+</html>
