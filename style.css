@@ -84,8 +84,20 @@ input{font:inherit;color:inherit}
 #nav .duo{fill:currentColor;fill-opacity:.2}
 #nav button[data-v=home]:not(.on){color:#c8f04a}
 
-/* 4 boutons alignés */
+/* 4 boutons alignés : intérieur vert du site + contour or brillant */
 .qa{display:flex;gap:10px;margin-bottom:18px}
-.qb{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;padding:12px 4px;border-radius:20px;background:rgba(21,21,29,.85);border:1.5px solid #2b2b37}
-.qb img{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#1c1c26}
-.qb span{font-size:12.5px;font-weight:600;text-align:center;line-height:1.15}
+.qb{position:relative;overflow:hidden;isolation:isolate;flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;padding:12px 4px;border-radius:20px;border:2.5px solid transparent;color:var(--ink);
+ background:
+  linear-gradient(165deg,#e2fc86 0%,#b0e130 55%,#8cbf1c 100%) padding-box,
+  linear-gradient(135deg,#fff6c2 0%,#f7d154 18%,#b8860b 38%,#ffe27a 55%,#d4a017 75%,#fff0a8 100%) border-box;
+ box-shadow:0 8px 22px rgba(245,197,66,.32),0 0 0 1px rgba(255,226,122,.25),inset 0 1px 0 rgba(255,255,255,.65);
+ transition:transform .15s,box-shadow .2s}
+.qb:active{transform:scale(.96)}
+.qb::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 45%)}
+.qb::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-60%;width:40%;z-index:2;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,244,190,.85),transparent);transform:skewX(-20deg);animation:shine 3.6s ease-in-out infinite}
+.qb:nth-child(2)::after{animation-delay:.3s}
+.qb:nth-child(3)::after{animation-delay:.6s}
+.qb:nth-child(4)::after{animation-delay:.9s}
+@keyframes shine{0%,55%{left:-60%}100%{left:130%}}
+.qb img{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#1c1c26;border:2px solid #e6b422;box-shadow:0 0 0 2px rgba(255,240,170,.7),0 4px 10px rgba(120,80,0,.35)}
+.qb span{font-size:12.5px;font-weight:800;text-align:center;line-height:1.15;color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.35)}
