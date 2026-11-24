@@ -79,3 +79,7 @@ input{font:inherit;color:inherit}
 .sh2 .go{width:100%}
 .cx{display:block;margin:12px auto 0;color:var(--mut);font-size:14px}
 #toast{position:fixed;left:50%;bottom:104px;transform:translateX(-50%);background:#22222c;border:1.5px solid #34343f;padding:10px 16px;border-radius:20px;font-size:14px;z-index:15}
+
+/* icône Accueil */
+#nav .duo{fill:currentColor;fill-opacity:.2}
+#nav button[data-v=home]:not(.on){color:#c8f04a}
