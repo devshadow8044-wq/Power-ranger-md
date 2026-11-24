@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0f">
+<title>App Maçon – Compte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bg"></div>
+<main class="pagew">
+ <h1 class="hello">Mon compte</h1>
+ <p class="role">Gère ton profil et tes réglages.</p>
+ <div class="pf">
+  <div class="pav" id="pav"><span id="pin"></span><button class="pcam" id="pcam" aria-label="Changer la photo"><svg viewBox="0 0 24 24"><path d="M4 8a2 2 0 0 1 2-2h2l1.500-2h5L16 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.500" r="3.500"/></svg></button></div>
+  <input type="file" id="pfile" accept="image/*" class="hide">
+  <div class="pn" id="pn"></div>
+  <div class="pe" id="pe"></div>
+  <div class="pr" id="pr"></div>
+ </div>
+ <div class="mn">
+  <button class="mi" data-s="sName"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.800 2.800 0 0 0-4-4L4 16z"/><path d="M13.500 6.500l4 4"/></svg></div><span>Changer mon nom<small id="mnm"></small></span><svg class="ch" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  <button class="mi" data-s="sPass"><div class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><span>Modifier le mot de passe<small>Choisis-en un nouveau</small></span><svg class="ch" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  <button class="mi" data-s="sSup"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="2"/><rect x="17" y="13" width="4" height="6" rx="2"/><path d="M19 19a4 4 0 0 1-4 3h-2"/></svg></div><span>Service client<small>On est là pour t’aider</small></span><svg class="ch" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  <button class="mi out" data-s="sOut"><div class="ic"><svg viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="M10 8l-4 4 4 4M6 12h10"/></svg></div><span>Se déconnecter</span></button>
+ </div>
+</main>
+<nav id="nav"><button data-v="home"><svg viewBox="0 0 24 24"><path class="duo" d="M4.5 11.2 12 4.2l7.5 7v8.3a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M9.5 20.5v-4.8a2.5 2.5 0 0 1 5 0v4.8"/><path d="M16.2 7.200V4.500h2v4.600"/></svg><span>Accueil</span></button><button data-v="work"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg><span>Travail</span></button><button data-v="crew"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17.5 14c2.8 0 4 1.8 4 5"/></svg><span>Ouvriers</span></button><button class="on" data-v="me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span>Compte</span></button></nav>
+
+<div id="sheet" class="hide">
+ <div class="sh2 hide" id="sName"><h3>Changer mon nom</h3><p>Ce nom s’affiche dans l’application.</p>
+  <div class="f"><div class="fi"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><input id="nn" type="text" placeholder="Prénom et nom" autocomplete="name"></div></div>
+  <div class="serr" id="e1"></div>
+  <button class="go" id="b1">Enregistrer</button><button class="cx">Fermer</button></div>
+ <div class="sh2 hide" id="sPass"><h3>Modifier le mot de passe</h3><p>Entre l’ancien, puis le nouveau.</p>
+  <div class="f"><div class="fi"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><input id="p0" type="password" placeholder="Ancien mot de passe" autocomplete="current-password"></div></div>
+  <div class="f"><div class="fi"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><input id="p1" type="password" placeholder="Nouveau (6 caractères minimum)" autocomplete="new-password"></div></div>
+  <div class="f"><div class="fi"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><input id="p2" type="password" placeholder="Confirme le nouveau" autocomplete="new-password"></div></div>
+  <div class="serr" id="e2"></div>
+  <button class="go" id="b2">Changer le mot de passe</button><button class="cx">Fermer</button></div>
+ <div class="sh2 hide" id="sSup"><h3>Service client</h3><p>Choisis comment nous joindre.</p>
+  <a class="go" id="sTel" href="#">Appeler</a>
+  <a class="go gold" id="sWa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+  <a class="go ghost" id="sMail" href="#">Envoyer un email</a>
+  <button class="cx">Fermer</button></div>
+ <div class="sh2 hide" id="sOut"><h3>Se déconnecter ?</h3><p>Tu devras te reconnecter pour revenir.</p>
+  <button class="go red" id="b4">Oui, me déconnecter</button><button class="cx">Annuler</button></div>
+</div>
+<div id="toast" class="hide"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
+<script src="firebase.js"></script>
+<script>
+// ---- À MODIFIER : coordonnées du service client ----
+const SUPPORT_TEL = "+221770000000";
+const SUPPORT_WA = "221770000000";
+const SUPPORT_MAIL = "support@exemple.com";
+
+const ini = s => s.trim().split(/\s+/).slice(0, 2).map(w => w[0] || "").join("").toUpperCase();
+const toast = t => { const e = $("#toast"); e.textContent = t; e.classList.remove("hide"); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.add("hide"), 2200); };
+const say = (id, t, ok) => { const e = $(id); e.textContent = t; e.classList.toggle("ok", !!ok); };
+auth.onAuthStateChanged(u => {
+  if (!u || !u.emailVerified) { if (u) auth.signOut(); location.replace("index.html"); return; }
+  const patron = u.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+  const ref = db.collection("users").doc(u.uid);
+  let photo = "";
+  function show() {
+    const n = u.displayName || u.email;
+    $("#pn").textContent = n; $("#pe").textContent = u.email; $("#pr").textContent = patron ? "Patron" : "Maçon"; $("#mnm").textContent = n;
+    const old = $("#pav img"); if (old) old.remove();
+    $("#pin").textContent = photo ? "" : ini(n);
+    if (photo) { const im = document.createElement("img"); im.src = photo; im.alt = ""; $("#pav").insertBefore(im, $("#pcam")); }
+  }
+  show();
+  ref.get().then(d => { if (d.exists && d.data().photo) { photo = d.data().photo; show(); } }).catch(() => {});
+
+  // photo de profil (réduite à 320 px et enregistrée dans Firestore)
+  $("#pcam").onclick = () => $("#pfile").click();
+  $("#pfile").onchange = e => {
+    const file = e.target.files[0]; e.target.value = "";
+    if (!file) return;
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = async () => {
+      const S = 320, c = document.createElement("canvas"); c.width = c.height = S;
+      const m = Math.min(img.width, img.height), sx = (img.width - m) / 2, sy = (img.height - m) / 2;
+      c.getContext("2d").drawImage(img, sx, sy, m, m, 0, 0, S, S);
+      URL.revokeObjectURL(url);
+      const data = c.toDataURL("image/jpeg", .82);
+      try { await ref.set({ photo: data }, { merge: true }); photo = data; show(); toast("Photo mise à jour"); }
+      catch (x) { toast("Impossible d’enregistrer la photo"); }
+    };
+    img.onerror = () => toast("Image non valide");
+    img.src = url;
+  };
+
+  // panneaux
+  const open = id => {
+    document.querySelectorAll(".sh2").forEach(p => p.classList.toggle("hide", p.id !== id));
+    $("#sheet").classList.remove("hide");
+    ["#e1", "#e2"].forEach(x => say(x, ""));
+    if (id === "sName") { $("#nn").value = u.displayName || ""; }
+    if (id === "sPass") { $("#p0").value = $("#p1").value = $("#p2").value = ""; }
+  };
+  const close = () => $("#sheet").classList.add("hide");
+  document.querySelectorAll(".mi").forEach(b => b.onclick = () => open(b.dataset.s));
+  document.querySelectorAll(".cx").forEach(b => b.onclick = close);
+  $("#sheet").onclick = e => { if (e.target.id === "sheet") close(); };
+
+  // nom
+  $("#b1").onclick = async () => {
+    const nm = $("#nn").value.trim().replace(/\s+/g, " ");
+    if (nm.length < 2) return say("#e1", "Entre un nom valide.");
+    try {
+      await u.updateProfile({ displayName: nm });
+      await ref.set({ name: nm }, { merge: true });
+      show(); close(); toast("Nom modifié");
+    } catch (x) { say("#e1", "Erreur : " + (x.code || "réessaie")); }
+  };
+
+  // mot de passe
+  $("#b2").onclick = async () => {
+    const o = $("#p0").value, a = $("#p1").value, b = $("#p2").value;
+    if (!o) return say("#e2", "Entre ton ancien mot de passe.");
+    if (a.length < 6) return say("#e2", "6 caractères minimum.");
+    if (a !== b) return say("#e2", "Les deux mots de passe sont différents.");
+    if (a === o) return say("#e2", "Choisis un mot de passe différent.");
+    try {
+      await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email, o));
+      await u.updatePassword(a);
+      close(); toast("Mot de passe modifié");
+    } catch (x) {
+      const m = { "auth/invalid-credential": "Ancien mot de passe incorrect.", "auth/wrong-password": "Ancien mot de passe incorrect.", "auth/weak-password": "Mot de passe trop court.", "auth/too-many-requests": "Trop d’essais. Réessaie plus tard.", "auth/requires-recent-login": "Reconnecte-toi puis réessaie." };
+      say("#e2", m[x.code] || "Erreur : " + x.code);
+    }
+  };
+
+  // service client
+  $("#sTel").href = "tel:" + SUPPORT_TEL;
+  $("#sWa").href = "https://wa.me/" + SUPPORT_WA;
+  $("#sMail").href = "mailto:" + SUPPORT_MAIL;
+
+  // déconnexion
+  $("#b4").onclick = () => auth.signOut();
+
+  document.querySelectorAll("#nav button").forEach(b => b.onclick = () => {
+    const v = b.dataset.v;
+    if (v === "home") location.href = "accueil.html"; else if (v === "crew") location.href = "ouvriers.html"; else if (v === "work") toast("Bientôt disponible");
+  });
+});
+</script>
+</body>
+</html>
