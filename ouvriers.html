@@ -78,12 +78,12 @@ auth.onAuthStateChanged(u => {
   $("#sb").onclick = () => { $("#qw").classList.toggle("hide"); if (!$("#qw").classList.contains("hide")) $("#qw").focus(); };
   $("#qw").oninput = e => { q = e.target.value; draw(); };
   const sheet = v => $("#sheet").classList.toggle("hide", !v);
-  $("#avt").onclick = () => sheet(true); $("#cx").onclick = () => sheet(false);
+  $("#avt").onclick = () => { location.href = "compte.html"; }; $("#cx").onclick = () => sheet(false);
   $("#sheet").onclick = e => { if (e.target.id === "sheet") sheet(false); };
   $("#outb").onclick = () => auth.signOut();
   document.querySelectorAll("#nav button").forEach(b => b.onclick = () => {
     const v = b.dataset.v;
-    if (v === "home") location.href = "accueil.html"; else if (v === "me") sheet(true); else if (v === "work") toast("Bientôt disponible");
+    if (v === "home") location.href = "accueil.html"; else if (v === "me") location.href = "compte.html"; else if (v === "work") toast("Bientôt disponible");
   });
   draw();
 });
