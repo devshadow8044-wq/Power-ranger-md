@@ -42,6 +42,7 @@ const OUVRIERS = [
 const ini = s => s.trim().split(/\s+/).slice(0, 2).map(w => w[0] || "").join("").toUpperCase();
 const toast = t => { const e = $("#toast"); e.textContent = t; e.classList.remove("hide"); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.add("hide"), 1800); };
 const PIN = '<svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 0 0-14 0c0 5.400 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+const AGE = '<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>';
 const TOOL = '<svg viewBox="0 0 24 24"><path d="M14.500 6.500a4 4 0 0 0 4.800 4.800L20 12l-8 8-5-5 8-8z"/><path d="M4 20l3-3"/></svg>';
 auth.onAuthStateChanged(u => {
   if (!u || !u.emailVerified) { if (u) auth.signOut(); location.replace("index.html"); return; }
@@ -54,18 +55,20 @@ auth.onAuthStateChanged(u => {
     const nb = OUVRIERS.filter(o => o.actif).length;
     $("#sub").textContent = OUVRIERS.length + " ouvriers · " + nb + " actifs aujourd’hui";
     $("#cnt").textContent = list.length;
-    const box = $("#wl"); box.innerHTML = "";
+    const box = $("#wl"); box.innerHTML = ""; box.className = "";
     if (!list.length) { const e = document.createElement("div"); e.className = "empty"; e.textContent = "Aucun résultat."; box.appendChild(e); return; }
+    box.className = "wg";
     list.forEach(o => {
-      const r = document.createElement("div"); r.className = "wk";
-      r.innerHTML = '<div class="wav"><span></span><i class="live"></i></div><div class="wm"><b></b><div class="wl lieu"></div><div class="wl metier"></div></div><div class="wst"></div>';
-      r.querySelector(".wav span").textContent = ini(o.nom);
+      const r = document.createElement("div"); r.className = "wc";
+      r.innerHTML = '<div class="ph"></div><div class="wn"></div><div class="wl m">' + TOOL + '<span></span></div><div class="wl a">' + AGE + '<span></span></div><div class="wl h">' + PIN + '<span></span></div><div class="wst"><i class="live"></i><b></b></div>';
+      const ph = r.querySelector(".ph");
+      if (o.photo) { const im = document.createElement("img"); im.src = o.photo; im.alt = ""; ph.appendChild(im); } else ph.textContent = ini(o.nom);
+      r.querySelector(".wn").textContent = o.nom;
+      r.querySelector(".m span").textContent = o.metier;
+      r.querySelector(".a span").textContent = o.age + " ans";
+      r.querySelector(".h span").textContent = o.lieu;
       r.querySelector(".live").classList.toggle("off", !o.actif);
-      const b = r.querySelector(".wm b"); b.textContent = o.nom;
-      const em = document.createElement("em"); em.textContent = o.age + " ans"; b.appendChild(em);
-      r.querySelector(".lieu").innerHTML = PIN + "<span></span>"; r.querySelector(".lieu span").textContent = "Habite à " + o.lieu;
-      r.querySelector(".metier").innerHTML = TOOL + "<span></span>"; r.querySelector(".metier span").textContent = o.metier;
-      const st = r.querySelector(".wst"); st.textContent = o.actif ? "Actif" : "Inactif"; st.classList.toggle("off", !o.actif);
+      const st = r.querySelector(".wst"); st.classList.toggle("off", !o.actif); st.querySelector("b").textContent = o.actif ? "Actif" : "Inactif";
       box.appendChild(r);
     });
   }
