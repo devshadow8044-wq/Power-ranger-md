@@ -83,3 +83,9 @@ input{font:inherit;color:inherit}
 /* icône Accueil */
 #nav .duo{fill:currentColor;fill-opacity:.2}
 #nav button[data-v=home]:not(.on){color:#c8f04a}
+
+/* 4 boutons alignés */
+.qa{display:flex;gap:10px;margin-bottom:18px}
+.qb{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;padding:12px 4px;border-radius:20px;background:rgba(21,21,29,.85);border:1.5px solid #2b2b37}
+.qb img{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#1c1c26}
+.qb span{font-size:12.5px;font-weight:600;text-align:center;line-height:1.15}
