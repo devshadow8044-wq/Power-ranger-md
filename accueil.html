@@ -86,7 +86,7 @@ auth.onAuthStateChanged(u => {
   $("#outb").onclick = () => auth.signOut();
   document.querySelectorAll(".qb").forEach(b => b.onclick = () => { if (b.dataset.q === "profil") sheet(true); else toast("Bientôt disponible"); });
   document.querySelectorAll("#nav button").forEach(b => b.onclick = () => {
-    if (b.dataset.v === "me") sheet(true); else if (b.dataset.v !== "home") toast("Bientôt disponible");
+    if (b.dataset.v === "me") sheet(true); else if (b.dataset.v === "crew") location.href = "ouvriers.html"; else if (b.dataset.v !== "home") toast("Bientôt disponible");
   });
 });
 </script>
