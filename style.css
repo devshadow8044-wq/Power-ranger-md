@@ -100,3 +100,17 @@ input{font:inherit;color:inherit}
 .qb::before{content:"";position:absolute;top:12px;left:50%;width:48px;height:48px;margin-left:-24px;border-radius:50%;z-index:2;pointer-events:none;background:linear-gradient(135deg,#e2fc86,#9bd11a);mix-blend-mode:color;opacity:.95}
 .qb img{position:relative;z-index:1;width:48px;height:48px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,#e2fc86,#b0e130);border:2px solid #fff3b0;box-shadow:0 0 0 2px #b8860b,0 4px 10px rgba(90,60,0,.45)}
 .qb span{position:relative;z-index:1;font-size:12.5px;font-weight:800;text-align:center;line-height:1.15;color:#2a1c00;text-shadow:0 1px 0 rgba(255,255,255,.45)}
+
+/* ouvriers */
+.wk{display:flex;gap:14px;align-items:center;padding:14px;margin-bottom:10px;background:rgba(21,21,29,.85);border:1.5px solid #2b2b37;border-radius:22px}
+.wav{position:relative;flex:none;width:54px;height:54px;border-radius:50%;background:var(--lime);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
+.live{position:absolute;right:-1px;bottom:-1px;width:15px;height:15px;border-radius:50%;background:#3ddc6a;border:3px solid #15151d;animation:blink 1.4s ease-in-out infinite}
+.live.off{background:#5c5c69;animation:none}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(61,220,106,.7)}50%{opacity:.45;box-shadow:0 0 0 7px rgba(61,220,106,0)}}
+.wm{flex:1;min-width:0}
+.wm b{display:flex;align-items:baseline;gap:8px;font-size:16.5px;font-weight:700}
+.wm b em{font-style:normal;color:var(--mut);font-size:13px;font-weight:500}
+.wl{display:flex;align-items:center;gap:7px;color:var(--mut);font-size:13.5px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wl svg{flex:none;width:15px;height:15px;fill:none;stroke:#c8f04a;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.wst{flex:none;font-size:12.5px;font-weight:700;color:#3ddc6a}
+.wst.off{color:#7b7b88}
