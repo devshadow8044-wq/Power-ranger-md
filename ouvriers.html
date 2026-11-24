@@ -83,7 +83,7 @@ auth.onAuthStateChanged(u => {
   $("#outb").onclick = () => auth.signOut();
   document.querySelectorAll("#nav button").forEach(b => b.onclick = () => {
     const v = b.dataset.v;
-    if (v === "home") location.href = "accueil.html"; else if (v === "me") location.href = "compte.html"; else if (v === "work") toast("Bientôt disponible");
+    if (v === "home") location.href = "accueil.html"; else if (v === "me") location.href = "compte.html"; else if (v === "work") location.href = "travail.html";
   });
   draw();
 });
