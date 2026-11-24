@@ -149,3 +149,25 @@ a.go{display:flex;align-items:center;justify-content:center;text-decoration:none
 .go.red{background:#ff6b6b;color:#1a0505;box-shadow:none}
 .serr{min-height:18px;color:var(--bad);font-size:13.5px;margin:2px 4px 10px}
 .serr.ok{color:#d4f56a}
+
+/* travail : catégories */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cc{display:flex;flex-direction:column;gap:9px;padding:12px;border-radius:22px;border:2px solid transparent;text-align:left;
+ background:linear-gradient(160deg,#1b1b24,#12121a) padding-box,linear-gradient(135deg,#fff3b0 0%,#f7d154 20%,#b8860b 42%,#ffe27a 62%,#d4a017 82%,#fff0a8 100%) border-box;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.cc:last-child:nth-child(odd){grid-column:1/-1;width:calc(50% - 6px);justify-self:center}
+.cc:active{transform:scale(.98)}
+.cph{height:130px;border-radius:17px;border:2px solid #f7d154;box-shadow:0 0 0 2px rgba(184,134,11,.55),0 4px 12px rgba(245,197,66,.25);background:var(--lime);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cph img{width:100%;height:100%;object-fit:cover}
+.cph svg{width:48px;height:48px;fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+.cn{font-size:16.5px;font-weight:800;line-height:1.15;margin-top:2px}
+.cv{display:flex;align-items:center;justify-content:center;gap:6px;height:38px;border-radius:19px;font-weight:800;font-size:14px;color:#2a1c00;background:linear-gradient(135deg,#fff3b0,#f7d154 40%,#d4a017 75%,#f9dc6a)}
+.cv svg{width:16px;height:16px;fill:none;stroke:#2a1c00;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.dh{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.dh .rb2{flex:none}
+.dh .rb2 svg{width:20px;height:20px}
+.dban{height:170px;border-radius:24px;border:2.5px solid #f7d154;box-shadow:0 0 0 3px rgba(184,134,11,.5),0 10px 26px rgba(245,197,66,.2);background:var(--lime);display:flex;align-items:center;justify-content:center;overflow:hidden;margin:14px 0 20px}
+.dban img{width:100%;height:100%;object-fit:cover}
+.dban svg{width:72px;height:72px;fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+.soon{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:34px 18px;border-radius:22px;border:1.5px dashed #4a4a58;background:rgba(21,21,29,.6)}
+.soon b{font-size:17px;color:#f7d154}
+.soon span{color:var(--mut);font-size:14px}
