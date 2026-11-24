@@ -30,16 +30,7 @@
   <button class="go" id="ab"></button>
   <button type="button" id="bk">← Retour</button>
  </form>
-<section id="ok" class="hide">
-  <div class="top"><div class="logo"><svg viewBox="0 0 26 26"><path d="M13 4C7.800 4 4 7.500 4 12c0 2 .8 3.800 2.200 5.100L5 22l4.600-1.700c1 .3 2.200.5 3.400.5 5.200 0 9-3.500 9-8.400S18.200 4 13 4z"/></svg></div><b>App <i>Maçon</i></b></div>
-  <div class="views">
-   <div class="v" id="v-home"><h1 class="big" id="hi"></h1><p>Ton compte est prêt. Les chantiers arrivent bientôt.</p></div>
-   <div class="v hide" id="v-work"><h1 class="big">Travail</h1><p>Les chantiers : bientôt disponible.</p></div>
-   <div class="v hide" id="v-crew"><h1 class="big">Ouvriers</h1><p>Les maçons : bientôt disponible.</p></div>
-   <div class="v hide" id="v-me"><h1 class="big" id="mn"></h1><p id="mm"></p><button class="go" id="outb" style="width:100%">Se déconnecter</button></div>
-  </div>
-  <nav id="nav"><button class="on" data-v="home"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/></svg><span>Accueil</span></button><button data-v="work"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg><span>Travail</span></button><button data-v="crew"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17.500 14c2.800 0 4 1.800 4 5"/></svg><span>Ouvriers</span></button><button data-v="me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.400 3.600-7 8-7s8 2.600 8 7"/></svg><span>Compte</span></button></nav>
-</section>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -107,19 +98,7 @@ $("#af").onsubmit = async e => {
   }
 };
 paint();
-document.querySelectorAll("#nav button").forEach(b => b.onclick = () => {
-  document.querySelectorAll("#nav button").forEach(x => x.classList.toggle("on", x === b));
-  ["home", "work", "crew", "me"].forEach(k => $("#v-" + k).classList.toggle("hide", k !== b.dataset.v));
-});
-auth.onAuthStateChanged(u => {
-  const ok = !!(u && u.emailVerified);
-  $("#af").classList.toggle("hide", ok); $("#ok").classList.toggle("hide", !ok);
-  if (ok) {
-    const n = u.displayName || u.email;
-    $("#hi").textContent = "Bienvenue, " + n.split(" ")[0] + " !"; $("#mn").textContent = n; $("#mm").textContent = u.email;
-  }
-});
-$("#outb").onclick = () => auth.signOut();
+auth.onAuthStateChanged(u => { if (u && u.emailVerified) location.replace("accueil.html"); });
 </script>
 </body>
 </html>
