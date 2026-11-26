@@ -1,3 +1,4 @@
+
 *{box-sizing:border-box;margin:0}
 :root{--lime:linear-gradient(135deg,#e2fc86,#b0e130);--ink:#101406;--mut:#a3a3b0;--fld:#15151d;--line:#2b2b37;--bad:#ff6b6b}
 html,body{min-height:100%;background:#0a0a0f;color:#fff;font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -171,3 +172,25 @@ a.go{display:flex;align-items:center;justify-content:center;text-decoration:none
 .soon{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:34px 18px;border-radius:22px;border:1.5px dashed #4a4a58;background:rgba(21,21,29,.6)}
 .soon b{font-size:17px;color:#f7d154}
 .soon span{color:var(--mut);font-size:14px}
+
+/* inscription sécurisée */
+.fi .eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.fi .eye svg{position:static;transform:none;width:20px;height:20px;fill:none;stroke:var(--mut);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fi .eye.on svg{stroke:#f7d154}
+.fi:has(.eye) input{padding-right:48px}
+.meter{display:flex;gap:6px;margin:9px 4px 0}
+.meter i{flex:1;height:5px;border-radius:3px;background:#2b2b37;transition:background .2s}
+.meter[data-l="1"] i:nth-child(-n+1){background:#ff6b6b}
+.meter[data-l="2"] i:nth-child(-n+2){background:#ffb347}
+.meter[data-l="3"] i:nth-child(-n+3){background:#f7d154}
+.meter[data-l="4"] i{background:#3ddc6a}
+.mt{display:block;color:var(--mut);font-size:12.5px;margin:5px 0 0 4px}
+.cap{display:flex;align-items:center;gap:10px;padding:8px;margin-bottom:10px;border-radius:22px;border:2px solid transparent;
+ background:linear-gradient(160deg,#1b1b24,#12121a) padding-box,linear-gradient(135deg,#fff3b0,#f7d154 25%,#b8860b 50%,#ffe27a 75%,#d4a017) border-box}
+.cap canvas{flex:1;min-width:0;height:60px;border-radius:14px;display:block}
+.cap button{flex:none;width:44px;height:44px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center}
+.cap button svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.cap button:active svg{transform:rotate(180deg)}
+.trust{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--mut);font-size:12.5px;margin-top:14px}
+.trust svg{width:16px;height:16px;fill:none;stroke:#f7d154;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
