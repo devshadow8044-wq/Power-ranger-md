@@ -23,6 +23,7 @@
   <button class="qb" data-q="apropos"><img src="https://files.catbox.moe/7z2nx5.jpg" alt="" referrerpolicy="no-referrer"><span>À propos</span></button>
   <button class="qb" data-q="avis"><img src="https://files.catbox.moe/2yjuh6.jpg" alt="" referrerpolicy="no-referrer"><span>Avis</span></button>
  </div>
+ <div class="sl hide" id="sl"><div class="st" id="slt"></div><div class="sdots" id="sld"></div></div>
  <div class="chips"><button class="on" data-f="all">Tous</button><button data-f="en_cours">En cours</button><button data-f="termine">Terminés</button></div>
  <input id="qw" class="hide" placeholder="Chercher un chantier ou un lieu…" aria-label="Chercher">
  <div class="sech"><h2>Chantiers</h2><span id="cnt">0</span></div>
@@ -37,6 +38,35 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
 <script src="firebase.js"></script>
 <script>
+// ---- bandeau de photos : une photo sort, la suivante arrive ----
+const SLIDES = [
+  { src: "https://files.catbox.moe/38qgep.jpg", t: "Bâtiment" },
+  { src: "https://files.catbox.moe/k7i63y.jpg", t: "Fondation" },
+  { src: "https://files.catbox.moe/kgg7ld.jpg", t: "Piscine" },
+  { src: "https://files.catbox.moe/d1n595.jpg", t: "Escalier" }
+];
+(function () {
+  const box = document.getElementById("sl"), tr = document.getElementById("slt"), dots = document.getElementById("sld");
+  Promise.all(SLIDES.map(s => new Promise(ok => { const im = new Image(); im.referrerPolicy = "no-referrer"; im.onload = () => ok(s); im.onerror = () => ok(null); im.src = s.src; }))).then(r => {
+    const ok = r.filter(Boolean), n = ok.length; if (!n) return;
+    const mk = s => { const d = document.createElement("div"); d.className = "sd"; const im = document.createElement("img"); im.src = s.src; im.alt = ""; im.referrerPolicy = "no-referrer"; im.draggable = false; const c = document.createElement("span"); c.className = "sc"; c.textContent = s.t; d.append(im, c); return d; };
+    ok.forEach(s => tr.appendChild(mk(s)));
+    if (n > 1) tr.appendChild(mk(ok[0]));
+    ok.forEach(() => dots.appendChild(document.createElement("i")));
+    box.classList.remove("hide"); if (n < 2) { dots.classList.add("hide"); return; }
+    let i = 0, timer, busy = false;
+    const paintDots = () => Array.from(dots.children).forEach((d, k) => d.classList.toggle("on", k === i % n));
+    const go = (anim) => { tr.style.transition = anim ? "" : "none"; tr.style.transform = "translateX(" + (-i * 100) + "%)"; paintDots(); };
+    const next = () => { if (busy) return; busy = true; i++; go(true); };
+    const prev = () => { if (busy) return; busy = true; if (i === 0) { i = n; go(false); tr.offsetWidth; } i--; go(true); };
+    tr.addEventListener("transitionend", () => { if (i === n) { i = 0; go(false); tr.offsetWidth; } busy = false; });
+    const start = () => { clearInterval(timer); timer = setInterval(next, 3500); }, stop = () => clearInterval(timer);
+    let x0 = null; box.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; stop(); }, { passive: true });
+    box.addEventListener("touchend", e => { if (x0 !== null) { const dx = e.changedTouches[0].clientX - x0; if (dx < -40) next(); else if (dx > 40) prev(); } x0 = null; start(); });
+    document.addEventListener("visibilitychange", () => document.hidden ? stop() : start());
+    go(false); start();
+  });
+})();
 const ini = s => s.trim().split(/\s+/).slice(0, 2).map(w => w[0] || "").join("").toUpperCase();
 const ago = d => {
   const m = Math.floor((Date.now() - d) / 60000);
