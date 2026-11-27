@@ -49,7 +49,7 @@ const SLIDES = [
   const box = document.getElementById("sl"), tr = document.getElementById("slt"), dots = document.getElementById("sld");
   Promise.all(SLIDES.map(s => new Promise(ok => { const im = new Image(); im.referrerPolicy = "no-referrer"; im.onload = () => ok(s); im.onerror = () => ok(null); im.src = s.src; }))).then(r => {
     const ok = r.filter(Boolean), n = ok.length; if (!n) return;
-    const mk = s => { const d = document.createElement("div"); d.className = "sd"; const im = document.createElement("img"); im.src = s.src; im.alt = ""; im.referrerPolicy = "no-referrer"; im.draggable = false; const c = document.createElement("span"); c.className = "sc"; c.textContent = s.t; d.append(im, c); return d; };
+    const mk = s => { const d = document.createElement("div"); d.className = "sd"; const im = document.createElement("img"); im.src = s.src; im.alt = ""; im.referrerPolicy = "no-referrer"; im.draggable = false; d.append(im); return d; };
     ok.forEach(s => tr.appendChild(mk(s)));
     if (n > 1) tr.appendChild(mk(ok[0]));
     ok.forEach(() => dots.appendChild(document.createElement("i")));
