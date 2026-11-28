@@ -247,3 +247,18 @@ a.go{display:flex;align-items:center;justify-content:center;text-decoration:none
 .pop.err .pok{background:#ff6b6b;color:#1a0505;box-shadow:0 8px 22px rgba(255,107,107,.25);border-color:transparent}
 @keyframes pfade{from{opacity:0}to{opacity:1}}
 @keyframes ppop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
+
+/* mouvement du succès (coche qui se dessine, ondes, étincelles) et de l'erreur */
+.pop.ok .pic{position:relative;animation:pbounce .7s cubic-bezier(.2,1.5,.4,1) both}
+.pop.ok .pic svg path{stroke-dasharray:30;stroke-dashoffset:30;animation:pdraw .5s .4s ease-out forwards}
+.pop.ok .pic::before,.pop.ok .pic::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:3px solid #3ddc6a;opacity:0;animation:pripple 1.8s .5s ease-out infinite}
+.pop.ok .pic::after{animation-delay:1.1s}
+.spk{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:#c8f04a;opacity:0;animation:pspk .9s .5s ease-out forwards}
+.spk:nth-child(even){background:#f7d154}
+.pop.err .pbox{animation:ppop .3s cubic-bezier(.2,1.3,.4,1),pshake .45s .3s}
+@keyframes pbounce{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.15);opacity:1}100%{transform:scale(1)}}
+@keyframes pdraw{to{stroke-dashoffset:0}}
+@keyframes pripple{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.7);opacity:0}}
+@keyframes pspk{0%{opacity:1;transform:rotate(var(--a)) translateY(-46px) scale(1)}100%{opacity:0;transform:rotate(var(--a)) translateY(-86px) scale(.3)}}
+@keyframes pshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+@media (prefers-reduced-motion:reduce){.pop *,.pop{animation:none!important}.pop.ok .pic svg path{stroke-dashoffset:0}}
