@@ -205,3 +205,8 @@ a.go{display:flex;align-items:center;justify-content:center;text-decoration:none
 .sl .sdots i{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.45);transition:width .3s,background .3s}
 .sl .sdots i.on{width:22px;background:#f7d154}
 .cc .cv{margin-top:auto}
+
+/* onglets Inscription / Connexion : même intérieur vert */
+.tabs{background:transparent;border:0;padding:0;gap:10px}
+.tabs button{background:var(--lime);color:var(--ink);font-weight:700;border:2px solid transparent;box-shadow:none}
+.tabs button.on{border-color:#f7d154;box-shadow:0 0 0 2px rgba(184,134,11,.55),0 6px 20px rgba(245,197,66,.3)}
