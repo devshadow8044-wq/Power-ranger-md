@@ -63,7 +63,7 @@ const SUPPORT_WA = "221770000000";
 const SUPPORT_MAIL = "support@exemple.com";
 
 const ini = s => s.trim().split(/\s+/).slice(0, 2).map(w => w[0] || "").join("").toUpperCase();
-const toast = t => { const e = $("#toast"); e.textContent = t; e.classList.remove("hide"); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.add("hide"), 2200); };
+const toast = (t, good) => { const e = $("#toast"); e.textContent = t; e.classList.toggle("good", !!good); e.classList.remove("hide"); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.add("hide"), 2200); };
 const say = (id, t, ok) => { const e = $(id); e.textContent = t; e.classList.toggle("ok", !!ok); };
 auth.onAuthStateChanged(u => {
   if (!u || !u.emailVerified) { if (u) auth.signOut(); location.replace("index.html"); return; }
@@ -92,7 +92,7 @@ auth.onAuthStateChanged(u => {
       c.getContext("2d").drawImage(img, sx, sy, m, m, 0, 0, S, S);
       URL.revokeObjectURL(url);
       const data = c.toDataURL("image/jpeg", .82);
-      try { await ref.set({ photo: data }, { merge: true }); photo = data; show(); toast("Photo mise à jour"); }
+      try { await ref.set({ photo: data }, { merge: true }); photo = data; show(); toast("Photo mise à jour", 1); }
       catch (x) { toast("Impossible d’enregistrer la photo"); }
     };
     img.onerror = () => toast("Image non valide");
@@ -119,7 +119,7 @@ auth.onAuthStateChanged(u => {
     try {
       await u.updateProfile({ displayName: nm });
       await ref.set({ name: nm }, { merge: true });
-      show(); close(); toast("Nom modifié");
+      show(); close(); toast("Nom modifié", 1);
     } catch (x) { say("#e1", "Erreur : " + (x.code || "réessaie")); }
   };
 
@@ -133,7 +133,7 @@ auth.onAuthStateChanged(u => {
     try {
       await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email, o));
       await u.updatePassword(a);
-      close(); toast("Mot de passe modifié");
+      close(); toast("Mot de passe modifié", 1);
     } catch (x) {
       const m = { "auth/invalid-credential": "Ancien mot de passe incorrect.", "auth/wrong-password": "Ancien mot de passe incorrect.", "auth/weak-password": "Mot de passe trop court.", "auth/too-many-requests": "Trop d’essais. Réessaie plus tard.", "auth/requires-recent-login": "Reconnecte-toi puis réessaie." };
       say("#e2", m[x.code] || "Erreur : " + x.code);
