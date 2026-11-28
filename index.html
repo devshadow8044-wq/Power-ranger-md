@@ -43,6 +43,17 @@
 <script src="firebase.js"></script>
 <script>
 let signup;
+// ---- fenêtre succès / erreur ----
+function popup(type, msg, cb) {
+  const old = document.getElementById("pop"); if (old) old.remove();
+  const ok = type === "ok", o = document.createElement("div"); o.id = "pop"; o.className = "pop " + type;
+  o.innerHTML = '<div class="pbox" role="alertdialog" aria-modal="true"><div class="pic"><svg viewBox="0 0 24 24">' + (ok ? '<path d="M5 12.500l4.500 4.500L19 7.500"/>' : '<path d="M6 6l12 12M18 6L6 18"/>') + '</svg></div><h3>' + (ok ? "Succès" : "Erreur") + '</h3><p></p><button type="button" class="go pok">OK</button></div>';
+  o.querySelector("p").textContent = msg; document.body.appendChild(o);
+  const b = o.querySelector(".pok"); let done = false;
+  const close = () => { if (done) return; done = true; o.remove(); if (cb) cb(); };
+  b.onclick = close; o.onclick = e => { if (e.target === o) close(); }; b.focus();
+}
+
 // ---- connexion / inscription (3 étapes) ----
 let step = 1; signup = true;
 const T = { 1: ["Créons ton compte", "Commence par ton prénom et ton nom.", "Suivant →"], 2: ["Tes contacts", "Ajoute ton numéro et ton email.", "Suivant →"], 3: ["Dernière étape", "Choisis un mot de passe sûr.", "Créer mon compte"], L: ["Content de te revoir", "Connecte-toi à ton compte.", "Se connecter"] };
@@ -119,7 +130,7 @@ $("#bk").onclick = () => { step--; paint(); };
 $("#af").onsubmit = async e => {
   e.preventDefault(); $("#err").classList.remove("okmsg"); $("#err").textContent = "";
   if ($("#hp").value) return;
-  if (!signup && lockLeft() > 0) { $("#err").textContent = "Trop d’essais. Réessaie dans " + lockLeft() + " s."; return; }
+  if (!signup && lockLeft() > 0) { popup("err", "Trop d’essais. Réessaie dans " + lockLeft() + " s."); return; }
   if (!check()) return;
   if (signup && step < 3) { step++; paint(); return; }
   const em = $("#em").value.trim(), pw = $("#pw").value;
@@ -131,19 +142,18 @@ $("#af").onsubmit = async e => {
       await db.collection("users").doc(c.user.uid).set(Object.assign({ name: nm, email: em.toLowerCase(), phone: ph }, photoData ? { photo: photoData } : {}));
       await c.user.sendEmailVerification();
       await auth.signOut(); signup = false; step = 1; resetPhoto(); paint();
-      $("#err").classList.add("okmsg");
-      $("#err").textContent = "Compte créé ! Clique sur le lien reçu par email, puis connecte-toi.";
+      popup("ok", "Compte créé ! Clique sur le lien reçu par email, puis connecte-toi.");
     } else {
       loginFlow = true;
       const c = await auth.signInWithEmailAndPassword(em, pw);
-      if (!c.user.emailVerified) { loginFlow = false; await auth.signOut(); $("#err").textContent = "Confirme d’abord ton email (regarde aussi les spams)."; }
-      else { fails = 0; $("#ab").disabled = true; $("#err").classList.add("okmsg"); $("#err").textContent = "Connexion réussie ! Bienvenue, redirection…"; }
+      if (!c.user.emailVerified) { loginFlow = false; await auth.signOut(); popup("err", "Confirme d’abord ton email (regarde aussi les spams)."); }
+      else { fails = 0; $("#ab").disabled = true; let gone = false; const go = () => { if (!gone) { gone = true; location.replace("accueil.html"); } }; popup("ok", "Connexion réussie ! Bienvenue.", go); setTimeout(go, 2500); }
     }
   } catch (x) {
     loginFlow = false; $("#ab").disabled = false;
     const m = { "auth/email-already-in-use": "Cet email est déjà utilisé.", "auth/weak-password": "Mot de passe trop court.", "auth/invalid-credential": "Email ou mot de passe incorrect.", "auth/invalid-email": "Email invalide.", "auth/too-many-requests": "Trop d’essais. Réessaie plus tard." };
     if (!signup && (x.code === "auth/invalid-credential" || x.code === "auth/wrong-password")) failed();
-    $("#err").textContent = m[x.code] || "Erreur : " + x.code;
+    popup("err", m[x.code] || "Erreur : " + x.code);
   }
 };
 $("#pbtn").onclick = () => $("#pfile").click();
@@ -156,7 +166,7 @@ $("#pfile").onchange = e => {
     photoData = c.toDataURL("image/jpeg", .82);
     const p = document.createElement("img"); p.src = photoData; p.alt = ""; $("#pbtn").innerHTML = ""; $("#pbtn").appendChild(p);
   };
-  img.onerror = () => { $("#err").textContent = "Image non valide."; };
+  img.onerror = () => popup("err", "Image non valide.");
   img.src = url;
 };
 $("#cr").onclick = () => { drawCap(); $("#cp").value = ""; };
@@ -164,7 +174,7 @@ $("#cp").oninput = e => { e.target.value = e.target.value.toUpperCase().replace(
 $("#pw").oninput = e => { const l = strength(e.target.value); $("#meter").dataset.l = l; $("#mtxt").textContent = ["", "Faible", "Moyen", "Bon", "Excellent"][l]; };
 document.querySelectorAll(".eye").forEach(b => b.onclick = () => { const i = $("#" + b.dataset.t); i.type = i.type === "password" ? "text" : "password"; b.classList.toggle("on", i.type === "text"); });
 paint();
-auth.onAuthStateChanged(u => { if (u && u.emailVerified) { if (loginFlow) setTimeout(() => location.replace("accueil.html"), 1300); else location.replace("accueil.html"); } });
+auth.onAuthStateChanged(u => { if (u && u.emailVerified && !loginFlow) location.replace("accueil.html"); });
 </script>
 </body>
 </html>
