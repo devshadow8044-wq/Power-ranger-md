@@ -223,3 +223,11 @@ a.go{display:flex;align-items:center;justify-content:center;text-decoration:none
 .pslot::after{content:"+";position:absolute;right:-2px;bottom:-2px;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#fff3b0,#f7d154 45%,#b8860b);border:3px solid #0a0a0f;color:#2a1c00;font-weight:800;font-size:20px;line-height:26px;text-align:center}
 .pph small{color:var(--mut);font-size:13px}
 .tabs button.on{background:linear-gradient(135deg,#fff3b0 0%,#f7d154 40%,#d4a017 75%,#f9dc6a 100%);color:#2a1c00}
+
+/* messages de succès en vert */
+#err.okmsg{display:flex;align-items:center;gap:10px;margin:8px 0 12px;padding:12px 14px;border-radius:16px;background:rgba(61,220,106,.13);border:1.5px solid rgba(61,220,106,.6);color:#a6ffc4;font-size:14.5px;font-weight:600;line-height:1.3}
+#err.okmsg:empty{display:none}
+#err.okmsg::before,#toast.good::before{content:"";flex:none;display:inline-block;width:22px;height:22px;border-radius:50%;background:#3ddc6a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.500l4.500 4.500L19 7.500' fill='none' stroke='%230a1a10' stroke-width='3.500' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat}
+#toast.good{display:flex;align-items:center;gap:10px;background:#0e2a1b;border:1.5px solid #3ddc6a;color:#b9ffd0;font-weight:600;box-shadow:0 8px 24px rgba(61,220,106,.25)}
+#toast.good.hide{display:none!important}
+.serr.ok{color:#5dff90;font-weight:600}
