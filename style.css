@@ -210,3 +210,16 @@ a.go{display:flex;align-items:center;justify-content:center;text-decoration:none
 .tabs{background:transparent;border:0;padding:0;gap:10px}
 .tabs button{background:var(--lime);color:var(--ink);font-weight:700;border:2px solid transparent;box-shadow:none}
 .tabs button.on{border-color:#f7d154;box-shadow:0 0 0 2px rgba(184,134,11,.55),0 6px 20px rgba(245,197,66,.3)}
+
+/* onglets en doré brillant */
+.tabs button{background:linear-gradient(135deg,#fff3b0 0%,#f7d154 40%,#d4a017 75%,#f9dc6a 100%);color:#2a1c00}
+.tabs button.on{border-color:#fff;box-shadow:0 0 0 2px #b8860b,0 6px 22px rgba(245,197,66,.45)}
+
+/* place photo de profil (inscription) */
+.pph{display:flex;flex-direction:column;align-items:center;gap:8px;margin:0 0 16px}
+.pslot{position:relative;width:104px;height:104px;border-radius:50%;border:3px solid #f7d154;box-shadow:0 0 0 3px rgba(184,134,11,.55),0 8px 22px rgba(245,197,66,.25);background:var(--fld);display:flex;align-items:center;justify-content:center;overflow:visible}
+.pslot img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.pslot svg{width:36px;height:36px;fill:none;stroke:#f7d154;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pslot::after{content:"+";position:absolute;right:-2px;bottom:-2px;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#fff3b0,#f7d154 45%,#b8860b);border:3px solid #0a0a0f;color:#2a1c00;font-weight:800;font-size:20px;line-height:26px;text-align:center}
+.pph small{color:var(--mut);font-size:13px}
+.tabs button.on{background:linear-gradient(135deg,#fff3b0 0%,#f7d154 40%,#d4a017 75%,#f9dc6a 100%);color:#2a1c00}
