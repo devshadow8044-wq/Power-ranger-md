@@ -47,7 +47,7 @@ let signup;
 function popup(type, msg, cb) {
   const old = document.getElementById("pop"); if (old) old.remove();
   const ok = type === "ok", o = document.createElement("div"); o.id = "pop"; o.className = "pop " + type;
-  o.innerHTML = '<div class="pbox" role="alertdialog" aria-modal="true"><div class="pic"><svg viewBox="0 0 24 24">' + (ok ? '<path d="M5 12.500l4.500 4.500L19 7.500"/>' : '<path d="M6 6l12 12M18 6L6 18"/>') + '</svg></div><h3>' + (ok ? "Succès" : "Erreur") + '</h3><p></p><button type="button" class="go pok">OK</button></div>';
+  o.innerHTML = '<div class="pbox" role="alertdialog" aria-modal="true"><div class="pic"><svg viewBox="0 0 24 24">' + (ok ? '<path d="M5 12.500l4.500 4.500L19 7.500"/>' : '<path d="M6 6l12 12M18 6L6 18"/>') + '</svg>' + (ok ? Array.from({ length: 8 }, (_, k) => '<i class="spk" style="--a:' + k * 45 + 'deg"></i>').join("") : "") + '</div><h3>' + (ok ? "Succès" : "Erreur") + '</h3><p></p><button type="button" class="go pok">OK</button></div>';
   o.querySelector("p").textContent = msg; document.body.appendChild(o);
   const b = o.querySelector(".pok"); let done = false;
   const close = () => { if (done) return; done = true; o.remove(); if (cb) cb(); };
