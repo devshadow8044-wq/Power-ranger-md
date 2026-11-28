@@ -204,3 +204,4 @@ a.go{display:flex;align-items:center;justify-content:center;text-decoration:none
 .sl .sdots{position:absolute;left:0;right:0;bottom:10px;z-index:2;display:flex;justify-content:center;gap:6px}
 .sl .sdots i{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.45);transition:width .3s,background .3s}
 .sl .sdots i.on{width:22px;background:#f7d154}
+.cc .cv{margin-top:auto}
