@@ -56,7 +56,7 @@ const V = {
   cp: v => { if (v.trim().toUpperCase() === code) return ""; setTimeout(() => { drawCap(); $("#cp").value = ""; }, 0); return "Code incorrect, un nouveau code a été généré"; }
 };
 // ---- captcha (lettres déformées) ----
-let code = "", photoData = "";
+let code = "", photoData = "", loginFlow = false;
 const CAMSVG = $("#pbtn").innerHTML;
 function resetPhoto() { photoData = ""; $("#pbtn").innerHTML = CAMSVG; }
 function drawCap() {
@@ -84,7 +84,7 @@ const lockLeft = () => { try { return Math.max(0, Math.ceil(((+localStorage.getI
 let fails = 0, lockMem = 0;
 function failed() { if (++fails >= 5) { fails = 0; lockMem = Date.now() + 60000; try { localStorage.setItem("am_lock", lockMem); } catch (e) {} } }
 function paint() {
-  paint0();
+  paint0(); $("#err").classList.remove("okmsg");
   $("#meter").classList.toggle("hide", !signup); $("#mtxt").classList.toggle("hide", !signup);
   $("#pw").placeholder = signup ? "8 caractères, lettres et chiffres" : "Ton mot de passe";
   $("#pw").autocomplete = signup ? "new-password" : "current-password";
@@ -117,7 +117,7 @@ $("#tabS").onclick = () => { signup = true; step = 1; paint(); };
 $("#tabL").onclick = () => { signup = false; paint(); };
 $("#bk").onclick = () => { step--; paint(); };
 $("#af").onsubmit = async e => {
-  e.preventDefault(); $("#err").style.color = ""; $("#err").textContent = "";
+  e.preventDefault(); $("#err").classList.remove("okmsg"); $("#err").textContent = "";
   if ($("#hp").value) return;
   if (!signup && lockLeft() > 0) { $("#err").textContent = "Trop d’essais. Réessaie dans " + lockLeft() + " s."; return; }
   if (!check()) return;
@@ -131,13 +131,16 @@ $("#af").onsubmit = async e => {
       await db.collection("users").doc(c.user.uid).set(Object.assign({ name: nm, email: em.toLowerCase(), phone: ph }, photoData ? { photo: photoData } : {}));
       await c.user.sendEmailVerification();
       await auth.signOut(); signup = false; step = 1; resetPhoto(); paint();
-      $("#err").style.color = "#d4f56a";
+      $("#err").classList.add("okmsg");
       $("#err").textContent = "Compte créé ! Clique sur le lien reçu par email, puis connecte-toi.";
     } else {
+      loginFlow = true;
       const c = await auth.signInWithEmailAndPassword(em, pw);
-      if (!c.user.emailVerified) { await auth.signOut(); $("#err").textContent = "Confirme d’abord ton email (regarde aussi les spams)."; }
+      if (!c.user.emailVerified) { loginFlow = false; await auth.signOut(); $("#err").textContent = "Confirme d’abord ton email (regarde aussi les spams)."; }
+      else { fails = 0; $("#ab").disabled = true; $("#err").classList.add("okmsg"); $("#err").textContent = "Connexion réussie ! Bienvenue, redirection…"; }
     }
   } catch (x) {
+    loginFlow = false; $("#ab").disabled = false;
     const m = { "auth/email-already-in-use": "Cet email est déjà utilisé.", "auth/weak-password": "Mot de passe trop court.", "auth/invalid-credential": "Email ou mot de passe incorrect.", "auth/invalid-email": "Email invalide.", "auth/too-many-requests": "Trop d’essais. Réessaie plus tard." };
     if (!signup && (x.code === "auth/invalid-credential" || x.code === "auth/wrong-password")) failed();
     $("#err").textContent = m[x.code] || "Erreur : " + x.code;
@@ -161,7 +164,7 @@ $("#cp").oninput = e => { e.target.value = e.target.value.toUpperCase().replace(
 $("#pw").oninput = e => { const l = strength(e.target.value); $("#meter").dataset.l = l; $("#mtxt").textContent = ["", "Faible", "Moyen", "Bon", "Excellent"][l]; };
 document.querySelectorAll(".eye").forEach(b => b.onclick = () => { const i = $("#" + b.dataset.t); i.type = i.type === "password" ? "text" : "password"; b.classList.toggle("on", i.type === "text"); });
 paint();
-auth.onAuthStateChanged(u => { if (u && u.emailVerified) location.replace("accueil.html"); });
+auth.onAuthStateChanged(u => { if (u && u.emailVerified) { if (loginFlow) setTimeout(() => location.replace("accueil.html"), 1300); else location.replace("accueil.html"); } });
 </script>
 </body>
 </html>
